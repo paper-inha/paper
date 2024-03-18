@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.paper.demo.auth.service.dto.AuthDto;
+import com.paper.demo.common.admin.AdminException;
 
 import jakarta.validation.Valid;
 
@@ -26,10 +27,10 @@ public interface IAuthApiControllerV1 {
 	 */
 	// 유저 회원가입
 	@PostMapping("/v1/signup")
-	ResponseEntity<String> signupUser(@RequestBody @Valid AuthDto.SignupDto signupDto);
+	ResponseEntity<?> signupUser(@RequestBody @Valid AuthDto.SignupDto signupDto) throws AdminException;
 	// 관리자 회원가입
 	@PostMapping("/v1/signup/inha")
-	ResponseEntity<String> signupAdmin(@RequestBody @Valid AuthDto.SignupDto signupDto);
+	ResponseEntity<?> signupAdmin(@RequestBody @Valid AuthDto.SignupDto signupDto);
 	/**
 	 * 로그인
 	 * @param loginDto
