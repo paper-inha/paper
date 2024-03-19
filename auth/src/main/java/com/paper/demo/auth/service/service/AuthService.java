@@ -119,7 +119,6 @@ public class AuthService implements IAuthServiceV1 {
 	}
 
 	// 로그아웃
-
 	public void logout(String requestAccessTokenInHeader) {
 		String requestAccessToken = resolveToken(requestAccessTokenInHeader);
 		String principal = getPrincipal(requestAccessToken);

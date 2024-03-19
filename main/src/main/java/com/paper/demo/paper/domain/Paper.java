@@ -1,6 +1,5 @@
-package com.paper.demo.src.paper.domain;
+package com.paper.demo.paper.domain;
 
-import com.paper.demo.src.user.domain.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,11 +35,5 @@ public class Paper {
 	 * @param user
 	 * @return
 	 */
-	public static Paper writePaper(String title, String content, User user) {
-		Paper paper = new Paper();
-		paper.title = title;
-		paper.content = content;
-		paper.author = user.getEmail();
-		return paper;
-	}
+
 }

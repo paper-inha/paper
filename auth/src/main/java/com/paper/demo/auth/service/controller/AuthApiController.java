@@ -57,6 +57,7 @@ public class AuthApiController implements IAuthApiControllerV1 {
 	public ResponseEntity<?> login(@RequestBody @Valid AuthDto.LoginDto loginDto) throws
 		NoSuchAlgorithmException,
 		InvalidKeySpecException {
+
 		AuthDto.TokenDto tokenDto = authService.login(loginDto);
 		// RT 저장
 		HttpCookie httpCookie = ResponseCookie.from("refresh-token", tokenDto.getRefreshToken())
@@ -153,4 +154,6 @@ public class AuthApiController implements IAuthApiControllerV1 {
 			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
 			.body(successResponse);
 	}
+
+
 }
