@@ -11,5 +11,8 @@ public interface ISecurityServiceV1{
 	String getUserEmail();
 
 	Mono<ResponseEntity<?>> logout(String accessToken);
-	Mono<ResponseEntity<?>> login(UserDto.RequestUserDto requestUserDto);
+	Mono<ResponseEntity<?>> login(UserDto.LoginDto loginDto);
+
+	Mono<ResponseEntity<?>> signup(UserDto.SignUpDto signUpDto);
+	Mono<ResponseEntity<?>> signupAdmin(UserDto.SignUpDto signUpDto);
 }

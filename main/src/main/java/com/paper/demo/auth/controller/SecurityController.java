@@ -25,12 +25,22 @@ public class SecurityController implements ISecurityControllerV1{
 
 
 	@Override
-	public Mono<ResponseEntity<?>> logout(@RequestHeader("Authorization") String accessToken) {
-		return securityService.logout(accessToken);
+	public Mono<ResponseEntity<?>> logout(@RequestHeader("Authorization") String AccessToken) {
+		return securityService.logout(AccessToken);
 	}
 
 	@Override
-	public Mono<ResponseEntity<?>> login(@RequestBody UserDto.RequestUserDto requestUserDto) {
-		return securityService.login(requestUserDto);
+	public Mono<ResponseEntity<?>> login(@RequestBody UserDto.LoginDto loginDto) {
+		return securityService.login(loginDto);
+	}
+
+	@Override
+	public Mono<ResponseEntity<?>> signupUser(@RequestBody UserDto.SignUpDto signUpDto){
+		return securityService.signup(signUpDto);
+	}
+
+	@Override
+	public Mono<ResponseEntity<?>> signupAdmin(@RequestBody UserDto.SignUpDto signUpDto){
+		return securityService.signupAdmin(signUpDto);
 	}
 }

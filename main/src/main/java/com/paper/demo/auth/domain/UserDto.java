@@ -8,13 +8,30 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class RequestUserDto {
+	public static class LoginDto {
 		private String email;
 		private String password;
+
+
 		@Builder
-		public RequestUserDto(String email,String password) {
+		public LoginDto(String email, String password) {
 			this.email = email;
 			this.password = password;
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class SignUpDto {
+		private String email;
+		private String password;
+		private String name;
+
+		@Builder
+		public SignUpDto(String email, String password,String name) {
+			this.email = email;
+			this.password = password;
+			this.name = name;
 		}
 	}
 }

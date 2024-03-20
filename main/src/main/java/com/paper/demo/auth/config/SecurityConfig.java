@@ -29,7 +29,7 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(registry -> registry
-				.requestMatchers("/v**/login").permitAll()
+				.requestMatchers("/v**/auth/**").permitAll()
 				.requestMatchers("/v**/paper/**").hasRole("USER")
 				.anyRequest().permitAll())
 			.oauth2ResourceServer(oauth2ResourceServer ->
@@ -41,7 +41,7 @@ public class SecurityConfig {
 	}
 	/**
 	 * @apiNote jwt를 이용하여 인증을 처리한다.
-	 * @apiNote jwt의 roles를 이용하여 Admin권한을 검색하여 ADMIN이 있다면 admin권한을 부여한다.
+	 * @apiNote jwt의 roles를 이용하여 권한 검색해서 USER가 있다면 USER권한을 부여한다.
 	 * @return
 	 */
 	private Converter<Jwt, JwtAuthenticationToken> adminConverter() {

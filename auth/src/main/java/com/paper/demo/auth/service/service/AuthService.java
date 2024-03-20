@@ -98,6 +98,8 @@ public class AuthService implements IAuthServiceV1 {
 		System.out.println("저장할때 메서드(저장된 RT): " + redisService.getValues("RT(" + provider + "):" + principal));
 	}
 
+
+
 	// 권한 이름 가져오기
 	public String getAuthorities(Authentication authentication) {
 		return authentication.getAuthorities().stream()
