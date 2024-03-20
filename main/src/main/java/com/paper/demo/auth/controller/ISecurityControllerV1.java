@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 public interface ISecurityControllerV1 {
 
-	@GetMapping("/v1/name")
+	@GetMapping("/v1/auth/name")
 	String getName();
 
 	@GetMapping("/v1/auth/logout")

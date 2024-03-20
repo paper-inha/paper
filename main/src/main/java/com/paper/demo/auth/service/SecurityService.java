@@ -24,6 +24,8 @@ public class SecurityService implements ISecurityServiceV1{
 	@Autowired
 	private final WebClient webClient;
 
+
+
 	/**
 	 * @apiNote 현재 인증된 사용자의 이메일을 반환한다.
 	 * @return

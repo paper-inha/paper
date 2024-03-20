@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 
 public interface ISecurityServiceV1{
 
+
 	String getUserEmail();
 
 	Mono<ResponseEntity<?>> logout(String accessToken);
