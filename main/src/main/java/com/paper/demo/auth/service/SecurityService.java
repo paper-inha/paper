@@ -24,8 +24,6 @@ public class SecurityService implements ISecurityServiceV1{
 	@Autowired
 	private final WebClient webClient;
 
-
-
 	/**
 	 * @apiNote 현재 인증된 사용자의 이메일을 반환한다.
 	 * @return
@@ -38,6 +36,8 @@ public class SecurityService implements ISecurityServiceV1{
 		}
 		return (String) jwt.getClaims().get("email");
 	}
+
+
 
 	/**
 	 * @apiNote 인증서버에 로그인 요청
@@ -89,6 +89,16 @@ public class SecurityService implements ISecurityServiceV1{
 		return this.webClient.post()
 			.uri("/v1/signup/inha")
 			.bodyValue(signUpDto)
+			.retrieve()
+			.bodyToMono(JsonResponse.class)
+			.map(response -> ResponseEntity
+				.status(response.getCode())
+				.body(response));
+	}
+	public Mono<ResponseEntity<?>> validateToken(String accessToken) {
+		return this.webClient.post()
+			.uri("/v1/validate")
+			.header(HttpHeaders.AUTHORIZATION,accessToken)
 			.retrieve()
 			.bodyToMono(JsonResponse.class)
 			.map(response -> ResponseEntity

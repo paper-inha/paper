@@ -5,7 +5,6 @@ secrets:
   main_db-password:
     file: mysql/password.txt
 
-
 volumes:
   auth-redis_db-data: { }
   auth-mysql_db-data: { }
@@ -70,6 +69,10 @@ services:
       - main_db-password
     volumes:
       - auth-mysql_db-data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+
 
   main_server:
     hostname: mainHost
@@ -96,12 +99,17 @@ services:
       retries: 5
       start_period: 30s
     environment:
-      - MYSQL_DATABASE=coupang
+      - MYSQL_DATABASE=paper
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/main_db-password
     secrets:
       - main_db-password
     volumes:
       - main-mysql_db-data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+
+
 
   auth_server:
     hostname: authHost

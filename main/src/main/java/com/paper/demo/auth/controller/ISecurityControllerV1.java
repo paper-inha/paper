@@ -12,8 +12,6 @@ import reactor.core.publisher.Mono;
 
 public interface ISecurityControllerV1 {
 
-	@GetMapping("/v1/auth/name")
-	String getName();
 
 	@GetMapping("/v1/auth/logout")
 	Mono<ResponseEntity<?>> logout(@RequestHeader("Authorization") String accessToken);
@@ -25,4 +23,7 @@ public interface ISecurityControllerV1 {
 	// 관리자 회원가입
 	@GetMapping("/v1/auth/signup/inha")
 	Mono<ResponseEntity<?>> signupAdmin(@RequestBody @Valid UserDto.SignUpDto signUpDto);
+
+	@GetMapping("/v1/auth/validate")
+	Mono<ResponseEntity<?>> validateToken(@RequestHeader("Authorization") String accessToken);
 }

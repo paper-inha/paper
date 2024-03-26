@@ -16,4 +16,5 @@ public interface ISecurityServiceV1{
 
 	Mono<ResponseEntity<?>> signup(UserDto.SignUpDto signUpDto);
 	Mono<ResponseEntity<?>> signupAdmin(UserDto.SignUpDto signUpDto);
+	Mono<ResponseEntity<?>> validateToken(String accessToken);
 }

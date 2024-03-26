@@ -18,11 +18,6 @@ public class SecurityController implements ISecurityControllerV1{
 	@Autowired
 	private SecurityService securityService;
 
-	@Override
-	public String getName() {
-		return securityService.getUserEmail();
-	}
-
 
 	@Override
 	public Mono<ResponseEntity<?>> logout(@RequestHeader("Authorization") String AccessToken) {
@@ -42,5 +37,10 @@ public class SecurityController implements ISecurityControllerV1{
 	@Override
 	public Mono<ResponseEntity<?>> signupAdmin(@RequestBody UserDto.SignUpDto signUpDto){
 		return securityService.signupAdmin(signUpDto);
+	}
+
+	@Override
+	public Mono<ResponseEntity<?>> validateToken(@RequestHeader("Authorization") String accessToken) {
+		return securityService.validateToken(accessToken);
 	}
 }

@@ -1,5 +1,10 @@
 package com.paper.demo.paper.domain;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,26 +31,16 @@ public class Paper {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "paper_id")
 	private Long id;
-	private String title;
 	private String content;
 	// 사용자 엔티티와의 연관 관계 정의
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "author_id")
 	private PaperUser author;
-	private String authorEmail;
-	private String createdDate;
-	private String updatedDate;
-	private String deletedDate;
+	@CreationTimestamp
+	private Timestamp createdDate;
+	@UpdateTimestamp
+	private Timestamp updatedDate;
 	private String deletedYn;
 
-	// == 생성 메서드 == //
-
-	/**
-	 * @apiNote Paper를 생성한다.
-	 * @param title
-	 * @param content
-	 * @param user
-	 * @return
-	 */
 
 }

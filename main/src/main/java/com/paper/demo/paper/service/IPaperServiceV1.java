@@ -1,12 +1,17 @@
 package com.paper.demo.paper.service;
 
+import org.springframework.http.ResponseEntity;
+
+import com.paper.demo.paper.domain.PaperDto;
+
+import reactor.core.publisher.Mono;
+
 public interface IPaperServiceV1 {
-	// void createPaper(PaperDto.PaperCreateDto paperCreateDto);
 
+	Mono<String> getUserYn(String accessToken);
 
-	//생성된 페이퍼 글쓰기 메서드
+	Mono<ResponseEntity<?>> getPaper(PaperDto.createPaperByUserDto createPaperByUserDto,String accessToken);
+	Mono<ResponseEntity<?>> createPapers(PaperDto.createPaperByPaperDto createPaperByPaperDto,String accessToken);
 
-
-	//생성된 페이퍼
-
+	String getUserEmail();
 }

@@ -17,17 +17,25 @@ public class PaperDto {
 			this.content = content;
 		}
 	}
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class createPaperByPaperDto{
+		private String content;
+		public createPaperByPaperDto(String content) {
+			this.content = content;
+		}
+	}
+
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class PaperWriteDto{
+	public static class createPaperByUserDto{
+		private String email;
 		private String title;
-		private String content;
 
-
-		public PaperWriteDto(String title, String content) {
+		public createPaperByUserDto(String email, String title) {
+			this.email = email;
 			this.title = title;
-			this.content = content;
 		}
 	}
 

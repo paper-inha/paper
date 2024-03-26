@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -18,10 +17,5 @@ public class WebClientConfig {
 			.baseUrl("http://authHost:8000/")
 			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 			.build();
-	}
-	@Builder
-	static class user{
-		private String email;
-		private String password;
 	}
 }
