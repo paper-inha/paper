@@ -1,17 +1,14 @@
 package com.paper.demo.paper.service;
 
-import org.springframework.http.ResponseEntity;
+import java.util.List;
 
 import com.paper.demo.paper.domain.PaperDto;
 
-import reactor.core.publisher.Mono;
-
 public interface IPaperServiceV1 {
 
-	Mono<String> getUserYn(String accessToken);
+	void createPapers(PaperDto.createPaper createPaper,String accessToken);
+	void deletePage(Long pageId);
+	List<String> getPaperList(String accessToken);
 
-	Mono<ResponseEntity<?>> getPaper(PaperDto.createPaperByUserDto createPaperByUserDto,String accessToken);
-	Mono<ResponseEntity<?>> createPapers(PaperDto.createPaperByPaperDto createPaperByPaperDto,String accessToken);
 
-	String getUserEmail();
 }

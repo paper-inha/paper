@@ -8,20 +8,9 @@ public class PaperDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class PaperCreateDto{
-		private String title;
+	public static class createPaper{
 		private String content;
-
-		public PaperCreateDto(String title, String content) {
-			this.title = title;
-			this.content = content;
-		}
-	}
-	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class createPaperByPaperDto{
-		private String content;
-		public createPaperByPaperDto(String content) {
+		public createPaper(String content) {
 			this.content = content;
 		}
 	}
@@ -29,11 +18,11 @@ public class PaperDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class createPaperByUserDto{
+	public static class createPage{
 		private String email;
 		private String title;
 
-		public createPaperByUserDto(String email, String title) {
+		public createPage(String email, String title) {
 			this.email = email;
 			this.title = title;
 		}

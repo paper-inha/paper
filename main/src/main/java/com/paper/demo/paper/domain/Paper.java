@@ -35,12 +35,10 @@ public class Paper {
 	// 사용자 엔티티와의 연관 관계 정의
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "author_id")
-	private PaperUser author;
+	private Page author;
 	@CreationTimestamp
 	private Timestamp createdDate;
 	@UpdateTimestamp
 	private Timestamp updatedDate;
 	private String deletedYn;
-
-
 }
