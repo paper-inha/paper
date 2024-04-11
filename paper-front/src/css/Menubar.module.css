@@ -1,0 +1,5 @@
+.topright {
+    position: absolute;
+    top: 20px; /* 상단에서 10px 떨어진 위치 */
+    right: 30px;
+  }
