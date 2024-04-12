@@ -49,7 +49,7 @@ function Login() {
   }, []);
   
   return (
-    <div>
+    <div className={styles.main}>
       <div className={styles.container}>
         <Logo />
         <div className={styles.wrapper}>

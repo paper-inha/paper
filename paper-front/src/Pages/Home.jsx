@@ -1,6 +1,5 @@
 import Menubar from '../Component/Menubar'
-import styles from '../css/App.module.css';
-import backImage from '../Image/back.jpg';
+import styles from '../css/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import menuImage from '../Image/menu.png';
 
@@ -11,12 +10,8 @@ function Home() {
     navigate('/login');
   }
     return (
-    <div style=
-    {{ backgroundImage: `url(${backImage})`,
-    width: '414px',
-    height: '491px'
-    }} 
-    className={styles.container}>
+  <div className={styles.main}>
+    <div className={styles.container}>
     <Menubar/> 
     <img src={menuImage} className={styles.menuBar} style={{ width: "130px", height: "130px" }} alt='menu' />
       <div>
@@ -27,6 +22,7 @@ function Home() {
       </div>
       <button onClick={handleClick} className={styles.btn} type="button">롤링페이퍼 시작하기</button>
     </div>
+  </div>  
   );
 }
 

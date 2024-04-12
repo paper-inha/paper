@@ -73,7 +73,6 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
 
-
   main_server:
     hostname: mainHost
     build: ./main
@@ -109,8 +108,6 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_0900_ai_ci
 
-
-
   auth_server:
     hostname: authHost
     build: ./auth
@@ -125,6 +122,13 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: logs,db,front,jwt
       TZ: Asia/Seoul
+
+  front_server:
+    hostname: frontHost
+    build: ./paper-front
+    ports:
+      - "3000:3000"
+    restart: no
 
 
 

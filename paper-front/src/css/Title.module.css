@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  .main{
+    background-color: whitesmoke;
+    min-height: 100vh;
+  }
+  
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../Image/light.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    left:50%;
+    transform: translateX(-50%);
+    width:450px;
+}
+.inputStyle{
+  font-size: 24px;
+}
+.inputStyle input{
+  border: none; 
+  border-bottom: 2px solid ;
+  width: 340px;
+  height: 30px;
+  background-color: transparent;
+  font-size: 24px;
+}
+.container h1{
+  position: absolute;
+  margin-top: -80px;
+}
+.textbox{
+  position: absolute;
+  margin-top: 200px;
+}
+.textbox input{
+  width: 370px;
+  height: 100px;
+}

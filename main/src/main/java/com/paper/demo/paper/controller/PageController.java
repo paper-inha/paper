@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paper.demo.commom.SuccessResponse;
 import com.paper.demo.common.ResponseStatus;
+import com.paper.demo.common.SuccessResponse;
 import com.paper.demo.paper.domain.PaperDto;
 import com.paper.demo.paper.service.PageService;
 import com.paper.demo.paper.service.PaperService;

@@ -1,4 +1,4 @@
-package com.paper.demo.swagger;
+package com.paper.demo.common.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ public class SwaggerConfig {
 	public OpenAPI openAPI() {
 		return new OpenAPI()
 			.info(new Info()
-				.title("롤링페이퍼 Auth Server API")
+				.title("롤링페이퍼 Main Server API")
 				.description("하고싶은 말을 적고, 누군가에게 전달하세요.")
 				.version("1.0.0"))
 	.components(new Components()

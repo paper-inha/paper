@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from '../css/LoginForm.module.css';
+import styles from '../css/JoinForm.module.css'; 
+//import styles from '../css/JoinFormL.module.css';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +22,7 @@ function Join() {
     navigate('/');
     }
     return (
-      <div>
+      <div className={styles.main}>
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <h1 onClick={main} >회원가입</h1>
