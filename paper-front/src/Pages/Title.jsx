@@ -22,7 +22,7 @@ function Title() {
     return (
     <div className={styles.main}>
       <div className={styles.container}>
-          <h1>제목 입력</h1>
+          <h1>제목</h1>
         <div className={styles.inputStyle}>
         <input type="text" 
         placeholder="제목을 입력해주세요"
