@@ -3,6 +3,9 @@ package com.paper.demo.auth.service.controller;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +28,21 @@ public interface IAuthApiControllerV1 {
 	 * Body Email,Password -> Json 형태로 전달
 	 *
 	 */
-	// 유저 회원가입
+	@Operation(summary = "회원가입", description = "회원가입을 수행합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "회원가입 성공"),
+			@ApiResponse(responseCode = "401", description = "인증 실패"),
+			@ApiResponse(responseCode = "400", description = "회원가입 실패")
+	})
 	@PostMapping("/v1/signup")
 	ResponseEntity<?> signupUser(@RequestBody @Valid AuthDto.SignupDto signupDto) throws AdminException;
 	// 관리자 회원가입
+	@Operation(summary = "관리자 회원가입", description = "회원가입을 수행합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "회원가입 성공"),
+			@ApiResponse(responseCode = "401", description = "인증 실패"),
+			@ApiResponse(responseCode = "400", description = "회원가입 실패")
+	})
 	@PostMapping("/v1/signup/inha")
 	ResponseEntity<?> signupAdmin(@RequestBody @Valid AuthDto.SignupDto signupDto);
 	/**
@@ -38,6 +52,11 @@ public interface IAuthApiControllerV1 {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeySpecException
 	 */
+	@Operation(summary = "로그인", description = "로그인을 수행합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "로그인 성공"),
+			@ApiResponse(responseCode = "400", description = "로그인 실패")
+	})
 	@PostMapping("/v1/login")
 	ResponseEntity<?> login(@RequestBody @Valid AuthDto.LoginDto loginDto) throws
 		NoSuchAlgorithmException,
@@ -51,6 +70,11 @@ public interface IAuthApiControllerV1 {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeySpecException
 	 */
+	@Operation(summary = "토큰 재발급", description = "토큰 재발급을 수행합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "토큰 재발급 성공"),
+			@ApiResponse(responseCode = "400", description = "토큰 재발급 실패")
+	})
 	@PostMapping("/v1/refresh")
 	ResponseEntity<?> reissue(@CookieValue(name = "refresh-token") String requestRefreshToken,
 		@RequestHeader("Authorization") String requestAccessToken) throws
@@ -62,6 +86,11 @@ public interface IAuthApiControllerV1 {
 	 * @param requestAccessToken
 	 * @return
 	 */
+	@Operation(summary = "토큰 검증", description = "토큰의 유효성을 검사합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "토큰 검증 성공"),
+			@ApiResponse(responseCode = "400", description = "토큰 검증 실패")
+	})
 	@PostMapping("/v1/validate")
 	ResponseEntity<?> validate(@RequestHeader("Authorization") String requestAccessToken);
 
@@ -70,6 +99,11 @@ public interface IAuthApiControllerV1 {
 	 * @param requestAccessToken
 	 * @return
 	 */
+	@Operation(summary = "로그아웃", description = "로그아웃을 수행합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "로그아웃 성공"),
+			@ApiResponse(responseCode = "400", description = "로그아웃 실패")
+	})
 	@PostMapping("/v1/logout")
 	ResponseEntity<?> logout(@RequestHeader("Authorization") String requestAccessToken);
 }
