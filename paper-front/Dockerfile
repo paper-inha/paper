@@ -10,8 +10,12 @@ RUN npm install
 COPY . .
 # 3000번 포트 노출
 EXPOSE 3000
-# npm start 스크립트 실행
-CMD ["npm", "start"]
-# 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
-# $ docker build .
+# 빌드 스크립트 실행
+RUN npm run build
+# serve 패키지를 글로벌로 설치
+RUN npm install -g serve
+# 정적 파일을 서빙하기 위해 serve 명령어를 사용 (CMD 대신 ENTRYPOINT 사용을 고려해 볼 수 있음)
+CMD ["serve", "-s", "build"]
 
+# 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
+# $ docker build -t <your-image-name> .
