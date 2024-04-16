@@ -30,7 +30,6 @@ public interface IPageControllerV1 {
 	@GetMapping("/v1/page")
 	ResponseEntity<?> createPage(@RequestHeader("Authorization") String accessToken,
 		@RequestBody PaperDto.createPage createPage);
-
 	/**
 	 * 페이퍼 생성
 	 * @param accessToken
@@ -47,7 +46,6 @@ public interface IPageControllerV1 {
 	)
 	@GetMapping("/v1/paper")
 	ResponseEntity<?> createPaper(@RequestHeader("Authorization") String accessToken, @RequestBody  PaperDto.createPaper createPaper);
-
 	/**
 	 * 페이퍼 리스트 조회
 	 * @param accessToken
@@ -63,7 +61,6 @@ public interface IPageControllerV1 {
 	)
 	@GetMapping("/v1/")
 	ResponseEntity<?> getPaperList(@RequestHeader("Authorization") String accessToken);
-
 	/**
 	 * 페이퍼 삭제
 	 * @param paperId
