@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from '../css/LoginForm.module.css';
 import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React.memo사용
-  
+
   let navigate = useNavigate();
   
   function handleClick(){
