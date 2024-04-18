@@ -32,6 +32,7 @@ public class Page {
 	private String title;
 	// 사용자가 작성한 페이퍼들에 대한 연관 관계 정의
 	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	@Builder.Default
 	private List<Paper> papers = new ArrayList<>();
 }
 

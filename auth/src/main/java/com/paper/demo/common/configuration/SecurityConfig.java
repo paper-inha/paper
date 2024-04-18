@@ -62,6 +62,7 @@ public class SecurityConfig {
 			.httpBasic(HttpBasicConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.csrf(AbstractHttpConfigurer::disable)
+			.cors(AbstractHttpConfigurer::disable)
 			// jwt 토큰 사용을 위한 설정
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 			// 예외 처리
