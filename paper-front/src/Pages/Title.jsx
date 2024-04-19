@@ -1,5 +1,3 @@
-import SwaggerUI from "swagger-ui-react"
-import "swagger-ui-react/swagger-ui.css"
 import styles from '../css/Title.module.css';
 import React, {useState} from 'react';
 function Title() {
@@ -21,7 +19,7 @@ function Title() {
       }
     };
 
-    return <SwaggerUI url="">(
+    return (
     <div className={styles.main}>
       <div className={styles.container}>
           <h1>제목</h1>
@@ -40,7 +38,6 @@ function Title() {
       </div>
     </div>  
     );
-    </SwaggerUI>
   }
   
 export default Title;

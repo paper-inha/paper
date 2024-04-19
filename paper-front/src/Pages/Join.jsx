@@ -30,6 +30,13 @@ function Join() {
             navigate('/Login'); // 회원가입 성공 후 로그인 페이지로 이동
         } catch (error) {
             console.error(error);
+            let errorMessage = "회원가입 중 문제가 발생했습니다.";
+            if (error.response && error.response.data) {
+                // 백엔드에서 전달된 에러 메시지가 있다면 사용
+                errorMessage = error.response.data.message || errorMessage;
+            }
+            // 사용자에게 에러 메시지 표시
+            alert(errorMessage);
         }
     }
 
