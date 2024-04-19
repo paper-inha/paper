@@ -51,13 +51,13 @@ function Login() {
         console.log(res);
         console.log("res.data.userId :: ", res.data.userId);
         console.log("res.data.msg ::", res.data.msg);
-        if (res.data.emaill === undefined){
+        if (res.data.email === undefined){
           console.log("==============", res.data.msg);
           alert("입력하신 id 가 일치하지 않습니다.")
         } else if (res.data.email === null){
           console.log("====== 비밀번호 ======");
           alert("입력하신 비밀번호 가 일치하지 않습니다.")
-        } else if (res.data.emaill === email){
+        } else if (res.data.email === email){
           console.log("======================","로그인 성공");
           sessionStorage.setItem("user_id",email);
           sessionStorage.setItem("name",res.data.name);
