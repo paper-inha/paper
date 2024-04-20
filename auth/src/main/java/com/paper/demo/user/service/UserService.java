@@ -48,7 +48,6 @@ public class UserService implements IUserServiceV1 {
 		//비밀번호 입력안내와 호환성검사
 		checkPassword(signupDto.getPassword());
 		checkPasswordCompatibility(signupDto.getPassword());
-
 		String encodedPassword = passwordEncoder.encode(signupDto.getPassword());
 		//사용자 등록
 		User user = User.registerUser(signupDto.getEmail(), encodedPassword, signupDto.getName(), Role.USER);
