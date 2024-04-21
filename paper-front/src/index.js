@@ -1,11 +1,16 @@
+// index.js
+
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import Routing from './Routing';
+import axios from 'axios';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+axios.defaults.withCredentials = true;
 
-root.render(
-    <div>
+
+ReactDOM.render(
+  <React.StrictMode>
     <Routing />
-    </div>
+  </React.StrictMode>,
+  document.getElementById('root')
 );

@@ -40,33 +40,47 @@ const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React
 function Login() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const onClickLogin = () => {
-    axios
-      .post("http://localhost/auth/v1/login",{
-        email: email,
-        password: password,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log("res.data.userId :: ", res.data.userId);
-        console.log("res.data.msg ::", res.data.msg);
-        if (res.data.email === undefined){
-          console.log("==============", res.data.msg);
-          alert("입력하신 id 가 일치하지 않습니다.")
-        } else if (res.data.email === null){
-          console.log("====== 비밀번호 ======");
-          alert("입력하신 비밀번호 가 일치하지 않습니다.")
-        } else if (res.data.email === email){
-          console.log("======================","로그인 성공");
-          sessionStorage.setItem("user_id",email);
-          sessionStorage.setItem("name",res.data.name);
-        }
-        document.location.href = "/title";
-      })
-      .catch();
+  const [JWT_EXPIRY_TIME,setJWEpiryTime] = useState( 24 * 3600 * 1000);
+  // 로그인 성공 시 호출되는 함수
+  const onLoginSuccess = (accessToken) => {
+  // accessToken 설정
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+  // accessToken 만료하기 1분 전에 로그인 연장
+  setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000);
   };
+  // 로그인 실패 또는 토큰 갱신 실패 시 처리
+  const handleError = (error) => {
+  console.error("로그인 실패:", error);
+  };
+  // 토큰 갱신을 위한 함수
+  const onSilentRefresh = async () => {
+    try {
+      const response = await axios.post('/silent-refresh');
+      onLoginSuccess(response.data.accessToken);
+    } catch (error) {
+      handleError(error);
+      }
+    };
 
+  async function onLogin(email,password){
+    try {
+      const response = await axios.post('http://localhost/auth/v1/login', {
+        email,
+        password,
+      });
+      onLoginSuccess(response.data.accessToken);
+      console.log("로그인 성공", response);
+      navigate('/Title');
+    } catch (error) {
+      handleError(error);
+    }
+  }
+  const onClickLogin = () => {
+    onLogin(email, password); // onLogin 함수를 호출
+  }
   useEffect(() => { //useEffect는 가장 기본적인 렌더링 최적화
     const link = document.createElement('link');
     link.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css';
@@ -85,7 +99,6 @@ function Login() {
         <Logo />
         <div className={styles.wrapper}>
           <h1>로그인</h1>
-          <form>
             <div className={styles.inputbox}>
               <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" required />
               <i className='bx bxs-user'></i>
@@ -103,7 +116,6 @@ function Login() {
 
             <button type="button" onClick={onClickLogin} className={styles.btn}>로그인</button>
             <SocialKakao />
-          </form>
         </div>
       </div>
     </div>
