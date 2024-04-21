@@ -19,6 +19,8 @@ import com.paper.demo.auth.jwt.JwtAccessDeniedHandler;
 import com.paper.demo.auth.jwt.JwtAuthenticationEntryPoint;
 import com.paper.demo.auth.jwt.JwtAuthenticationFilter;
 import com.paper.demo.auth.jwt.JwtTokenProvider;
+import com.paper.demo.user.oauth.OAuth2SuccessHandler;
+import com.paper.demo.user.oauth.service.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +32,8 @@ public class SecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
+	private final CustomOAuth2UserService customOAuth2UserService;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 	@Bean
 	public BCryptPasswordEncoder encoder() {
 		// 비밀번호를 DB에 저장하기 전 사용할 암호화
@@ -38,12 +41,11 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-		// ACL(Access Control List, 접근 제어 목록)의 예외 URL 설정
-		return (web)
-			-> web
-			.ignoring()
-			.requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
+	public WebSecurityCustomizer webSecurityCustomizer() { // security를 적용하지 않을 리소스
+		return web -> web.ignoring()
+			// error endpoint를 열어줘야 함, favicon.ico 추가!
+			.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+			.requestMatchers("/error", "/favicon.ico");
 	}
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,9 +53,7 @@ public class SecurityConfig {
 		// 리프래시 토큰은 애초에 토큰값을 넣는데 굳이 permitAll을 할 필요가 있을까?
 		http.authorizeHttpRequests(authorize -> {
 				authorize.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll();
-				authorize.requestMatchers("/v**/login/**").permitAll();
-				authorize.requestMatchers("/v**/signup/**").permitAll();
-				// authorize.requestMatchers("/v**/refresh/**").permitAll();
+				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/auth/**","/v**/logout/**").permitAll();
 				authorize.anyRequest().authenticated();
 			})
 			.sessionManagement(session -> {
@@ -63,6 +63,14 @@ public class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable)
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
+			.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo
+					.userService(customOAuth2UserService))
+				.successHandler(oAuth2SuccessHandler)
+					.failureHandler((request, response, exception) -> {
+						response.sendRedirect("http://localhost:3000/login");
+					}
+				)
+			)
 			// jwt 토큰 사용을 위한 설정
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 			// 예외 처리

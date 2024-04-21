@@ -93,7 +93,6 @@ public interface IAuthApiControllerV1 {
 	})
 	@PostMapping("/v1/validate")
 	ResponseEntity<?> validate(@RequestHeader("Authorization") String requestAccessToken);
-
 	/**
 	 * 로그아웃
 	 * @param requestAccessToken

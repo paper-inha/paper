@@ -56,6 +56,7 @@ public class PageService implements IPageServiceV1 {
 			.title(createPage.getTitle())
 			.build();
 		if (Boolean.TRUE.equals(getUserYn(accessToken).map(yn -> yn.equals("yes")).block())){
+			System.out.println("페이지 생성");
 			pageRepository.save(buildPage);
 			log.info("페이지 생성 완료");
 		} else {

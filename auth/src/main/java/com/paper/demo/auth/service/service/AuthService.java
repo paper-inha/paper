@@ -44,8 +44,6 @@ public class AuthService implements IAuthServiceV1 {
 		return jwtTokenProvider.validateAccessTokenOnlyExpired(requestAccessToken); // true = 재발급
 	}
 
-
-
 	// 토큰 재발급: validate 메서드가 true 반환할 때만 사용 -> AT, RT 재발급
 	public AuthDto.TokenDto reissue(String requestAccessTokenInHeader, String requestRefreshToken) throws
 		NoSuchAlgorithmException,
@@ -92,6 +90,7 @@ public class AuthService implements IAuthServiceV1 {
 
 	// RT를 Redis에 저장
 	public void saveRefreshToken(String provider, String principal, String refreshToken) {
+
 		redisService.setValuesWithTimeout("RT(" + provider + "):" + principal, // key
 			refreshToken, // value
 			jwtTokenProvider.getTokenExpirationTime(refreshToken)); // timeout(milliseconds)

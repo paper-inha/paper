@@ -20,13 +20,12 @@ const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React
 });
 
 const SocialKakao = React.memo(function SocialKakao() {
-  const Rest_api_key = 'REST API KEY';
-  const redirect_uri = 'http://localhost:3000/auth';
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-
-  const handleLogin = useCallback(() => {// useCallback을 이용해 렌더링 최적화
-    window.location.href = kakaoURL;
-  }, [kakaoURL]);
+  // 로컬호스트의 백엔드 서버를 통해 카카오 로그인을 시작하는 URL
+  const BACKEND_OAUTH2_KAKAO_URL = process.env.BACKEND_OAUTH2_KAKAO_URL;
+  const handleLogin = useCallback(() => {
+    // 백엔드 서버를 통한 로그인 프로세스 시작
+    window.location.href = BACKEND_OAUTH2_KAKAO_URL;
+  }, [BACKEND_OAUTH2_KAKAO_URL]);
 
   return (
       <button className={styles.kakao} onClick={handleLogin}>
