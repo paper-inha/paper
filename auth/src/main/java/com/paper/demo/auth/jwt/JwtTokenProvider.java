@@ -122,13 +122,13 @@ public class JwtTokenProvider implements InitializingBean {
 	public boolean validateRefreshToken(String refreshToken) {
 		try {
 			if (redisService.getValues(refreshToken).equals("delete")) { // 회원 탈퇴했을 경우
+				System.out.println("회원 탈퇴했을 경우");
 				return false;
 			}
 			Jwts.parserBuilder()
 				.setSigningKey(signingKeyPair.getPublic())
 				.build()
 				.parseClaimsJws(refreshToken);
-			System.out.println("refreshToken: " + refreshToken);
 			return true;
 		} catch (SignatureException e) {
 			log.error("Invalid JWT signature.");
@@ -172,8 +172,10 @@ public class JwtTokenProvider implements InitializingBean {
 				.getExpiration()
 				.before(new Date());
 		} catch (ExpiredJwtException e) {
+			System.out.println("ExpiredJwtException");
 			return true;
 		} catch (Exception e) {
+			System.out.println("Exception");
 			return false;
 		}
 	}

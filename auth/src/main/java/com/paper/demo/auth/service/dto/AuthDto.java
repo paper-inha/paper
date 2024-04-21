@@ -54,4 +54,14 @@ public class AuthDto {
 			this.refreshToken = refreshToken;
 		}
 	}
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class EmailDto{
+		private String email;
+
+		@Builder
+		public EmailDto(String email) {
+			this.email = email;
+		}
+	}
 }

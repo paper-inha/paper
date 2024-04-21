@@ -29,6 +29,7 @@ public class PageController implements IPageControllerV1 {
 	public ResponseEntity<?> createPage(@RequestHeader("Authorization") String accessToken,
 		@RequestBody PaperDto.createPage createPage) {
 		pageService.createPage(createPage, accessToken);
+		System.out.println("페이지 생성");
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS,null);
 		return ResponseEntity
 			.status(ResponseStatus.SUCCESS.getCode())
