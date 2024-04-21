@@ -26,8 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OauthController {
 
-	private final JwtTokenProvider jwtTokenProvider;
-	private final long COOKIE_EXPIRATION = 7776000; // 90일
 
 	@GetMapping("/auth/token")
 	public ResponseEntity<?> Oauth2Login(@AuthenticationPrincipal HttpServletRequest httpServletRequest){

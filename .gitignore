@@ -21,7 +21,10 @@ gradle-app.setting
 .classpath
 
 
-
+git rm .env --cached
+git add .
+git commit -m "remove .env file from git"
+git push
 
 
 #####
