@@ -1,5 +1,5 @@
 import styles from '../css/Title.module.css';
-import Menubar from '../Component/Menubar'
+import Menubar from '../Component/Menubar/Header'
 import mainImage from '../Image/main.png';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
