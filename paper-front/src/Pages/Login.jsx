@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
+import { useContext } from 'react';
 import styles from '../css/LoginForm.module.css';
 import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { LoginContext } from '../Contexts/LoginContextProvider';
 
 
 const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React.memo사용
@@ -36,78 +37,78 @@ const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React
       </button>
     );
   });
+  function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { login } = useContext(LoginContext);
 
-function Login() {
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
-
-  const onClickLogin = () => {
-    axios
-      .post("http://localhost/auth/v1/login",{
-        email: email,
-        password: password,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log("res.data.userId :: ", res.data.userId);
-        console.log("res.data.msg ::", res.data.msg);
-        if (res.data.email === undefined){
-          console.log("==============", res.data.msg);
-          alert("입력하신 id 가 일치하지 않습니다.")
-        } else if (res.data.email === null){
-          console.log("====== 비밀번호 ======");
-          alert("입력하신 비밀번호 가 일치하지 않습니다.")
-        } else if (res.data.email === email){
-          console.log("======================","로그인 성공");
-          sessionStorage.setItem("user_id",email);
-          sessionStorage.setItem("name",res.data.name);
-        }
-        document.location.href = "/title";
-      })
-      .catch();
+  const onLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      // 로그인 성공 시 처리
+    } catch (error) {
+      console.error('로그인 에러', error);
+      alert('로그인 에러 발생');
+    }
   };
 
-  useEffect(() => { //useEffect는 가장 기본적인 렌더링 최적화
-    const link = document.createElement('link');
-    link.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+
+    useEffect(() => {
+      const link = document.createElement('link');
+      link.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
   
-
-  return (
-    <div className={styles.main}>
-      <div className={styles.container}>
-        <Logo />
-        <div className={styles.wrapper}>
-          <h1>로그인</h1>
-          <form>
-            <div className={styles.inputbox}>
-              <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" required />
-              <i className='bx bxs-user'></i>
-            </div>
-            <div className={styles.inputbox}>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="패스워드" required />
-              <i className='bx bx-lock-alt'></i>
-            </div>
-            <div className={styles.rememberforgot}>
-              <label>
-                <input type="checkbox" />아이디를 저장
-              </label>
-              <a href="join">회원이 아니신가요?</a>
-            </div>
-
-            <button type="button" onClick={onClickLogin} className={styles.btn}>로그인</button>
-            <SocialKakao />
-          </form>
+      return () => {
+        document.head.removeChild(link);
+      };
+    }, []);
+  
+    return (
+      <div className={styles.main}>
+        <div className={styles.container}>
+          <Logo />
+          <div className={styles.wrapper}>
+            <h1>로그인</h1>
+            <form onSubmit={onLogin}>
+              <div className={styles.inputbox}>
+                <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="이메일"
+                  required
+                />
+                <i className="bx bxs-user"></i>
+              </div>
+              <div className={styles.inputbox}>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="패스워드"
+                  required
+                />
+                <i className="bx bx-lock-alt"></i>
+              </div>
+              <div className={styles.rememberforgot}>
+                <label>
+                  <input type="checkbox" />
+                  아이디를 저장
+                </label>
+                <a href="join">회원이 아니신가요?</a>
+              </div>
+  
+              <button type="submit" className={styles.btn}>
+                로그인
+              </button>
+              <SocialKakao />
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
+    );
+  }
+  
 export default React.memo(Login);

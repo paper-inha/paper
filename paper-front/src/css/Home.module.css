@@ -16,7 +16,7 @@
   
   .btn {
     position: absolute;
-    bottom: 80px;
+    bottom: 125px;
     left: 50%;
     transform: translateX(-50%);
     width: 300px;
@@ -31,7 +31,7 @@
   }
   .introduce{
     position: absolute;
-    bottom: 140px;
+    bottom: 185px;
     left: 50%;
     transform: translateX(-50%);
     font-size:16;
