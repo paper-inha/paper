@@ -31,7 +31,6 @@ public class AuthApiController implements IAuthApiControllerV1 {
 
 	private final AuthService authService;
 	private final UserService userService;
-	private final BCryptPasswordEncoder encoder;
 
 	private final long COOKIE_EXPIRATION = 7776000; // 90일
 

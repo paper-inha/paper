@@ -1,4 +1,4 @@
-package com.paper.demo.common.configuration;
+package com.paper.demo.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
