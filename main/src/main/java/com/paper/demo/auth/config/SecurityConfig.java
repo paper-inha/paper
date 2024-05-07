@@ -29,9 +29,8 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(registry -> registry
-				.requestMatchers("/v**/auth/**").permitAll()
-					.requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
-					.permitAll()
+				.requestMatchers("/v**/auth/**","/v**/validate/**").permitAll()
+				.requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
 				.requestMatchers("/v**/paper/**").hasRole("USER")
 				.anyRequest().permitAll())
 			.oauth2ResourceServer(oauth2ResourceServer ->

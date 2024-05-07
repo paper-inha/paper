@@ -93,7 +93,6 @@ public interface IAuthApiControllerV1 {
 	})
 	@PostMapping("/v1/validate")
 	ResponseEntity<?> validate(@RequestHeader("Authorization") String requestAccessToken);
-
 	/**
 	 * 로그아웃
 	 * @param requestAccessToken
@@ -106,4 +105,12 @@ public interface IAuthApiControllerV1 {
 	})
 	@PostMapping("/v1/logout")
 	ResponseEntity<?> logout(@RequestHeader("Authorization") String requestAccessToken);
+
+	// @Operation(summary = "이메일 인증", description = "이메일 인증을 수행합니다.")
+	// @ApiResponses(value = {
+	// 		@ApiResponse(responseCode = "200", description = "이메일 인증 성공"),
+	// 		@ApiResponse(responseCode = "400", description = "이메일 인증 실패")
+	// })
+	// @PostMapping("/v1/email")
+	// ResponseEntity<?> email(@RequestBody @Valid AuthDto.EmailDto emailDto) throws AdminException;
 }

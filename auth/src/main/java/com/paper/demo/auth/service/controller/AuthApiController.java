@@ -51,23 +51,21 @@ public class AuthApiController implements IAuthApiControllerV1 {
 			.body(successResponse);
 	}
 
-
 	// 로그인 -> 토큰 발급
 	public ResponseEntity<?> login(@RequestBody @Valid AuthDto.LoginDto loginDto) throws
 		NoSuchAlgorithmException,
 		InvalidKeySpecException {
-
 		AuthDto.TokenDto tokenDto = authService.login(loginDto);
 		// RT 저장
-		HttpCookie httpCookie = ResponseCookie.from("refresh-token", tokenDto.getRefreshToken())
+		HttpCookie httpCookie = ResponseCookie.from("refreshToken", tokenDto.getRefreshToken())
 			.maxAge(COOKIE_EXPIRATION)
 			.httpOnly(true)
-			.secure(true)
+			.secure(false)
 			.build();
+
 		Map<String, String> tokens = new HashMap<>();
 		tokens.put("accessToken", tokenDto.getAccessToken());
 		tokens.put("refreshToken", tokenDto.getRefreshToken());
-
 		// SuccessResponse 객체 생성
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, tokens);
 
@@ -77,15 +75,14 @@ public class AuthApiController implements IAuthApiControllerV1 {
 			.header(HttpHeaders.SET_COOKIE, httpCookie.toString()) // 쿠키 설정
 			.header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken()) // 액세스 토큰을 헤더에 추가
 			.body(successResponse); // SuccessResponse 객체를 바디에 추가
-		// .build();
 	}
-
 	//true = 재발급O
 	//false = 재발급x
 	public ResponseEntity<?> validate(@RequestHeader("Authorization") String requestAccessToken) {
 		Map<String, String> tokenMessage = new HashMap<>();
 		if (!authService.validate(requestAccessToken)) {
 			tokenMessage.put("message", "토큰이 유효합니다.");
+
 			SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, tokenMessage);
 			return ResponseEntity
 				.status(ResponseStatus.SUCCESS.getCode())
@@ -94,6 +91,7 @@ public class AuthApiController implements IAuthApiControllerV1 {
 		}else{
 			tokenMessage.put("message", "토큰이 유효하지 않습니다.");
 			SuccessResponse<?> failResponse = SuccessResponse.from(ResponseStatus.TOKEN_UNAUTHORIZED, tokenMessage);
+			System.out.println("토큰이 유효하지 않습니다.");
 			return ResponseEntity
 				.status(ResponseStatus.TOKEN_UNAUTHORIZED.getCode())
 				.body(failResponse);

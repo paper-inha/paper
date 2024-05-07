@@ -1,4 +1,4 @@
-import Menubar from '../Component/Menubar/Header'
+import Menubar from '../Component/Menubar'
 import styles from '../css/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import menuImage from '../Image/menu.png';
@@ -21,7 +21,6 @@ function Home() {
         </p>
       </div>
       <button onClick={handleClick} className={styles.btn} type="button">롤링페이퍼 시작하기</button>
-    
     </div>
   </div>  
   );

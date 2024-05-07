@@ -71,4 +71,10 @@ public interface IAuthServiceV1 {
 	 */
 	void logout(String requestAccessTokenInHeader);
 
+	// /**
+	//  * 이메일 인증
+	//  * @param email
+	//  */
+	// void email(String email);
+
 }

@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "swagger-ui-dist": "^5.15.1",
-    "swagger-ui-react": "^5.15.2"
-  }
-}

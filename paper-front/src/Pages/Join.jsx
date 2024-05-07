@@ -19,7 +19,8 @@ function Join() {
             document.head.removeChild(link);
         };
     }, []);
-    async function onClickJoin(email, password, name) {
+
+    async function getData(email, password, name) {
         try {
             const response = await axios.post('http://localhost/auth/v1/signup', {
                 email,
@@ -46,8 +47,9 @@ function Join() {
             alert('패스워드가 일치하지 않습니다.');
             return;
         }
-        onClickJoin(email, password, name).then(r => console.log(r));
+        getData(email, password, name).then(r => console.log(r));
     };
+
     return (
         <div className={styles.main}>
             <div className={styles.container}>
