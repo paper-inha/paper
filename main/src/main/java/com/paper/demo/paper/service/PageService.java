@@ -21,9 +21,23 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 public class PageService implements IPageServiceV1 {
-
 	private final SecurityService securityService;
 	private final PageRepository pageRepository;
+
+	/**
+	 * 페이지 타이틀 유효성 검사
+	 * @param accessToken
+	 * @return
+	 */
+	@Override
+	public boolean valiteTitle(String accessToken){
+		return pageRepository.findByEmail(getUserEmail()) != null;
+	}
+	/**
+	 * 유저 정보 조회
+	 * @param accessToken
+	 * @return
+	 */
 	@Override
 	public Mono<String> getUserYn(String accessToken) {
 		return securityService.validateToken(accessToken)
@@ -39,6 +53,11 @@ public class PageService implements IPageServiceV1 {
 				return "no";
 			});
 	}
+
+	/**
+	 * 유저 이메일 조회
+	 * @return
+	 */
 	@Override
 	public String getUserEmail() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,15 +67,20 @@ public class PageService implements IPageServiceV1 {
 		System.out.println("jwt.getClaims().get(email) : " + jwt.getClaims().get("email"));
 		return (String) jwt.getClaims().get("email");
 	}
+
+	/**
+	 * 페이지 생성
+	 * @param createPage
+	 * @param accessToken
+	 */
 	@Transactional
 	@Override
 	public void createPage(PaperDto.createPage createPage,String accessToken) {
-		Page buildPage = Page.builder()
-			.email(getUserEmail())
-			.title(createPage.getTitle())
-			.build();
 		if (Boolean.TRUE.equals(getUserYn(accessToken).map(yn -> yn.equals("yes")).block())){
-			System.out.println("페이지 생성");
+			Page buildPage = Page.builder()
+				.email(getUserEmail())
+				.title(createPage.getTitle())
+				.build();
 			pageRepository.save(buildPage);
 			log.info("페이지 생성 완료");
 		} else {

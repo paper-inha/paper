@@ -3,6 +3,7 @@ package com.paper.demo.paper.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paper.demo.common.ResponseStatus;
@@ -19,6 +20,14 @@ public class PageController implements IPageControllerV1 {
 	private final PageService pageService;
 	private final PaperService paperService;
 
+	@Override
+	public boolean validateTitle(@RequestHeader("Authorization") String accessToken) {
+		pageService.valiteTitle(accessToken);
+		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, null);
+		return ResponseEntity
+			.status(ResponseStatus.SUCCESS.getCode())
+			.body(successResponse).hasBody();
+	}
 	/**
 	 * 페이지를 생성하는 메서드
 	 * @param accessToken
@@ -29,7 +38,6 @@ public class PageController implements IPageControllerV1 {
 	public ResponseEntity<?> createPage(@RequestHeader("Authorization") String accessToken,
 		@RequestBody PaperDto.createPage createPage) {
 		pageService.createPage(createPage, accessToken);
-		System.out.println("페이지 생성");
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS,null);
 		return ResponseEntity
 			.status(ResponseStatus.SUCCESS.getCode())

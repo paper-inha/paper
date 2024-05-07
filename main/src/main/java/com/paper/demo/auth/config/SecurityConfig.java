@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,9 +15,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+public class SecurityConfig  {
 	/**
 	 * @apiNote 인증서버에서 발급한 엑세스토큼을 이용하여 인증을 처리한다.
 	 * @param http
@@ -40,11 +44,6 @@ public class SecurityConfig {
 				sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
 	}
-	/**
-	 * @apiNote jwt를 이용하여 인증을 처리한다.
-	 * @apiNote jwt의 roles를 이용하여 권한 검색해서 USER가 있다면 USER권한을 부여한다.
-	 * @return
-	 */
 	private Converter<Jwt, JwtAuthenticationToken> adminConverter() {
 		return jwt -> {
 			String authority = jwt.getClaimAsString("roles");
@@ -53,6 +52,5 @@ public class SecurityConfig {
 			return new JwtAuthenticationToken(jwt, grantedAuthorities);
 		};
 	}
-
 
 }

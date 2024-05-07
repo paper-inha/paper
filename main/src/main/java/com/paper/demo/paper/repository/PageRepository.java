@@ -9,4 +9,7 @@ import com.paper.demo.paper.domain.Page;
 public interface PageRepository extends JpaRepository<Page, Long> {
 	Page findByEmail(String email);
 
+
+
+
 }

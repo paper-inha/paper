@@ -50,7 +50,6 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		// 인터셉터로 요청을 안전하게 보호하는 방법 설정
-		// 리프래시 토큰은 애초에 토큰값을 넣는데 굳이 permitAll을 할 필요가 있을까?
 		http.authorizeHttpRequests(authorize -> {
 				authorize.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll();
 				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/auth/**","/v**/logout/**").permitAll();

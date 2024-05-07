@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.paper.demo.paper.domain.PaperDto;
 @Tag(name = "롤링페이퍼 API", description = "롤링페이퍼 API")
 public interface IPageControllerV1 {
+
+	@GetMapping("/v1/validate")
+	boolean validateTitle(@RequestHeader("Authorization") String accessToken);
+
 	/**
 	 * 페이지 생성
 	 * @param accessToken
@@ -27,7 +32,7 @@ public interface IPageControllerV1 {
 				@ApiResponse(responseCode = "400", description = "페이지 생성 실패")
 			}
 	)
-	@GetMapping("/v1/page")
+	@PostMapping("/v1/page")
 	ResponseEntity<?> createPage(@RequestHeader("Authorization") String accessToken,
 		@RequestBody PaperDto.createPage createPage);
 	/**
@@ -44,7 +49,7 @@ public interface IPageControllerV1 {
 					@ApiResponse(responseCode = "400", description = "페이퍼 생성")
 			}
 	)
-	@GetMapping("/v1/paper")
+	@PostMapping("/v1/paper")
 	ResponseEntity<?> createPaper(@RequestHeader("Authorization") String accessToken, @RequestBody  PaperDto.createPaper createPaper);
 	/**
 	 * 페이퍼 리스트 조회

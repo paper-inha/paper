@@ -1,4 +1,4 @@
-package com.paper.demo.configuration;
+package com.paper.demo.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

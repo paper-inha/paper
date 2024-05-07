@@ -12,10 +12,11 @@ import com.paper.demo.auth.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
+
 @RestController
 @RequiredArgsConstructor
 public class SecurityController implements ISecurityControllerV1{
-	@Autowired
+@Autowired
 	private SecurityService securityService;
 
 
