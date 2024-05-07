@@ -1,18 +1,12 @@
-import React from 'react'
-import Menubar from '../Component/Menubar/Header'
-import LoginContextConsumer from '../Contexts/LoginContextConsumer'
+/*const {pageList,setpageList}=useState([]);
+const PageList = async () => {
+    const resp = (await axios.get('http://localhost/auth/v1/Pages')).data
+    setpageList(resp.data)
 
-const View = () => {
-    return (
-        <>
-        <Menubar />
-        <div className="container">
-            <h1>View</h1>
-            <hr />
-            <h2>소개 페이지</h2>
-            <LoginContextConsumer/>
-        </div>
-        </>
-    )
+    const pngn = resp.pagination;
+    console.log(pngn.data)
 }
-export default View
+useEffect(()=> {
+    PageList();
+},[]);
+*/

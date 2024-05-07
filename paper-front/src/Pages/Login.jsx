@@ -14,6 +14,7 @@ const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React
   function handleClick(){
     navigate('/');
   }
+  
     return (
       <img src={mainImage} className={styles.logo} alt='main' onClick={handleClick}/>
     );

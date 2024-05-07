@@ -16,7 +16,7 @@
   
   .btn {
     position: absolute;
-    bottom: 80px;
+    bottom: 125px;
     left: 50%;
     transform: translateX(-50%);
     width: 300px;
@@ -31,7 +31,7 @@
   }
   .introduce{
     position: absolute;
-    bottom: 140px;
+    bottom: 185px;
     left: 50%;
     transform: translateX(-50%);
     font-size:16;
@@ -39,7 +39,9 @@
     text-align: center;
   }
   .menuBar{
+    width:100px;
+    height:100px;
     position: absolute;
-    top: -25px; /* 상단에서 10px 떨어진 위치 */
-    left: -20px;
+    margin-top: 0px; /* 상단에서 10px 떨어진 위치 */
+    left: 0px;
   }
