@@ -39,7 +39,9 @@
     text-align: center;
   }
   .menuBar{
+    width:100px;
+    height:100px;
     position: absolute;
-    top: -25px; /* 상단에서 10px 떨어진 위치 */
-    left: -20px;
+    margin-top: 0px; /* 상단에서 10px 떨어진 위치 */
+    left: 0px;
   }

@@ -13,7 +13,7 @@ function Home() {
   <div className={styles.main}>
     <div className={styles.container}>
     <Menubar/> 
-    <img src={menuImage} className={styles.menuBar} style={{ width: "130px", height: "130px",left:"12px",top:"12px" }} alt='menu' />
+    <img src={menuImage} className={styles.menuBar} alt='menu' />
       <div>
         <p className={styles.introduce}>
           여러분의 친구들과
