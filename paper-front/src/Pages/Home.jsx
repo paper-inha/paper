@@ -1,4 +1,4 @@
-import Menubar from '../Component/Menubar'
+import Menubar from '../Component/Menubar/Header'
 import styles from '../css/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import menuImage from '../Image/menu.png';

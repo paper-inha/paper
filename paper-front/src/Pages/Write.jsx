@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import styles from "../css/Title.module.css";
+import styles from "../css/Write.module.css";
+
 
 function Write() {
     const [inputValue, setInputValue] = useState('');

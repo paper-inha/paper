@@ -1,9 +1,50 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Menubar from '../Component/Menubar/Header';
 import styles from '../css/User.module.css';
 
+const MyRollingResults = () => {
+        // 페이지 리스트 불러오기 코드 구현
+        return (
+        <div>
+            {/* 내가 만든 롤링 결과를 표시하는 UI */}
+        </div>
+        );
+    };
+    
+    const MyPostsResults = () => {
+        // 내가 쓴 페이퍼 불러오기 코드 구현
+        return (
+        <div>
+            {/* 내가 쓴 글 결과를 표시하는 UI */}
+        </div>
+        );
+    };
+const User = () => {  
+    const [activeTab, setActiveTab] = useState('posts'); // 초기 탭은 "작성글"
+    const [showMyRolling, setShowMyRolling] = useState(false);
+    const [showMyPosts, setShowMyPosts] = useState(false);
+    const [rollingClass, setRollingClass] = useState(`${styles.boxs3}`);
+    const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
 
-const User = () => {
+    const handleTabClick = (tab) => {
+      setActiveTab(tab);
+    };
+  
+    const handleMyRollingClick = () => {
+      setShowMyRolling(true);
+      setShowMyPosts(false);
+      setRollingClass(`${styles.boxs3}`);
+      setPostsClass(`${styles.boxs4}`);
+      // 내가 만든 롤링 기능 구현
+    };
+  
+    const handleMyPostsClick = () => {
+      setShowMyPosts(true);
+      setShowMyRolling(false);
+      setRollingClass(`${styles.boxs4}`);
+      setPostsClass(`${styles.boxs3}`);
+      // 내가 쓴 글 기능 구현
+    };
 
     return (
         <div className={styles.main}>
@@ -12,30 +53,36 @@ const User = () => {
                 <h1>마이페이지</h1>
                 <div className={styles.box1}>
                     <div className={styles.boxs1}>
-                    <p>rio214@naver.com</p>
+                    <p>rio214@naver.com</p> {/*이 부분에 유저 정보 들어가야 함 */}
                     <h2>rio214</h2>
                     </div>
                 </div>
                 <div className={styles.box2}>
-                    <div className={styles.boxs2}>
+                    <div className={`${styles.boxs2} ${activeTab === 'posts' ? styles.active : ''}`}
+                    onClick={() => handleTabClick('posts')}>
                         <h3>작성글</h3>
                     </div>
-                    <div className={styles.boxs2}>
+                    <div className={`${styles.boxs2} ${activeTab === 'notifications' ? styles.active : ''}`}
+                    onClick={() => handleTabClick('notifications')}>
                         <h3>알림</h3>
                     </div>
                 </div>
                 <div className={styles.box3}>
-                    <div className={styles.box4}>
-                        <div className={styles.boxs3}>
-                            내가 만든 롤링
+                    {activeTab === 'posts' && (
+                        <div className={styles.box4}>
+                        <div className={rollingClass} onClick={handleMyRollingClick}>내가 만든 롤링</div>
+                        <div className={postsClass} onClick={handleMyPostsClick}>내가 쓴 글</div>
                         </div>
-                        <div className={styles.boxs4}>
-                            내가 쓴 롤
+                    )}
+                    {activeTab === 'notifications' && (
+                        <div className={styles.box4}>
+                        <div className={styles.boxs3}>준비중인 기능입니다</div>
                         </div>
+                    )}
                     </div>
-                </div>
                 <div className={styles.box5}>
-
+                {showMyRolling && <MyRollingResults />}
+                {showMyPosts && <MyPostsResults />}
                 </div>
             </div>
         </div>   

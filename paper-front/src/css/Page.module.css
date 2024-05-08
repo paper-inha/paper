@@ -1,0 +1,38 @@
+.main{
+    background-color: whitesmoke;
+    min-height: 100vh;
+  }
+  .container {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 414px;
+      height: 491px;
+      display: flex;
+      background: url('../Image/light.jpg') no-repeat;
+      background-size: 100% 90%;
+      flex-direction: column;
+    }
+.box1{
+    position: fixed;
+    padding: 4px 0px 0px;
+    top: 0px;
+    width: 100%;
+    max-width: 414px;
+    height: 80px;
+    background: transparent;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 5px;
+    z-index: 50;
+    transition: transform 0.5s ease 0s;
+}
+
+.box2{
+    position: relative;
+    height: 100%;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    z-index: 50;
+}

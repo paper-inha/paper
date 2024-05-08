@@ -1,5 +1,4 @@
 import styles from '../css/Title.module.css';
-
 import React, {useState} from 'react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -52,10 +51,10 @@ function Title() {
                     />
                     {inputValue.length}/{maxLength}
                 </div>
-                {/*<div className={styles.textbox}>*/}
-                {/*    <input type="text" placeholder='내용을 입력해주세요' value={textValue} onChange={textCh}/>*/}
-                {/*    {textValue.length}/{textLength}*/}
-                {/*</div>*/}
+                <div className={styles.textbox}>
+                    <input type="text" placeholder='내용을 입력해주세요' value={textValue} onChange={textCh}/>
+                    {textValue.length}/{textLength}
+                </div>
                 <button type="button" onClick={onClickPage} className={styles.btn}>페이지 생성</button>
             </div>
         </form>

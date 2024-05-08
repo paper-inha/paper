@@ -1,15 +1,16 @@
-import styles from '../css/Title.module.css';
+import styles from '../css/Page.module.css';
 import Modal from '../Component/Modal';
 import React, {useState} from 'react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Write from "./Write";
+import Menubar from '../Component/Menubar/Header';
 function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
     const [inputValue, setInputValue] = useState('');
-
+    let navigate = useNavigate();
     async function showPaper() {
         try {
             const response = await axios.get('http://localhost/main/v1/', {
@@ -22,12 +23,15 @@ function Page() {
         }
     }
     return (
+
         <div className={styles.main}>
             <form>
                 <div className={styles.container}>
-                    <h1>페이지 테스트</h1>
-                    <div className={styles.main}>
-                        <button type="button" onClick={showPaper} className={styles.btn}>페이퍼 불러오기</button>
+                    <div className={styles.box1}>
+                        <div className={styles.box2}>
+                            <Menubar/>
+                            <p>rio214</p> {/*사용자 이름 */}
+                        </div>
                     </div>
                 </div>
             </form>
