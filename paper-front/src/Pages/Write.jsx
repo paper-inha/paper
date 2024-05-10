@@ -38,17 +38,24 @@ function Write() {
         <div className={styles.main}>
             <form>
                 <div className={styles.container}>
-                    <h1>제목 입력</h1>
-                    <div className={styles.inputStyle}>
-                        <input type="text"
-                               placeholder="페이퍼 내용을 입력해주세요"
-                               value={inputValue}
-                               onChange={handleChange}
-                        />
-                        {inputValue.length}/{maxLength}
-                    </div>
+                    <session className={styles.box1}>
+                        <session className={styles.box2}>
+                            <div className={styles.cancle}>
+                                취소{/*네비게이트로 뒤로가기 */}
+                            </div>
+                            <div className={styles.next}>
+                                다음{/*이동시 context 색깔 선택*/}
+                            </div>
+                            
+                        </session>
+                        <div className={styles.contextbox}>
+                            <div className={styles.contextbox2}>
+                            <textarea className={styles.context} value={inputValue} onchange={handleChange}></textarea>
+                            </div>
+                        </div>
+                    </session>
                 </div>
-                <button type="button" onClick={onClickPage} className={styles.btn}>페이지 생성</button>
+                <button type="button" onClick={onClickPage} className={styles.btn}>페이퍼 생성</button>
             </form>
         </div>
     );

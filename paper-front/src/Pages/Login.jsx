@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import styles from '../css/LoginForm.module.css';
 import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
+import GoogleLogo from '../Image/google.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -37,7 +38,7 @@ const SocialGoogle = React.memo(function SocialGoogle() {
   }, [BACKEND_OAUTH2_GOOGLE_URL]);
   return (
       <button className={styles.google} onClick={handleLogin}>
-        <i className='bx bxl-google' style={{marginRight: '10px', verticalAlign: 'middle'}}></i>
+        <img src={GoogleLogo} alt="google" style={{ marginRight: '10px', verticalAlign: 'middle', width: '20px', height: '20px' }} />
         구글로 시작하기
       </button>
   );

@@ -23,21 +23,34 @@ function Page() {
         }
     }
     return (
-
         <div className={styles.main}>
-            <form>
+        <div className={styles.mainpage}>
                 <div className={styles.container}>
-                    <div className={styles.box1}>
-                        <div className={styles.box2}>
+                    <div className={styles.headerbox1}>
+                        <div className={styles.headerbox2}>
                             <Menubar/>
-                            <p>rio214</p> {/*사용자 이름 */}
+                            <h1 className={styles.h1F}>rio214</h1> {/*사용자 이름 */}
                         </div>
+                        <div headerbox3></div>
                     </div>
-                </div>
-            </form>
+                    <div className={styles.paperlistbox1}>
+                        0개 작성 {/*페이퍼 리스트 개수 */}
+                    </div>
+                    <session className={styles.post1}>
+                        <div className={styles.post2}>
+                            <div className={styles.postit}>
+                                <div className={styles.postitcontext}>
+                                    아아 안녕하세요{/*포스트잇이 들어갈 자리 */}
+                                </div>
+                            </div>
+                        </div>
+                    </session>
+                    <div className={styles.Write}></div>
+            </div>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <Write closeModal={closeModal} />
             </Modal>
+        </div>
         </div>
     );
 }
