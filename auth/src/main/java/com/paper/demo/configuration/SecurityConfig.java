@@ -19,7 +19,7 @@ import com.paper.demo.auth.jwt.JwtAccessDeniedHandler;
 import com.paper.demo.auth.jwt.JwtAuthenticationEntryPoint;
 import com.paper.demo.auth.jwt.JwtAuthenticationFilter;
 import com.paper.demo.auth.jwt.JwtTokenProvider;
-import com.paper.demo.user.oauth.OAuth2SuccessHandler;
+import com.paper.demo.user.oauth.service.OAuth2SuccessHandler;
 import com.paper.demo.user.oauth.service.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,12 +47,13 @@ public class SecurityConfig {
 			.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
 			.requestMatchers("/error", "/favicon.ico");
 	}
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		// 인터셉터로 요청을 안전하게 보호하는 방법 설정
 		http.authorizeHttpRequests(authorize -> {
 				authorize.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll();
-				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/auth/**","/v**/logout/**").permitAll();
+				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/oauth/**","/v**/logout/**").permitAll();
 				authorize.anyRequest().authenticated();
 			})
 			.sessionManagement(session -> {

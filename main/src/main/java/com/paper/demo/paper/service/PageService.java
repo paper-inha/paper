@@ -30,7 +30,7 @@ public class PageService implements IPageServiceV1 {
 	 * @return
 	 */
 	@Override
-	public boolean valiteTitle(String accessToken){
+	public boolean validateTitle(String accessToken){
 		return pageRepository.findByEmail(getUserEmail()) != null;
 	}
 	/**

@@ -9,6 +9,6 @@ public interface IPageServiceV1 {
 	Mono<String> getUserYn(String accessToken);
 	String getUserEmail();
 	void createPage(PaperDto.createPage createPage,String accessToken);
-	boolean valiteTitle(String accessToken);
+	boolean validateTitle(String accessToken);
 
 }

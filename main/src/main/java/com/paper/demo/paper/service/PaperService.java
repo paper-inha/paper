@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.paper.demo.paper.domain.Paper;
 import com.paper.demo.paper.domain.PaperDto;
+import com.paper.demo.paper.domain.PaperListDto;
 import com.paper.demo.paper.repository.PageRepository;
 import com.paper.demo.paper.repository.PaperRepository;
 
@@ -44,7 +45,7 @@ public class PaperService implements IPaperServiceV1 {
 	 */
 	@Override
 	@Transactional
-	public List<String> getPaperList(String accessToken){
+	public List<PaperListDto> getPaperList(String accessToken){
 		return paperRepository.getPaperList(pageService.getUserEmail());
 	}
 	/**

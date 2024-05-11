@@ -22,11 +22,7 @@ public class PageController implements IPageControllerV1 {
 
 	@Override
 	public boolean validateTitle(@RequestHeader("Authorization") String accessToken) {
-		pageService.valiteTitle(accessToken);
-		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, null);
-		return ResponseEntity
-			.status(ResponseStatus.SUCCESS.getCode())
-			.body(successResponse).hasBody();
+		return pageService.validateTitle(accessToken);
 	}
 	/**
 	 * 페이지를 생성하는 메서드
@@ -64,8 +60,9 @@ public class PageController implements IPageControllerV1 {
 	 * @return
 	 */
 	@Override
-	public ResponseEntity<?> getPaperList(@RequestHeader("Authorization") String accessToken){
-		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, paperService.getPaperList(accessToken));
+	public ResponseEntity<?> getPaperList(@RequestHeader("Authorization") String accessToken) {
+		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS,
+			paperService.getPaperList(accessToken));
 		return ResponseEntity.ok().body(successResponse);
 	}
 
@@ -80,6 +77,11 @@ public class PageController implements IPageControllerV1 {
 		paperService.deletePage(paperId);
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, null);
 		return ResponseEntity.status(ResponseStatus.SUCCESS.getCode()).body(successResponse);
+	}
+	@Override
+	public ResponseEntity<?> getUserEmail(@RequestHeader("Authorization") String accessToken) {
+		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, pageService.getUserEmail());
+		return ResponseEntity.ok().body(successResponse);
 	}
 
 }

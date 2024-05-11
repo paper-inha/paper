@@ -1,4 +1,4 @@
-package com.paper.demo.user.oauth;
+package com.paper.demo.user.oauth.service;
 
 import java.io.IOException;
 
@@ -27,7 +27,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 		HttpSession session = request.getSession();
 		String accessToken = (String) session.getAttribute("accessToken");
 		String refreshToken = (String) session.getAttribute("refreshToken");
-
 		if (accessToken != null && refreshToken != null) {
 			// 액세스 토큰을 HTTP 헤더에 추가
 			response.setHeader("Authorization", "Bearer " + accessToken);
@@ -35,8 +34,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 			addRefreshTokenInCookie(refreshToken, request, response);
 		}
 		// 필요한 경우 리다이렉트
-		response.sendRedirect("http://localhost:3000/title");
+		response.sendRedirect("http://localhost:3000/Title");
 	}
+
 	private void addRefreshTokenInCookie(String refreshToken, HttpServletRequest request, HttpServletResponse response) {
 		Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
 		refreshTokenCookie.setHttpOnly(true);

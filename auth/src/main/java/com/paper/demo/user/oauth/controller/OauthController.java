@@ -25,24 +25,17 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class OauthController {
-
-
-	@GetMapping("/auth/token")
+	@GetMapping("/oauth/token")
 	public ResponseEntity<?> Oauth2Login(@AuthenticationPrincipal HttpServletRequest httpServletRequest){
 		HttpSession session = httpServletRequest.getSession();
-
 		Map<String, String> tokens = new HashMap<>();
 		tokens.put("accessToken", (String) session.getAttribute("accessToken"));
 		tokens.put("refreshToken", (String) session.getAttribute("refreshToken"));
-
 		// SuccessResponse 객체 생성
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, tokens);
-
 		// ResponseEntity에 SuccessResponse 및 쿠키, 헤더 추가하여 반환
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(successResponse);
 	}
-
-
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from '../css/LoginForm.module.css';
 import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
@@ -23,7 +23,6 @@ const SocialKakao = React.memo(function SocialKakao() {
     // 백엔드 서버를 통한 로그인 프로세스 시작
     window.location.href = BACKEND_OAUTH2_KAKAO_URL;
   }, [BACKEND_OAUTH2_KAKAO_URL]);
-
   return (
       <button className={styles.kakao} onClick={handleLogin}>
         <img src={KakaoLogo} alt="Kakao" style={{ marginRight: '10px', verticalAlign: 'middle', width: '20px', height: '20px' }} />
@@ -31,6 +30,7 @@ const SocialKakao = React.memo(function SocialKakao() {
       </button>
   );
 });
+
 const SocialGoogle = React.memo(function SocialGoogle() {
   const BACKEND_OAUTH2_GOOGLE_URL = process.env.REACT_APP_BACKEND_OAUTH2_GOOGLE_URL;
   const handleLogin = useCallback(() => {
