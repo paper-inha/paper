@@ -5,6 +5,7 @@ import KakaoLogo from '../Image/kakao.png';
 import GoogleLogo from '../Image/google.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React.memo사용
   let navigate = useNavigate();
@@ -48,6 +49,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const axiosInstance = axios.create({
     baseURL: 'http://localhost'
   });
@@ -69,14 +72,27 @@ function Login() {
         email,
         password,
       });
+      
+      if(response.data.status === 403){
+        setModalMessage('아이디가 존재하지 않습니다 회원가입을 해주세요');
+        setIsModalOpen(true);
+      }
       console.log(response.data.data.accessToken);
       const { accessToken } = response.data.data;
       localStorage.setItem('accessToken', accessToken);
       await checkTitleExistence();
     } catch (error) {
-      console.error("로그인 실패:", error);
+      if(error.response && error.response.data.status === 403){
+        setModalMessage('아이디가 존재하지 않습니다 회원가입을 해주세요');
+        setIsModalOpen(true);
+      } else {
+        setModalMessage('이메일 또는 비밀번호가 일치하지 않습니다.');
+        setIsModalOpen(true);
+      }
     }
   }
+  
+  
   async function checkTitleExistence() {
     try {
       const response = await axiosInstance.get('/main/v1/validate', {
@@ -124,6 +140,20 @@ function Login() {
             </form>
           </div>
         </div>
+        <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="Error Modal"
+                className={styles.modal}
+                overlayClassName={styles.modalOverlay}
+            >
+                <div className={styles.modalContent}>
+                    <h2>Error</h2>
+                    <p>{modalMessage}</p>
+                    <button onClick={() => setIsModalOpen(false)}>Close</button>
+                </div>
+            </Modal>
+ 
       </div>
   );
 }

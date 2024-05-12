@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../css/JoinForm.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 function Join() {
     const [email, setEmail] = useState('');
@@ -9,7 +10,8 @@ function Join() {
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [name, setName] = useState('');
     let navigate = useNavigate();
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     useEffect(() => {
         const link = document.createElement('link');
         link.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css';
@@ -37,14 +39,16 @@ function Join() {
                 errorMessage = error.response.data.message || errorMessage;
             }
             // 사용자에게 에러 메시지 표시
-            alert(errorMessage);
+            setModalMessage(errorMessage);
+            setIsModalOpen(true);
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if(password !== passwordConfirm){
-            alert('패스워드가 일치하지 않습니다.');
+            setModalMessage('패스워드가 일치하지 않습니다.');
+            setIsModalOpen(true);
             return;
         }
         getData(email, password, name).then(r => console.log(r));
@@ -75,6 +79,19 @@ function Join() {
                     </form>
                 </div>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="Error Modal"
+                className={styles.modal}
+                overlayClassName={styles.modalOverlay}
+            >
+                <div className={styles.modalContent}>
+                    <h2>Error</h2>
+                    <p>{modalMessage}</p>
+                    <button onClick={() => setIsModalOpen(false)}>Close</button>
+                </div>
+            </Modal>
         </div>
     );
 }

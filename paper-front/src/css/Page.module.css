@@ -77,6 +77,11 @@
     z-index: 50;
     transition: opacity 0s ease 0s, all 0.5s ease 0s;
 }
+.write{
+    position: absolute;
+    right:24px;
+    bottom:50px;
+}
 .post1{
     display: block;
     position: relative;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/Page.module.css';
 import Menubar from "../Component/Menubar/Header";
+import Modal from 'react-modal';
 
 function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +13,7 @@ function Page() {
     let navigate = useNavigate();
     const [papers, setPapers] = useState([]); // 서버로부터 받은 데이터를 저장할 상태
     const [userEmail, setUserEmail] = useState(''); // 유저 이메일을 저장할 상태
+
 
     async function showPaper() {
         try {
@@ -60,6 +62,7 @@ function Page() {
                     <div className={styles.paperlistbox1}>
                         0개 작성
                     </div>
+                    <div className={styles.write} onClick={() => navigate('/Write')}>임시 글쓰기 추후 수정</div>
                     <session className={styles.post1}>
                         <div className={styles.post2}>
                             <div className={styles.postit}>
@@ -75,7 +78,6 @@ function Page() {
                             </div>
                         </div>
                     </session>
-                    <div className={styles.Write}></div>
                 </div>
             </div>
         </div>
