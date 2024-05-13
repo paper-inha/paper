@@ -71,11 +71,10 @@ public class AuthService implements IAuthServiceV1 {
 		// 토큰 재발급 및 Redis 업데이트
 		System.out.println("Redis에 저장된 RT: " + redisService.getValues("RT(" + SERVER + "):" + principal));
 		redisService.deleteValues("RT(" + SERVER + "):" + principal); // 기존 RT 삭제
-		AuthDto.TokenDto tokenDto = jwtTokenProvider.createToken(principal, authorities);
+		AuthDto.TokenDto tokenDto = jwtTokenProvider.createToken(principal, authorities,"normal");
 		saveRefreshToken(SERVER, principal, tokenDto.getRefreshToken());
 		return tokenDto;
 	}
-
 	// 토큰 발급
 	public AuthDto.TokenDto generateToken(String provider, String email, String authorities) {
 		// RT가 이미 있을 경우
@@ -83,7 +82,7 @@ public class AuthService implements IAuthServiceV1 {
 			redisService.deleteValues("RT(" + provider + "):" + email); // 삭제
 		}
 		// AT, RT 생성 및 Redis에 RT 저장
-		AuthDto.TokenDto tokenDto = jwtTokenProvider.createToken(email, authorities);
+		AuthDto.TokenDto tokenDto = jwtTokenProvider.createToken(email, authorities,"Normal");
 		saveRefreshToken(provider, email, tokenDto.getRefreshToken());
 		return tokenDto;
 	}

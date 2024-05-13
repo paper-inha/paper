@@ -11,18 +11,27 @@ function Page() {
     const closeModal = () => setIsModalOpen(false);
     const [inputValue, setInputValue] = useState('');
     let navigate = useNavigate();
-    const [papers, setPapers] = useState([]); // 서버로부터 받은 데이터를 저장할 상태
-    const [userEmail, setUserEmail] = useState(''); // 유저 이메일을 저장할 상태
+    const [papers, setPapers] = useState([]);
+    const [userEmail, setUserEmail] = useState('');
 
+    const getToken = () => {
+        const loginType = localStorage.getItem('loginType'); // 로그인 유형 확인
+        if (loginType === 'social') {
+            return localStorage.getItem('socialAccessToken');
+        } else {
+            return localStorage.getItem('accessToken');
+        }
+    }
 
     async function showPaper() {
         try {
+            const token = getToken();
             const response = await axios.get('http://localhost/main/v1/', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    Authorization: `Bearer ${token}`
                 },
             });
-            setPapers(response.data.data); // 받아온 데이터를 상태에 저장
+            setPapers(response.data.data);
         } catch (error) {
             console.error("페이퍼 불러오기 실패", error);
         }
@@ -30,21 +39,22 @@ function Page() {
 
     async function getUserEmail() {
         try {
+            const token = getToken();
             const response = await axios.get('http://localhost/main/v1/user', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    Authorization: `Bearer ${token}`
                 }
             });
-            setUserEmail(response.data.data); // 응답으로부터 이메일을 가져와 상태에 저장
+            setUserEmail(response.data.data);
         } catch (error) {
             console.error("유저 이메일 불러오기 실패", error);
         }
     }
 
     useEffect(() => {
-        showPaper(); // 컴포넌트 마운트 시 데이터 불러오기
-        getUserEmail(); // 컴포넌트 마운트 시 유저 이메일 불러오기
-    }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때만 실행되도록 함
+        showPaper();
+        getUserEmail();
+    }, []);
 
     return (
         <div className={styles.main}>
@@ -60,24 +70,20 @@ function Page() {
                         <div headerbox3></div>
                     </div>
                     <div className={styles.paperlistbox1}>
-                        0개 작성
+                        {papers.length}개 작성
                     </div>
                     <div className={styles.write} onClick={() => navigate('/Write')}>임시 글쓰기 추후 수정</div>
-                    <session className={styles.post1}>
+                    <section className={styles.post1}>
                         <div className={styles.post2}>
-                            <div className={styles.postit}>
-                                <div className={styles.postitcontext}>
-                                    {papers.map(paper => (
-                                        <div key={paper.id} className={styles.postit}>
-                                            <div className={styles.postitcontext}>
-                                                {paper.content}
-                                            </div>
-                                        </div>
-                                    ))}
+                            {papers.map(paper => (
+                                <div key={paper.id} className={styles.postit}>
+                                    <div className={styles.postitcontext}>
+                                        {paper.content}
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
                         </div>
-                    </session>
+                    </section>
                 </div>
             </div>
         </div>

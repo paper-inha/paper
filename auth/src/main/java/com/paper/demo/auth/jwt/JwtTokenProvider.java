@@ -35,6 +35,7 @@ public class JwtTokenProvider implements InitializingBean {
 	private static final String AUTHORITIES_KEY = "roles"; // 토큰에 저장할 권한 키
 	private static final String EMAIL_KEY = "email"; // 토큰에 저장할 키
 	private static final String url = "https://authHost:9000"; // 인증서버 주소
+	private static final String LOGIN_TYPE = "loginType"; // 로그인 타입
 	private static KeyPair signingKeyPair; // 비밀키, 공개키 쌍
 	private final UserDetailsServiceImpl userDetailsService; // 유저 정보
 	private final RedisService redisService; // 레디스
@@ -70,7 +71,7 @@ public class JwtTokenProvider implements InitializingBean {
 	}
 
 	@Transactional
-	public AuthDto.TokenDto createToken(String email, String authorities) {
+	public AuthDto.TokenDto createToken(String email, String authorities,String loginType) {
 		Long now = System.currentTimeMillis();
 
 		String accessToken = Jwts.builder()
@@ -81,6 +82,7 @@ public class JwtTokenProvider implements InitializingBean {
 			.claim(url, true)
 			.claim(EMAIL_KEY, email)
 			.claim(AUTHORITIES_KEY, authorities)
+			.claim(LOGIN_TYPE, loginType)
 			.signWith(signingKeyPair.getPrivate(), SignatureAlgorithm.RS256)
 			.compact();
 

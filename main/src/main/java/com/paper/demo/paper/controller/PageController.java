@@ -20,10 +20,16 @@ public class PageController implements IPageControllerV1 {
 	private final PageService pageService;
 	private final PaperService paperService;
 
+	/**
+	 * 페이지 타이틀 유효성 검사
+	 * @param accessToken
+	 * @return
+	 */
 	@Override
 	public boolean validateTitle(@RequestHeader("Authorization") String accessToken) {
 		return pageService.validateTitle(accessToken);
 	}
+
 	/**
 	 * 페이지를 생성하는 메서드
 	 * @param accessToken
@@ -78,6 +84,12 @@ public class PageController implements IPageControllerV1 {
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, null);
 		return ResponseEntity.status(ResponseStatus.SUCCESS.getCode()).body(successResponse);
 	}
+
+	/**
+	 * 유저 이메일 조회
+	 * @param accessToken
+	 * @return
+	 */
 	@Override
 	public ResponseEntity<?> getUserEmail(@RequestHeader("Authorization") String accessToken) {
 		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, pageService.getUserEmail());

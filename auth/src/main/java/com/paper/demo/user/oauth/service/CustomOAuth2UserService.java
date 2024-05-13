@@ -45,7 +45,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		httpSession.setAttribute("user", new SessionUser(oauthUser)); // SessionUser (직렬화된 dto 클래스 사용)
 		// JWT 토큰 생성
 		String authorities = oauthUser.getRoleKey();
-		AuthDto.TokenDto tokens = jwtTokenProvider.createToken(oauthUser.getEmail(), authorities);
+		AuthDto.TokenDto tokens = jwtTokenProvider.createToken(oauthUser.getEmail(), authorities,oauthUser.getOauth());
 		authService.saveRefreshToken("OauthServer",oauthUser.getEmail(), tokens.getRefreshToken());
 		httpSession.setAttribute("accessToken", tokens.getAccessToken());
 		httpSession.setAttribute("refreshToken", tokens.getRefreshToken());

@@ -11,4 +11,6 @@ public interface IPageServiceV1 {
 	void createPage(PaperDto.createPage createPage,String accessToken);
 	boolean validateTitle(String accessToken);
 
+	String getLoginType(String accessToken);
+
 }

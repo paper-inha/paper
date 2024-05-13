@@ -11,6 +11,10 @@
     <file type="web" url="file://$PROJECT_DIR$/main" />
     <file type="web" url="file://$PROJECT_DIR$/../sinor_cache_back/auth" />
   </component>
+  <component name="PWA">
+    <option name="enabled" value="true" />
+    <option name="wasEnabledAtLeastOnce" value="true" />
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React.memo사용
+const Logo = React.memo(function Logo() {
   let navigate = useNavigate();
   function handleClick(){
     navigate('/');
@@ -72,13 +72,13 @@ function Login() {
         email,
         password,
       });
-      
       if(response.data.status === 403){
         setModalMessage('아이디가 존재하지 않습니다 회원가입을 해주세요');
         setIsModalOpen(true);
       }
-      console.log(response.data.data.accessToken);
-      const { accessToken } = response.data.data;
+      console.log("엑세스토큰 확인 : " + response.data.data.accessToken);
+      const accessToken  = response.data.data.accessToken;
+      console.log("저장 전 엑세스토큰 : "+ accessToken);
       localStorage.setItem('accessToken', accessToken);
       await checkTitleExistence();
     } catch (error) {
@@ -91,8 +91,6 @@ function Login() {
       }
     }
   }
-  
-  
   async function checkTitleExistence() {
     try {
       const response = await axiosInstance.get('/main/v1/validate', {
@@ -106,7 +104,7 @@ function Login() {
         navigate("/Page");
       } else {
         console.log("페이지가 없습니다.");
-        navigate("/Title");
+        navigate("/NormalTitle");
       }
     } catch (error) {
       console.error("에러내용", error);
@@ -141,19 +139,19 @@ function Login() {
           </div>
         </div>
         <Modal
-                isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
-                contentLabel="Error Modal"
-                className={styles.modal}
-                overlayClassName={styles.modalOverlay}
-            >
-                <div className={styles.modalContent}>
-                    <h2>Error</h2>
-                    <p>{modalMessage}</p>
-                    <button onClick={() => setIsModalOpen(false)}>Close</button>
-                </div>
-            </Modal>
- 
+            isOpen={isModalOpen}
+            onRequestClose={() => setIsModalOpen(false)}
+            contentLabel="Error Modal"
+            className={styles.modal}
+            overlayClassName={styles.modalOverlay}
+        >
+          <div className={styles.modalContent}>
+            <h2>Error</h2>
+            <p>{modalMessage}</p>
+            <button onClick={() => setIsModalOpen(false)}>Close</button>
+          </div>
+        </Modal>
+
       </div>
   );
 }

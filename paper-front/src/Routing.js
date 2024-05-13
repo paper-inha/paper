@@ -7,6 +7,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Write from "./Pages/Write";
 import Page from "./Pages/Page";
 import User from "./Pages/User";
+import NormalTitle from "./Pages/NormalTitle";
 
 function Routing(){
     return (
@@ -20,7 +21,7 @@ function Routing(){
                     <Route path='/write' element={<Write />}/>
                     <Route path='/page' element={<Page/>}/>
                     <Route path='/user' element={<User/>}/>
-                    
+                    <Route path='/normaltitle' element={<NormalTitle/>}/>
                 </Routes>
             </BrowserRouter>
     )

@@ -1,5 +1,9 @@
 package com.paper.demo.paper.service;
 
+import static org.springframework.util.ClassUtils.*;
+
+import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -29,9 +33,13 @@ public class PageService implements IPageServiceV1 {
 	 * @param accessToken
 	 * @return
 	 */
-	@Override
-	public boolean validateTitle(String accessToken){
-		return pageRepository.findByEmail(getUserEmail()) != null;
+	public boolean validateTitle(String accessToken) {
+		String email = getUserEmail(); // 현재 사용자의 이메일을 얻습니다.
+		String loginType = getLoginType(accessToken); // 현재 사용자의 로그인 타입을 얻습니다.
+		System.out.println("validateTitle : getUserEmail() : " + email);
+		System.out.println("validateTitle : getLoginType() : " + loginType);
+		Optional<Page> optionalPage = pageRepository.findByEmailAndLoginType(email, loginType);
+		return optionalPage.isPresent();
 	}
 	/**
 	 * 유저 정보 조회
@@ -45,28 +53,13 @@ public class PageService implements IPageServiceV1 {
 				JsonResponse jsonResponse = (JsonResponse)responseEntity.getBody();
 				if (jsonResponse != null) {
 					if (jsonResponse.getCode() == 200) {
-						System.out.println("yes");
 						return "yes";
 					}
 				}
-				System.out.println("no");
 				return "no";
 			});
 	}
 
-	/**
-	 * 유저 이메일 조회
-	 * @return
-	 */
-	@Override
-	public String getUserEmail() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
-			throw new RuntimeException("인증정보가 없거나 잘못된 토큰정보 입니다.");
-		}
-		System.out.println("jwt.getClaims().get(email) : " + jwt.getClaims().get("email"));
-		return (String) jwt.getClaims().get("email");
-	}
 
 	/**
 	 * 페이지 생성
@@ -80,6 +73,7 @@ public class PageService implements IPageServiceV1 {
 			Page buildPage = Page.builder()
 				.email(getUserEmail())
 				.title(createPage.getTitle())
+				.loginType(getLoginType(accessToken))
 				.build();
 			pageRepository.save(buildPage);
 			log.info("페이지 생성 완료");
@@ -87,4 +81,26 @@ public class PageService implements IPageServiceV1 {
 			throw new RuntimeException("페이지 생성 실패");
 		}
 	}
+	/**
+	 * 유저 이메일 조회
+	 * @return
+	 */
+	@Override
+	public String getUserEmail() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
+			throw new RuntimeException("인증정보가 없거나 잘못된 토큰정보 입니다.");
+		}
+		return (String) jwt.getClaims().get("email");
+	}
+
+	@Override
+	public String getLoginType(String accessToken) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
+			throw new RuntimeException("인증정보가 없거나 잘못된 토큰정보 입니다.");
+		}
+		return (String) jwt.getClaims().get("loginType");
+	}
+
 }

@@ -3,7 +3,6 @@ package com.paper.demo.paper.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.paper.demo.paper.domain.PaperDto;
 @Tag(name = "롤링페이퍼 API", description = "롤링페이퍼 API")
 public interface IPageControllerV1 {
-
+	/**
+	 * 페이지 타이틀 유효성 검사
+	 * @param accessToken
+	 * @return
+	 */
 	@GetMapping("/v1/validate")
 	boolean validateTitle(@RequestHeader("Authorization") String accessToken);
 

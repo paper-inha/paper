@@ -20,9 +20,7 @@ const Logo = React.memo(function Logo() { // 렌더링 최적화를 위해 React
 
 
 function Title() {
-
     const [inputValue, setInputValue] = useState('');
-    const [email, setEmail] = useState("");
     const maxLength = 12;
     const navigate = useNavigate();
     const handleChange = (event) => {
@@ -40,26 +38,29 @@ function Title() {
       }
     };
     useEffect(() => {
-        // 서버로부터 액세스 토큰을 받아오는 함수
         const getAccessToken = async () => {
             try {
                 const response = await axios.get('http://localhost/auth/oauth/token', {
                     withCredentials: true, // 이 요청에 쿠키나 인증 정보를 포함
                 });
                 // 받아온 토큰을 로컬 스토리지에 저장
-                localStorage.setItem('accessToken', response.data.data.accessToken);
+                localStorage.setItem('loginType', 'social');
+                localStorage.setItem('socialAccessToken', response.data.data.accessToken);
+                return true; // 토큰을 성공적으로 받아왔음을 나타내는 true 반환
             } catch (error) {
                 // 에러 처리
                 console.error('토큰을 받아오는데 실패했습니다.', error);
+                return false; // 토큰 받기 실패를 나타내는 false 반환
             }
         };
         const checkTitleExistence = async () => {
             try {
-                const response = await axios.get('/main/v1/validate', {
+                const response = await axios.get('http://localhost/main/v1/validate', { // 두 번째 인자로 빈 객체(또는 실제 요청 본문이 필요한 경우 해당 데이터)를 추가
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                        Authorization: `Bearer ${localStorage.getItem('socialAccessToken')}`
                     }
                 });
+                console.log("응답 내용", response.data)
                 if (response.data) {
                     console.log("페이지가 있습니다.");
                     navigate("/Page");
@@ -75,7 +76,8 @@ function Title() {
         // 토큰 받아오기와 토큰을 이용한 추가 작업을 진행하는 함수
         const init = async () => {
             const tokenReceived = await getAccessToken();
-            if (tokenReceived) {
+            console.log("토큰 받아오기 성공 여부", tokenReceived)
+            if (tokenReceived) { // getAccessToken 함수가 true를 반환한 경우에만 checkTitleExistence 함수 호출
                 await checkTitleExistence(); // 비동기 처리를 위해 await 추가
             }
         };
@@ -89,7 +91,7 @@ function Title() {
                     title: inputValue
                 },{
                 headers: {  // 'headers'로 수정
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    Authorization: `Bearer ${localStorage.getItem('socialAccessToken')}`
                 },
             });
             console.log("페이지 생성 성공");
