@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext} from 'react';
 import styles from '../css/LoginForm.module.css';
 import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
 import GoogleLogo from '../Image/google.png';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Modal from 'react-modal';
+import { AuthContext } from '../Context/AuthContext';
 
 const Logo = React.memo(function Logo() {
   let navigate = useNavigate();
@@ -46,6 +46,9 @@ const SocialGoogle = React.memo(function SocialGoogle() {
 });
 
 function Login() {
+  const { email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, handleLogin, isLoggedIn } = useContext(AuthContext);
+
+  /*
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
@@ -110,6 +113,7 @@ function Login() {
       console.error("에러내용", error);
     }
   }
+  */
   return (
       <div className={styles.main}>
         <div className={styles.container}>
