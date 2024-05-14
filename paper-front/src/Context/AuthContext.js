@@ -75,9 +75,25 @@ export const AuthProvider = ({ children }) => {
         console.error("에러내용", error);
       }
     }
-    
+    async function handleLogout() {
+      try {
+        await axiosInstance.post('/auth/v1/logout', null, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+        // 로그아웃 성공 시 수행할 작업
+        localStorage.removeItem('accessToken');
+        setIsLoggedIn(false);
+        navigate('/login');
+      } catch (error) {
+        console.error('로그아웃 에러:', error);
+        // 로그아웃 실패 시 수행할 작업
+      }
+    }
+
   return (
-    <AuthContext.Provider value={{ email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, setModalMessage, handleLogin, checkTitleExistence,isLoggedIn,setIsLoggedIn }}>
+    <AuthContext.Provider value={{ email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, setModalMessage, handleLogin, checkTitleExistence,isLoggedIn,setIsLoggedIn,handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -29,7 +29,7 @@ function Title() {
         setInputValue(value);
       }
     };
-    const [textValue,setTextValue] = useState('');
+    /*const [textValue,setTextValue] = useState('');
     const textLength = 50;
     const textCh = (event) => {
       const {value} = event.target;
@@ -37,6 +37,7 @@ function Title() {
         setTextValue(value);
       }
     };
+    */
     useEffect(() => {
         const getAccessToken = async () => {
             try {
@@ -95,6 +96,7 @@ function Title() {
                 },
             });
             console.log("페이지 생성 성공");
+            console.log(response.data);
             navigate("/Page");
         } catch (error) {
             console.error("페이지 생성 실패:", error);

@@ -80,7 +80,7 @@
 .write{
     position: absolute;
     right:24px;
-    bottom:50px;
+    top:300px; 
 }
 .post1{
     display: block;

@@ -1,12 +1,14 @@
-import React, {  useState } from 'react';
+import React, {  useContext, useState } from 'react';
 import { Menu, Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import styles from '../../css/Menubar.module.css';
 import {Link} from 'react-router-dom'
-//import { LoginContext } from '../../Contexts/LoginContextProvider';
-//import { useContext } from 'react';
+import { AuthContext } from '../../Context/AuthContext';
+
+
 const Menubar = () => {
-  
+  const { isLoggedIn,handleLogout } = useContext(AuthContext);
+
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -16,8 +18,6 @@ const Menubar = () => {
     setVisible(false);
   };
 
-  //const {isLogin, logout} = useContext(LoginContext);
-  
   return (
   <header>
   <div>
@@ -33,7 +33,7 @@ const Menubar = () => {
         >
         <Menu mode="inline" style={{ height: "100%", borderRight: 0 }}>
           <ul>
-            
+          {!isLoggedIn && (
             <>
             <li>
               <Menu.Item key="1">
@@ -51,6 +51,8 @@ const Menubar = () => {
               </Menu.Item>
             </li>
             </>            
+          )}
+          {isLoggedIn && (
           <>
             <li>
               <Menu.Item key="4">
@@ -58,11 +60,12 @@ const Menubar = () => {
               </Menu.Item>
             </li>
             <li>
-              <Menu.Item key="5">
+              <Menu.Item key="5" onClick={handleLogout}>
                 <p>로그아웃</p>
-              </Menu.Item>
+              </Menu.Item> 
             </li>
               </>
+          )}
           </ul>
       </Menu>
       </Drawer>
