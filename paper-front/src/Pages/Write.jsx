@@ -36,7 +36,7 @@ function Write() {
     }
     return (
         <div className={styles.main}>
-            <form>
+            <div className={styles.mainpage}>
                 <div className={styles.container}>
                     <session className={styles.box1}>
                         <session className={styles.box2}>
@@ -46,7 +46,7 @@ function Write() {
                             <div className={styles.next}>
                                 다음{/*이동시 context 색깔 선택*/}
                             </div>
-                            
+                            <br></br>
                         </session>
                         <div className={styles.contextbox}>
                             <div className={styles.contextbox2}>
@@ -56,7 +56,7 @@ function Write() {
                     </session>
                 </div>
                 <button type="button" onClick={onClickPage} className={styles.btn}>페이퍼 생성</button>
-            </form>
+            </div>
         </div>
     );
 }

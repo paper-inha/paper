@@ -4,16 +4,22 @@
     justify-content: center;
     width: 100%;
     min-height: 100vh;
-    max-width: 414px;
+    background-color: gray;
 }
+
+.mainpage{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    max-width: 414px;
+  }
+
 .container{
     position: relative;
-    width: 100vw;
-    max-width: 100vw;
-    min-width: 100vw;
-    min-height: 100vh;
-    background: url('../Image/Line.jpg') no-repeat;
-    display: flex;
+    width: 100%;
+    height: 100vh;
+    max-width: 414px;    
+    background-color: white;
     -webkit-box-pack: center;
     justify-content: center;
 }
@@ -38,7 +44,10 @@
     font-weight: bold;
 }
 .next{
-    float: right;
+    right:0px;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: bold;
 }
 .contextbox{
     margin-top: 30px;

@@ -7,7 +7,7 @@ import { AuthContext } from '../../Context/AuthContext';
 
 
 const Menubar = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn,handleLogout } = useContext(AuthContext);
 
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
@@ -60,7 +60,7 @@ const Menubar = () => {
               </Menu.Item>
             </li>
             <li>
-              <Menu.Item key="5">
+              <Menu.Item key="5" onClick={handleLogout}>
                 <p>로그아웃</p>
               </Menu.Item> 
             </li>
