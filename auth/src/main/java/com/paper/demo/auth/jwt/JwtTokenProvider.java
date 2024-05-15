@@ -96,14 +96,17 @@ public class JwtTokenProvider implements InitializingBean {
 
 		return new AuthDto.TokenDto(accessToken, refreshToken);
 	}
-
-	// == 토큰으로부터 정보 추출 == //
+	public String getLoginType(String token) {
+		System.out.println("getLoginType : " + getClaims(token).get(LOGIN_TYPE).toString());
+		return getClaims(token).get(LOGIN_TYPE).toString();
+	}
 	public Claims getClaims(String token) {
 		try {
+			String cleanToken = token.replace("Bearer ", "").trim();
 			return Jwts.parserBuilder()
 				.setSigningKey(signingKeyPair.getPublic())
 				.build()
-				.parseClaimsJws(token)
+				.parseClaimsJws(cleanToken)
 				.getBody();
 		} catch (ExpiredJwtException e) { // Access Token
 			return e.getClaims();

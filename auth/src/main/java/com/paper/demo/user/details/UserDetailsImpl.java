@@ -34,7 +34,7 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		// user 객체와 oauthUser 객체 중 어느 것을 사용하고 있는지에 따라 다르게 작동
+
 		if (user != null) {
 			authorities.add(() -> user.getRole().getKey()); // key: ROLE_권한
 		} else if (oauthUser != null) {
@@ -49,18 +49,17 @@ public class UserDetailsImpl implements UserDetails {
 		if (user != null) {
 			return user.getEmail();
 		} else if (oauthUser != null) {
-			return oauthUser.getEmail(); // OauthUser에도 getEmail 메소드가 있다고 가정
+			return oauthUser.getEmail();
 		}
 		return null; // 혹은 적절한 예외 처리
 	}
+
 
 	@Override
 	public String getPassword() {
 		if (user != null) {
 			return user.getPassword();
 		}
-		// OauthUser에 대한 비밀번호 처리 로직이 필요하다면 여기에 추가
-		// OAuth 인증을 사용하는 경우, 일반적으로 비밀번호를 직접 다루지 않으므로 null을 반환하거나 예외 처리를 할 수 있습니다.
 		return null; // 혹은 적절한 예외 처리
 	}
 

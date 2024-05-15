@@ -11,10 +11,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.paper.demo.auth.jwt.JwtTokenProvider;
 import com.paper.demo.auth.service.dto.AuthDto;
+import com.paper.demo.user.details.UserDetailsImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +91,6 @@ public class AuthService implements IAuthServiceV1 {
 
 	// RT를 Redis에 저장
 	public void saveRefreshToken(String provider, String principal, String refreshToken) {
-
 		redisService.setValuesWithTimeout("RT(" + provider + "):" + principal, // key
 			refreshToken, // value
 			jwtTokenProvider.getTokenExpirationTime(refreshToken)); // timeout(milliseconds)
@@ -133,4 +134,7 @@ public class AuthService implements IAuthServiceV1 {
 			"logout",
 			expiration);
 	}
+
+
+
 }

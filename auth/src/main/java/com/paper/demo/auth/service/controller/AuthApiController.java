@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paper.demo.auth.jwt.JwtTokenProvider;
 import com.paper.demo.auth.service.dto.AuthDto;
 import com.paper.demo.auth.service.service.AuthService;
 import com.paper.demo.common.ResponseStatus;
 import com.paper.demo.common.SuccessResponse;
+import com.paper.demo.user.details.UserDetailsImpl;
+import com.paper.demo.user.domain.User;
 import com.paper.demo.user.service.UserService;
 
 import jakarta.validation.Valid;
@@ -31,8 +34,11 @@ public class AuthApiController implements IAuthApiControllerV1 {
 
 	private final AuthService authService;
 	private final UserService userService;
+	private final JwtTokenProvider jwtTokenProvider;
+
 
 	private final long COOKIE_EXPIRATION = 7776000; // 90일
+
 
 	// 회원가입
 	public ResponseEntity<?> signupUser(@RequestBody @Valid AuthDto.SignupDto signupDto) {
@@ -149,6 +155,22 @@ public class AuthApiController implements IAuthApiControllerV1 {
 		return ResponseEntity
 			.status(ResponseStatus.SUCCESS.getCode())
 			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+			.body(successResponse);
+	}
+	@Override
+	public ResponseEntity<?> name(@RequestHeader("Authorization") String requestAccessToken) {
+		String loginType = jwtTokenProvider.getLoginType(requestAccessToken);
+		String email = userService.getUserEmail();
+		String userName;
+		if ("Normal".equals(loginType)) {
+			userName = userService.getUserName(email);
+		} else {
+			userName = userService.getOauthUserName(email);
+		}
+		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, userName);
+
+		return ResponseEntity
+			.status(ResponseStatus.SUCCESS.getCode())
 			.body(successResponse);
 	}
 

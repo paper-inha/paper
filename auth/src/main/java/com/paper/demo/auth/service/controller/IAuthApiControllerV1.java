@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,6 +19,7 @@ import com.paper.demo.common.admin.AdminException;
 import jakarta.validation.Valid;
 
 public interface IAuthApiControllerV1 {
+
 	/**
 	 * RT = Refresh Token, AT = Access Token
 	 * 1. 회원가입
@@ -113,4 +115,7 @@ public interface IAuthApiControllerV1 {
 	// })
 	// @PostMapping("/v1/email")
 	// ResponseEntity<?> email(@RequestBody @Valid AuthDto.EmailDto emailDto) throws AdminException;
+
+	@GetMapping("/v1/name")
+	ResponseEntity<?> name(@RequestHeader("Authorization") String requestAccessToken);
 }
