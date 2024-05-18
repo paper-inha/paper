@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { useCallback,createContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,11 +10,16 @@ export const AuthProvider = ({ children }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [isLoggedIn,setIsLoggedIn] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false); // 다크모드 상태 추가
     let navigate = useNavigate();
 
     const axiosInstance = axios.create({
       baseURL: 'http://localhost'
     });
+
+    const toggleDarkMode = () => { // 다크모드 토글 함수 추가
+      setIsDarkMode(!isDarkMode);
+    };
 
     axiosInstance.interceptors.request.use(
         config => {
@@ -28,6 +33,32 @@ export const AuthProvider = ({ children }) => {
           return Promise.reject(error);
         }
     );
+    
+    const handleKakaoLogin = useCallback(async () => {
+      try {
+        // 카카오 로그인 프로세스 시작
+        const BACKEND_OAUTH2_KAKAO_URL = process.env.REACT_APP_BACKEND_OAUTH2_KAKAO_URL;
+        window.location.href = BACKEND_OAUTH2_KAKAO_URL;
+    
+        // 로그인 성공 후 setIsLoggedIn(true) 호출
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Kakao login error:', error);
+      }
+    }, []);
+
+    const handleGoogleLogin = useCallback(async () => {
+      try {
+        // 구글 로그인 프로세스 시작
+        const BACKEND_OAUTH2_GOOGLE_URL = process.env.REACT_APP_BACKEND_OAUTH2_GOOGLE_URL;
+        window.location.href = BACKEND_OAUTH2_GOOGLE_URL;
+    
+        // 로그인 성공 후 setIsLoggedIn(true) 호출
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Google login error:', error);
+      }
+    }, []);
 
     async function handleLogin() {
       try {
@@ -93,7 +124,7 @@ export const AuthProvider = ({ children }) => {
     }
 
   return (
-    <AuthContext.Provider value={{ email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, setModalMessage, handleLogin, checkTitleExistence,isLoggedIn,setIsLoggedIn,handleLogout }}>
+    <AuthContext.Provider value={{ email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, setModalMessage, handleLogin, checkTitleExistence,isLoggedIn,setIsLoggedIn,handleLogout,handleKakaoLogin,handleGoogleLogin,isDarkMode, toggleDarkMode }}>
       {children}
     </AuthContext.Provider>
   );

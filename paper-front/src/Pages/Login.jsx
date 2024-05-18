@@ -1,5 +1,6 @@
 import React, {useCallback, useContext} from 'react';
-import styles from '../css/LoginForm.module.css';
+import D from '../css/LoginFormD.module.css';
+import L from '../css/LoginFormL.module.css';
 import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
 import GoogleLogo from '../Image/google.png';
@@ -7,25 +8,25 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { AuthContext } from '../Context/AuthContext';
 
+
+
 const Logo = React.memo(function Logo() {
+  const { isDarkMode } = useContext(AuthContext);
   let navigate = useNavigate();
   function handleClick(){
     navigate('/');
   }
   return (
-      <img src={mainImage} className={styles.logo} alt='main' onClick={handleClick}/>
+      <img src={mainImage} className={isDarkMode?D.logo:L.logo} alt='main' onClick={handleClick}/>
   );
 });
 
 const SocialKakao = React.memo(function SocialKakao() {
-  // 로컬호스트의 백엔드 서버를 통해 카카오 로그인을 시작하는 URL
-  const BACKEND_OAUTH2_KAKAO_URL = process.env.REACT_APP_BACKEND_OAUTH2_KAKAO_URL;
-  const handleLogin = useCallback(() => {
-    // 백엔드 서버를 통한 로그인 프로세스 시작
-    window.location.href = BACKEND_OAUTH2_KAKAO_URL;
-  }, [BACKEND_OAUTH2_KAKAO_URL]);
+  const { isDarkMode } = useContext(AuthContext);
+  const { handleKakaoLogin } = useContext(AuthContext);
+
   return (
-      <button className={styles.kakao} onClick={handleLogin}>
+      <button className={isDarkMode?D.kakao:L.kakao} onClick={handleKakaoLogin}>
         <img src={KakaoLogo} alt="Kakao" style={{ marginRight: '10px', verticalAlign: 'middle', width: '20px', height: '20px' }} />
         카카오로 시작하기
       </button>
@@ -33,12 +34,10 @@ const SocialKakao = React.memo(function SocialKakao() {
 });
 
 const SocialGoogle = React.memo(function SocialGoogle() {
-  const BACKEND_OAUTH2_GOOGLE_URL = process.env.REACT_APP_BACKEND_OAUTH2_GOOGLE_URL;
-  const handleLogin = useCallback(() => {
-    window.location.href = BACKEND_OAUTH2_GOOGLE_URL;
-  }, [BACKEND_OAUTH2_GOOGLE_URL]);
+  const { handleGoogleLogin } = useContext(AuthContext);
+  const { isDarkMode } = useContext(AuthContext);
   return (
-      <button className={styles.google} onClick={handleLogin}>
+      <button className={isDarkMode?D.google:L.google} onClick={handleGoogleLogin}>
         <img src={GoogleLogo} alt="google" style={{ marginRight: '10px', verticalAlign: 'middle', width: '20px', height: '20px' }} />
         구글로 시작하기
       </button>
@@ -46,6 +45,7 @@ const SocialGoogle = React.memo(function SocialGoogle() {
 });
 
 function Login() {
+  const { isDarkMode } = useContext(AuthContext);
   const { email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, handleLogin, isLoggedIn } = useContext(AuthContext);
 
   /*
@@ -115,28 +115,28 @@ function Login() {
   }
   */
   return (
-      <div className={styles.main}>
-        <div className={styles.container}>
+      <div className={isDarkMode ? D.main : L.main}>
+        <div className={isDarkMode ? D.container : L.container}>
           <Logo />
-          <div className={styles.wrapper}>
+          <div className={isDarkMode ? D.wrapper : L.wrapper}>
             <h1>로그인</h1>
             <form>
-              <div className={styles.inputbox}>
+              <div className={isDarkMode ? D.inputbox: L.inputbox}>
                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" required />
                 <i className='bx bxs-user'></i>
               </div>
-              <div className={styles.inputbox}>
+              <div className={isDarkMode ? D.inputbox: L.inputbox}>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="패스워드" required />
                 <i className='bx bx-lock-alt'></i>
               </div>
-              <div className={styles.rememberforgot}>
+              <div className={isDarkMode ? D.rememberforgot : L.rememberforgot}>
                 <label>
                   <input type="checkbox" />아이디를 저장
                 </label>
                 <a href="/join">회원이 아니신가요?</a>
               </div>
 
-              <button type="button" onClick={handleLogin} className={styles.btn}>로그인</button>
+              <button type="button" onClick={handleLogin} className={isDarkMode ? D.btn : L.btn}>로그인</button>
               <SocialKakao />
               <SocialGoogle/>
             </form>
@@ -146,10 +146,10 @@ function Login() {
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
             contentLabel="Error Modal"
-            className={styles.modal}
-            overlayClassName={styles.modalOverlay}
+            className={L.modal}
+            overlayClassName={L.modalOverlay}
         >
-          <div className={styles.modalContent}>
+          <div className={L.modalContent}>
             <h2>Error</h2>
             <p>{modalMessage}</p>
             <button onClick={() => setIsModalOpen(false)}>Close</button>

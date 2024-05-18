@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../css/JoinForm.module.css';
+import React, { useState, useEffect,useContext } from 'react';
+import D from '../css/JoinFormD.module.css';
+import L from '../css/JoinFormL.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { AuthContext } from '../Context/AuthContext';
 
 function Join() {
+    const { isDarkMode } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -55,27 +58,27 @@ function Join() {
     };
 
     return (
-        <div className={styles.main}>
-            <div className={styles.container}>
-                <div className={styles.wrapper}>
+        <div className={isDarkMode ? D.main : L.main}>
+            <div className={isDarkMode ? D.container : L.container}>
+                <div className={isDarkMode ? D.wrapper : L.wrapper}>
                     <h1 onClick={() => navigate('/')}>회원가입</h1>
                     <form onSubmit={handleSubmit}>
-                        <div className={styles.inputbox}>
+                        <div className={isDarkMode ? D.inputbox : L.inputbox}>
                             <input type="text" placeholder="이메일" required value={email} onChange={(e) => setEmail(e.target.value)}/>
                             <i className='bx bxs-user'></i>
                         </div>
-                        <div className={styles.inputbox}>
+                        <div className={isDarkMode ? D.inputbox : L.inputbox}>
                             <input type="password" placeholder="패스워드" required value={password} onChange={(e) => setPassword(e.target.value)}/>
                             <i className='bx bx-lock-alt'></i>
                         </div>
-                        <div className={styles.inputbox}>
+                        <div className={isDarkMode ? D.inputbox : L.inputbox}>
                             <input type="password" placeholder="패스워드 확인" required value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}/>
                             <i className='bx bx-lock-alt'></i>
                         </div>
-                        <div className={styles.inputbox}>
+                        <div className={isDarkMode ? D.inputbox : L.inputbox}>
                             <input type="text" placeholder="닉네임" required value={name} onChange={(e) => setName(e.target.value)}/>
                         </div>
-                        <button type="submit" className={styles.btn}>회원가입</button>
+                        <button type="submit" className={isDarkMode ? D.btn : L.btn}>회원가입</button>
                     </form>
                 </div>
             </div>
@@ -83,10 +86,10 @@ function Join() {
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 contentLabel="Error Modal"
-                className={styles.modal}
-                overlayClassName={styles.modalOverlay}
+                className={isDarkMode?D.modal:L.modal}
+                overlayClassName={isDarkMode?D.modalOverlay: L.modal}
             >
-                <div className={styles.modalContent}>
+                <div className={isDarkMode?D.modalContent:L.modal}>
                     <h2>Error</h2>
                     <p>{modalMessage}</p>
                     <button onClick={() => setIsModalOpen(false)}>Close</button>
