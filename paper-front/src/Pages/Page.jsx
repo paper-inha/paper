@@ -73,8 +73,8 @@ function Page() {
                     <div className={styles.paperlistbox1}>
                         {papers.length}개 작성
                     </div>
-                    <div className={styles.write} onClick={() => navigate('/Write')}>
-                        <p>임시 글쓰기 추후 수정</p>
+                    <div className={styles.write} >
+                        <p onClick={() => navigate('/Write')}>임시 글쓰기 추후 수정</p>
                     </div>
                     <section className={styles.post1}>
                         <div className={styles.post2}>

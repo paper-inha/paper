@@ -9,6 +9,7 @@ import Page from "./Pages/Page";
 import User from "./Pages/User";
 import NormalTitle from "./Pages/NormalTitle";
 import {AuthProvider} from "./Context/AuthContext";
+import PrivateRoute from './Component/Private/PrivateRoute';
 
 function Routing(){
     return (
@@ -19,11 +20,19 @@ function Routing(){
                         <Route path='/home' element={<App />}/>
                         <Route path='/login' element={<Login />}/>
                         <Route path='/join' element={<Join />}/>
+                        <Route element={<PrivateRoute />}>
                         <Route path='/title' element={<Title />}/>
+                        </Route>
+                        <Route element={<PrivateRoute />}>
                         <Route path='/write' element={<Write />}/>
+                        </Route>
                         <Route path='/page' element={<Page/>}/>
+                        <Route element={<PrivateRoute />}>
                         <Route path='/user' element={<User/>}/>
+                        </Route>
+                        <Route element={<PrivateRoute />}>
                         <Route path='/normaltitle' element={<NormalTitle/>}/>
+                        </Route>
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>
