@@ -46,6 +46,7 @@ function NormalTitle() {
                 },
             });
             console.log("페이지 생성 성공");
+            localStorage.setItem('pageTitle', inputValue);
             navigate("/Page");
         } catch (error) {
             console.error("페이지 생성 실패:", error);
@@ -67,10 +68,6 @@ function NormalTitle() {
                         />
                         {inputValue.length}/{maxLength}
                     </div>
-                    {/*<div className={styles.textbox}>*/}
-                    {/*    <input type="text" placeholder='내용을 입력해주세요' value={textValue} onChange={textCh}/>*/}
-                    {/*    {textValue.length}/{textLength}*/}
-                    {/*</div>*/}
                     <div className={styles.btnbox}>
                         <button type="button" onClick={onClickPage} className={styles.btn}>페이지 생성</button>
                     </div>

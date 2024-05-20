@@ -4,12 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../css/Page.module.css';
 import Menubar from "../Component/Menubar/Header";
 import Modal from 'react-modal';
+import Write from './Write';
 
 function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
-    const [inputValue, setInputValue] = useState('');
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     let navigate = useNavigate();
     const [papers, setPapers] = useState([]);
     const [userEmail, setUserEmail] = useState('');
@@ -21,7 +27,7 @@ function Page() {
         } else {
             return localStorage.getItem('accessToken');
         }
-    }
+    };
 
     async function showPaper() {
         try {
@@ -58,23 +64,20 @@ function Page() {
     }, []);
 
     return (
+    <div id="wrap">
         <div className={styles.main}>
             <div className={styles.mainpage}>
                 <div className={styles.container}>
                     <div className={styles.headerbox1}>
                         <div className={styles.headerbox2}>
+                            <span className={styles.img}>이미지</span>
+                            <h1 className={styles.h1F}>{userEmail}</h1>
                             <Menubar/>
-                            <div>
-                                <h1 className={styles.h1F}>{userEmail}</h1>
-                            </div>
                         </div>
                         <div headerbox3></div>
                     </div>
                     <div className={styles.paperlistbox1}>
                         {papers.length}개 작성
-                    </div>
-                    <div className={styles.write} >
-                        <p onClick={() => navigate('/Write')}>임시 글쓰기 추후 수정</p>
                     </div>
                     <section className={styles.post1}>
                         <div className={styles.post2}>
@@ -85,11 +88,25 @@ function Page() {
                                     </div>
                                 </div>
                             ))}
+                            <div className={styles.postbox}></div>
                         </div>
                     </section>
+                    <div className={styles.write} >
+                        <div className={styles.writebtn}>
+                        <button onClick={openModal}>글</button>
+                        <Modal
+                            isOpen={isModalOpen}
+                            onRequestClose={closeModal}
+                            contentLabel="Write Modal"
+                        >
+                        <Write closeModal={closeModal} />
+                        </Modal>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     );
 }
 export default Page;

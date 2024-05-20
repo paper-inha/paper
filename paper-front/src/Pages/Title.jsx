@@ -29,15 +29,7 @@ function Title() {
         setInputValue(value);
       }
     };
-    /*const [textValue,setTextValue] = useState('');
-    const textLength = 50;
-    const textCh = (event) => {
-      const {value} = event.target;
-      if (value.length <= textLength){
-        setTextValue(value);
-      }
-    };
-    */
+    
     useEffect(() => {
         const getAccessToken = async () => {
             try {
@@ -97,6 +89,7 @@ function Title() {
             });
             console.log("페이지 생성 성공");
             console.log(response.data);
+            localStorage.setItem('pageTitle', inputValue);
             navigate("/Page");
         } catch (error) {
             console.error("페이지 생성 실패:", error);
@@ -118,10 +111,6 @@ function Title() {
                     />
                     {inputValue.length}/{maxLength}
                 </div>
-                {/*<div className={styles.textbox}>*/}
-                {/*    <input type="text" placeholder='내용을 입력해주세요' value={textValue} onChange={textCh}/>*/}
-                {/*    {textValue.length}/{textLength}*/}
-                {/*</div>*/}
                 <div className={styles.btnbox}>
                 <button type="button" onClick={onClickPage} className={styles.btn}>페이지 생성</button>
                 </div>

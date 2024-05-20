@@ -18,18 +18,6 @@
     transform: translateX(-50%);
     width:450px;
 }
-.logo{
-    position: absolute;
-    top: -15%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 350px;
-    height: 400px;
-    display: flex;
-    background-size: contain;
-    flex-direction: column;
-    cursor: pointer; /* 마우스 오버 시 커서 변경 */
-}
 .kakao{
 
     position: relative;
@@ -190,3 +178,4 @@
         font-weight: bold;
         cursor: pointer;
       }
+      

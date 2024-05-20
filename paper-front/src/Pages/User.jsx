@@ -3,11 +3,22 @@ import Menubar from '../Component/Menubar/Header';
 import styles from '../css/User.module.css';
 import axios from 'axios';
 
-const MyRollingResults = () => {
+function User() {  
+    const [activeTab, setActiveTab] = useState('posts'); // 초기 탭은 "작성글"
+    const [showMyRolling, setShowMyRolling] = useState(false);
+    const [showMyPosts, setShowMyPosts] = useState(false);
+    const [rollingClass, setRollingClass] = useState(`${styles.boxs3}`);
+    const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
+    /*const [papers, setPapers] = useState([]);*/
+    const [userEmail, setUserEmail] = useState('');
+    const [pageTitle,setPageTitle] = useState('');
+
+
+    const MyRollingResults = () => {
         // 페이지 리스트 불러오기 코드 구현
         return (
         <div>
-            {/* 내가 만든 롤링 결과를 표시하는 UI */}
+            {pageTitle}
         </div>
         );
     };
@@ -20,14 +31,6 @@ const MyRollingResults = () => {
         </div>
         );
     };
-function User() {  
-    const [activeTab, setActiveTab] = useState('posts'); // 초기 탭은 "작성글"
-    const [showMyRolling, setShowMyRolling] = useState(false);
-    const [showMyPosts, setShowMyPosts] = useState(false);
-    const [rollingClass, setRollingClass] = useState(`${styles.boxs3}`);
-    const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
-    /*const [papers, setPapers] = useState([]);*/
-    const [userEmail, setUserEmail] = useState('');
 
     const getToken = () => {
         const loginType = localStorage.getItem('loginType'); // 로그인 유형 확인
@@ -68,6 +71,10 @@ function User() {
 
     useEffect(() => {
         getUserEmail();
+        const title = localStorage.getItem('pageTitle');
+        if (title) {
+            setPageTitle(title);
+        }
     }, []);
 
 

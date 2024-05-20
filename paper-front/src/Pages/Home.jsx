@@ -12,8 +12,9 @@ function Home() {
     return (
   <div className={styles.main}>
     <div className={styles.container}>
-    <Menubar/> 
-    <img src={menuImage} className={styles.menuBar} alt='menu' />
+    
+      <Menubar/> 
+      <img src={menuImage} className={styles.menuBar} alt='menu' />
       <div>
         <p className={styles.introduce}>
           여러분의 친구들과

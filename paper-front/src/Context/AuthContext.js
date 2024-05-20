@@ -24,8 +24,11 @@ export const AuthProvider = ({ children }) => {
     axiosInstance.interceptors.request.use(
         config => {
           const accessToken = localStorage.getItem('accessToken');
+          const socialAccessToken = localStorage.getItem('socialAccessToken');
           if (accessToken) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
+          }else if (socialAccessToken){
+            config.headers['Authorization'] = `Bearer${socialAccessToken}`;
           }
           return config;
         },
@@ -42,6 +45,8 @@ export const AuthProvider = ({ children }) => {
     
         // 로그인 성공 후 setIsLoggedIn(true) 호출
         setIsLoggedIn(true);
+        localStorage.setItem('loginType', 'social');
+        localStorage.setItem('socialAccessToken', 'your_social_access_token_here');
       } catch (error) {
         console.error('Kakao login error:', error);
       }
@@ -55,6 +60,8 @@ export const AuthProvider = ({ children }) => {
     
         // 로그인 성공 후 setIsLoggedIn(true) 호출
         setIsLoggedIn(true);
+        localStorage.setItem('loginType', 'social');
+        localStorage.setItem('socialAccessToken', 'your_social_access_token_here');
       } catch (error) {
         console.error('Google login error:', error);
       }
@@ -74,6 +81,7 @@ export const AuthProvider = ({ children }) => {
         const accessToken  = response.data.data.accessToken;
         console.log("저장 전 엑세스토큰 : "+ accessToken);
         localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('loginType', 'normal');
         setIsLoggedIn(true);
         await checkTitleExistence();
       } catch (error) {
@@ -115,6 +123,8 @@ export const AuthProvider = ({ children }) => {
         });
         // 로그아웃 성공 시 수행할 작업
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('socialAccessToken');
+        localStorage.removeItem('loginType');
         setIsLoggedIn(false);
         navigate('/login');
       } catch (error) {

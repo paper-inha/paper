@@ -1,25 +1,11 @@
-import React, {useCallback, useContext} from 'react';
+import React, {useContext} from 'react';
 import D from '../css/LoginFormD.module.css';
 import L from '../css/LoginFormL.module.css';
-import mainImage from '../Image/main.png';
 import KakaoLogo from '../Image/kakao.png';
 import GoogleLogo from '../Image/google.png';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { AuthContext } from '../Context/AuthContext';
-
-
-
-const Logo = React.memo(function Logo() {
-  const { isDarkMode } = useContext(AuthContext);
-  let navigate = useNavigate();
-  function handleClick(){
-    navigate('/');
-  }
-  return (
-      <img src={mainImage} className={isDarkMode?D.logo:L.logo} alt='main' onClick={handleClick}/>
-  );
-});
 
 const SocialKakao = React.memo(function SocialKakao() {
   const { isDarkMode } = useContext(AuthContext);
@@ -47,7 +33,7 @@ const SocialGoogle = React.memo(function SocialGoogle() {
 function Login() {
   const { isDarkMode } = useContext(AuthContext);
   const { email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, handleLogin, isLoggedIn } = useContext(AuthContext);
-
+  let navigate = useNavigate();
   /*
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -117,9 +103,8 @@ function Login() {
   return (
       <div className={isDarkMode ? D.main : L.main}>
         <div className={isDarkMode ? D.container : L.container}>
-          <Logo />
           <div className={isDarkMode ? D.wrapper : L.wrapper}>
-            <h1>로그인</h1>
+            <h1 onClick={() => navigate('/')}>로그인</h1>
             <form>
               <div className={isDarkMode ? D.inputbox: L.inputbox}>
                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" required />
@@ -146,10 +131,10 @@ function Login() {
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
             contentLabel="Error Modal"
-            className={L.modal}
-            overlayClassName={L.modalOverlay}
+            className={isDarkMode ? L.modal: D.modal}
+            overlayClassName={isDarkMode ? D.modalOverlay : L.modalOverlay }
         >
-          <div className={L.modalContent}>
+          <div className={isDarkMode ? D.modalContent: L.modalContent} >
             <h2>Error</h2>
             <p>{modalMessage}</p>
             <button onClick={() => setIsModalOpen(false)}>Close</button>

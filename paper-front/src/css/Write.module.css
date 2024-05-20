@@ -29,27 +29,27 @@
     max-width: 414px;
     overflow-y: scroll;
 }
-.box2{
+.box2 {
     display: flex;
-    -webkit-box-align: center;
     align-items: center;
-    -webkit-box-pack: justify;
     justify-content: space-between;
     height: 68px;
-}
-.cancle{
+  }
+  
+  .cancle {
     font-size: 18px;
     line-height: 26px;
     font-weight: bold;
-}
-.nextbox{
-    float: right;
-}
-.next{
+    margin-right: auto; /* 추가된 부분 */
+  }
+  
+  .next {
     font-size: 18px;
     line-height: 26px;
     font-weight: bold;
-}
+    margin-left: 16px; /* 추가된 부분 */
+  }
+  
 .contextbox{
     margin-top: 30px;
     display: flex;
@@ -143,4 +143,5 @@
     border: none;
     border-radius: 10px;
     box-shadow: none;
+    cursor: pointer;   
 }
