@@ -2,6 +2,8 @@ import React,{useState,useEffect} from 'react';
 import Menubar from '../Component/Menubar/Header';
 import styles from '../css/User.module.css';
 import axios from 'axios';
+import Report from '../Image/report.jpeg';
+import Pen from '../Image/pen.png';
 
 function User() {  
     const [activeTab, setActiveTab] = useState('posts'); // 초기 탭은 "작성글"
@@ -112,10 +114,12 @@ function User() {
                 <div className={styles.box2}>
                     <div className={`${styles.boxs2} ${activeTab === 'posts' ? styles.active : ''}`}
                     onClick={() => handleTabClick('posts')}>
+                        <img src={Pen} width="24" height="24"  />
                         <h3>작성글</h3>
                     </div>
                     <div className={`${styles.boxs2} ${activeTab === 'notifications' ? styles.active : ''}`}
                     onClick={() => handleTabClick('notifications')}>
+                        <img src={Report} width="24" height="24" />
                         <h3>알림</h3>
                     </div>
                 </div>

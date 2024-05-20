@@ -118,7 +118,7 @@ function Login() {
                 <label>
                   <input type="checkbox" />아이디를 저장
                 </label>
-                <a href="/join">회원이 아니신가요?</a>
+                <p onClick={() => navigate('/join')}>회원이 아니신가요?</p>
               </div>
 
               <button type="button" onClick={handleLogin} className={isDarkMode ? D.btn : L.btn}>로그인</button>

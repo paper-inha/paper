@@ -4,11 +4,10 @@ import { MenuOutlined } from '@ant-design/icons';
 import styles from '../../css/Menubar.module.css';
 import {Link} from 'react-router-dom'
 import { AuthContext } from '../../Context/AuthContext';
-
+import DarkModeToggle from './DarkMode';
 
 const Menubar = () => {
   const { isLoggedIn,handleLogout } = useContext(AuthContext);
-  const { isDarkMode, toggleDarkMode } = useContext(AuthContext);
 
   useEffect(() => {
     // isLoggedIn 상태 변화 감지
@@ -58,9 +57,7 @@ const Menubar = () => {
               </Menu.Item>
             </li>
             <li>
-            <button onClick={toggleDarkMode}>
-            {isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
-            </button>
+              <DarkModeToggle />
             </li>
             </>            
           )}
@@ -77,9 +74,7 @@ const Menubar = () => {
               </Menu.Item> 
             </li>
             <li>
-            <button onClick={toggleDarkMode}>
-            {isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
-            </button>
+            <DarkModeToggle />
             </li>
               </>
           )}
