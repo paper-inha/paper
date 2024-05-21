@@ -11,6 +11,7 @@
       left: 50%;
       transform: translateX(-50%);
       width: 414px;
+      min-height: 100vh;
       height: 100%;
       display: flex;
       background: url('../Image/Line.jpg') no-repeat;

@@ -53,6 +53,7 @@ function NormalTitle() {
             console.log("Bearer "+localStorage.getItem('accessToken'));
         }
     }
+    
     return (
         <div className={styles.main}>
             <form>

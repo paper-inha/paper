@@ -14,7 +14,8 @@ function User() {
     /*const [papers, setPapers] = useState([]);*/
     const [userEmail, setUserEmail] = useState('');
     const [pageTitle,setPageTitle] = useState('');
-
+    const [paperList,setPaperList] = useState('');
+    
 
     const MyRollingResults = () => {
         // 페이지 리스트 불러오기 코드 구현
@@ -29,7 +30,7 @@ function User() {
         // 내가 쓴 페이퍼 불러오기 코드 구현
         return (
         <div>
-            {/* 내가 쓴 글 결과를 표시하는 UI */}
+            {paperList}
         </div>
         );
     };
@@ -77,8 +78,27 @@ function User() {
         if (title) {
             setPageTitle(title);
         }
+        getPaperList();
+        const list = localStorage.getItem('paperlist');
+        if(list){
+            setPaperList(list);
+        }
     }, []);
 
+     async function getPaperList() {
+        try {
+            const token = getToken();
+          const response = await axios.get('http://localhost/main/v1/', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setPaperList(response.data.data);
+          
+        } catch (error) {
+          console.error('페이퍼 리스트 조회 실패:', error);
+        }
+      };
 
     const handleTabClick = (tab) => {
       setActiveTab(tab);

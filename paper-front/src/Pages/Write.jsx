@@ -1,79 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../css/Write.module.css";
 
 function Write({ closeModal }) {
   const [inputValue, setInputValue] = useState("");
   const maxLength = 100;
-  const navigate = useNavigate();
-
+  
   const handleChange = (event) => {
     const { value } = event.target;
     if (value.length <= maxLength) {
       setInputValue(value);
     }
   };
-
-  useEffect(() => {
-    const getAccessToken = async () => {
-      try {
-        const response = await axios.get("http://localhost/auth/oauth/token", {
-          withCredentials: true,
-        });
-        localStorage.setItem("loginType", "social");
-        localStorage.setItem("socialAccessToken", response.data.data.accessToken);
-        return true;
-      } catch (error) {
-        console.error("토큰을 받아오는데 실패했습니다.", error);
-        return false;
-      }
-    };
-
-    const checkTitleExistence = async () => {
-      try {
-        const response = await axios.get("http://localhost/main/v1/validate", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("socialAccessToken")}`,
-          },
-        });
-        if (response.data) {
-          navigate("/Page");
-        } else {
-          navigate("/Title");
-        }
-      } catch (error) {
-        console.error("에러내용", error);
-      }
-    };
-
-    const init = async () => {
-      const tokenReceived = await getAccessToken();
-      if (tokenReceived) {
-        await checkTitleExistence();
-      }
-    };
-    init();
-  }, [navigate]);
-
-  async function onClickPage() {
+    
+  async function onClickPaper() {
     try {
       const response = await axios.post(
         "http://localhost/main/v1/paper",
         {
           content: inputValue,
+          
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("socialAccessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           },
+          withCredentials: true,
         }
       );
       console.log("페이퍼 생성 성공");
       console.log(response.data);
+      localStorage.setItem('paperlist', inputValue);
       closeModal();
     } catch (error) {
       console.error("페이퍼 생성 실패:", error);
+      console.log("Bearer "+localStorage.getItem('accessToken'));
     }
   }
 
@@ -110,7 +71,7 @@ function Write({ closeModal }) {
               <button
                 className={styles.btn}
                 color="dark"
-                onClick={onClickPage}
+                onClick={onClickPaper}
               >
                 페이퍼 생성
               </button>
