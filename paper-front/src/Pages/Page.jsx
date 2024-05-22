@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/Page.module.css';
@@ -7,9 +7,20 @@ import Modal from 'react-modal';
 import Write from './Write';
 import Share from '../Image/share.png';
 import Plus from '../Image/plus.png';
+import {AuthContext} from "../Context/AuthContext";
 
 function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { silentRefresh,showPaper,getUserEmail ,papers,userEmail} = useContext(AuthContext);
+
+    useEffect(() => {
+        const initialize = async () => {
+            await silentRefresh();
+            await showPaper();
+            await getUserEmail();
+        };
+        initialize();
+    }, []);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -17,34 +28,6 @@ function Page() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
-    let navigate = useNavigate();
-    const [papers, setPapers] = useState([]);
-    const [userEmail, setUserEmail] = useState('');
-
-    async function showPaper() {
-        try {
-            const response = await axios.get('http://localhost/main/v1/');
-            setPapers(response.data.data);
-        } catch (error) {
-            console.error("페이퍼 불러오기 실패", error);
-        }
-    }
-
-    async function getUserEmail() {
-        try {
-            const response = await axios.get('http://localhost/main/v1/user');
-            setUserEmail(response.data.data);
-            console.log(response.data);
-        } catch (error) {
-            console.error("유저 이메일 불러오기 실패", error);
-        }
-    }
-
-    useEffect(() => {
-        showPaper();
-        getUserEmail();
-    }, []);
 
     return (
         <div id="wrap">

@@ -21,14 +21,6 @@
         const maxLength = 12;
         const { inputValue, onClickPage, setInputValue } = useContext(AuthContext);
 
-        const handleChange = (event) => {
-            const { value } = event.target;
-            if (value.length <= maxLength) {
-                setInputValue(value);
-            }
-        };
-
-
         return (
             <div className={styles.main}>
                 <form>
@@ -40,12 +32,11 @@
                             <input type="text"
                                    placeholder="제목을 입력해주세요"
                                    value={inputValue}
-                                   onChange={handleChange}
+                                   onChange={(e) => setInputValue(e.target.value)}
                             />
-                            {inputValue.length}/{maxLength}
                         </div>
                         <div className={styles.btnbox}>
-                            <button type="button" onClick={onClickPage} className={styles.btn}>페이지 생성</button>
+                            <button type="button" onClick={() => onClickPage()} className={styles.btn}>페이지 생성</button>
                         </div>
                     </div>
                 </form>

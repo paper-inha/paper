@@ -105,17 +105,15 @@ public class AuthApiController implements IAuthApiControllerV1 {
 	}
 
 	// 토큰 재발급
-	public ResponseEntity<?> reissue(@CookieValue(name = "refresh-token") String requestRefreshToken,
+	public ResponseEntity<?> reissue(@CookieValue(name = "refreshToken") String requestRefreshToken,
 		@RequestHeader("Authorization") String requestAccessToken) throws
 		NoSuchAlgorithmException,
 		InvalidKeySpecException {
 		Map<String, String> tokens = new HashMap<>();
-
 		AuthDto.TokenDto reissuedTokenDto = authService.reissue(requestAccessToken, requestRefreshToken);
-		System.out.println("reissuedTokenDto : " + reissuedTokenDto);
 		if (reissuedTokenDto != null) { // 토큰 재발급 성공
 			// RT 저장
-			ResponseCookie responseCookie = ResponseCookie.from("refresh-token", reissuedTokenDto.getRefreshToken())
+			ResponseCookie responseCookie = ResponseCookie.from("refreshToken", reissuedTokenDto.getRefreshToken())
 				.maxAge(COOKIE_EXPIRATION)
 				.httpOnly(true)
 				.secure(true)
@@ -131,7 +129,7 @@ public class AuthApiController implements IAuthApiControllerV1 {
 				.body(successResponse);
 		} else {
 			SuccessResponse<?> failResponse = SuccessResponse.from(ResponseStatus.TOKEN_UNAUTHORIZED, tokens);
-			ResponseCookie responseCookie = ResponseCookie.from("refresh-token", "")
+			ResponseCookie responseCookie = ResponseCookie.from("refreshToken", "")
 				.maxAge(0)
 				.path("/")
 				.build();

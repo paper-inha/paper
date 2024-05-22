@@ -26,7 +26,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 		Authentication authentication) throws IOException {
 		HttpSession session = request.getSession();
 		String accessToken = (String) session.getAttribute("accessToken");
-		String refreshToken = (String) session.getAttribute("refreshToken");
+		String refreshToken = (String) session.getAttribute("refresh-Token");
 		if (accessToken != null && refreshToken != null) {
 			response.setHeader("Authorization", "Bearer " + accessToken);
 			addRefreshTokenInCookie(refreshToken, request, response);

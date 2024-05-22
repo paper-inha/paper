@@ -4,9 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import handleSocialLogin from '../Pages/AuthCallback';
 
 export const AuthContext = createContext();
-
 const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 export const AuthProvider = ({ children }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,6 +19,8 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    const [papers, setPapers] = useState([]);
+    const [userEmail, setUserEmail] = useState('');
     let navigate = useNavigate();
 
     axios.defaults.baseURL = 'http://localhost'; // 기본 URL 설정
@@ -33,7 +39,6 @@ export const AuthProvider = ({ children }) => {
     );
 
     const toggleDarkMode = () => {
-        console.log("toggleDarkMode 실행");
         setIsDarkMode(!isDarkMode);
     };
 
@@ -42,21 +47,23 @@ export const AuthProvider = ({ children }) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         setIsLoggedIn(true);
         setTimeout(silentRefresh, JWT_EXPIRY_TIME - 60000);
+        localStorage.setItem('isLoggedIn', 'true');
         await checkTitleExistence();
     }
 
-    const silentRefresh = async () => {
-        if (!isLoggedIn) return;
-        try {
+        async function silentRefresh(){
+            if (!isLoggedIn) return;
+            const refreshToken = getCookie('refreshToken');
+            try {
             const response = await axios.post('/auth/v1/refresh', {}, {
                 headers: {
-                    Authorization: `Bearer ${axios.defaults.headers.common['Authorization']}`
+                    Authorization: `Bearer ${axios.defaults.headers.common['Authorization']}`,
+                    refreshToken: refreshToken
                 }
             });
-            await onLoginSuccess(response.data);
+            await onLoginSuccess(response);
         } catch (error) {
             console.error('토큰 발급 오류', error);
-            await handleLogout();
         }
     }
     async function onClickPage() {
@@ -64,7 +71,6 @@ export const AuthProvider = ({ children }) => {
             const response = await axios.post('/main/v1/page', {
                 title:inputValue,
             });
-            console.log("페이지 생성 성공:", response.data)
             navigate("/Page");
         } catch (error) {
             console.error("페이지 생성 실패:", error);
@@ -89,34 +95,47 @@ export const AuthProvider = ({ children }) => {
                 email,
                 password,
             });
-            console.log(response.data);
             await onLoginSuccess(response);
+
         } catch (error) {
-            console.log("handleLogin 함수 실행", email, password);
             console.error('로그인 오류 :', error);
-            // 에러 객체의 세부 내용을 출력하기 위한 for문
             for (const key in error) {
                 if (error.hasOwnProperty(key)) {
                     console.log(`${key}: ${error[key]}`);
                 }
             }
-            // 추가로 error 객체의 depth를 확인하기 위해 JSON.stringify 사용
-            console.log("에러 객체의 세부 내용:", JSON.stringify(error, null, 2));
+            console.error(JSON.stringify(error));
         }
     }
 
     async function handleLogout() {
         try {
-            console.log('로그아웃 시도');
             await axios.post('/auth/v1/logout');
             axios.defaults.headers.common['Authorization'] = '';
             setIsLoggedIn(false);
+            localStorage.removeItem('isLoggedIn');
             navigate('/login');
         } catch (error) {
             console.error('로그아웃 오류 :', error);
         }
     }
+    async function showPaper() {
+        try {
+            const response = await axios.get('http://localhost/main/v1/');
+            setPapers(response.data.data);
+        } catch (error) {
+            console.error("페이퍼 불러오기 실패", error);
+        }
+    }
 
+    async function getUserEmail() {
+        try {
+            const response = await axios.get('http://localhost/main/v1/user');
+            setUserEmail(response.data.data);
+        } catch (error) {
+            console.error("유저 이메일 불러오기 실패", error);
+        }
+    }
     useEffect(() => {
         silentRefresh().then(() => console.log('silent refresh done'));
     }, []);
@@ -140,7 +159,12 @@ export const AuthProvider = ({ children }) => {
                 isDarkMode,
                 onClickPage,
                 inputValue,
-                setInputValue
+                setInputValue,
+                silentRefresh,
+                showPaper,
+                getUserEmail,
+                papers,
+                userEmail
             }}
         >
             {children}

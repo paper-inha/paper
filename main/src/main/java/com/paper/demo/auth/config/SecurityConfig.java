@@ -1,5 +1,6 @@
 package com.paper.demo.auth.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class SecurityConfig  {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(AbstractHttpConfigurer::disable)
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.authorizeHttpRequests(registry -> registry
 				.requestMatchers("/v**/auth/**","/v**/validate/**","/v**/user","/v**/paper").permitAll()
 				.requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
@@ -42,6 +43,18 @@ public class SecurityConfig  {
 				sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
 	}
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // Allow specific origin
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow specific methods
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // Allow specific headers
+		configuration.setAllowCredentials(true); // Allow credentials
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 		private Converter<Jwt, JwtAuthenticationToken> adminConverter() {
 			return jwt -> {
 				String authority = jwt.getClaimAsString("roles");
@@ -50,5 +63,6 @@ public class SecurityConfig  {
 				return new JwtAuthenticationToken(jwt, grantedAuthorities);
 			};
 		}
+
 
 }
