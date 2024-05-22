@@ -12,20 +12,18 @@ function Write({ closeModal }) {
       setInputValue(value);
     }
   };
-    
+  
   async function onClickPaper() {
     try {
       const response = await axios.post(
         "http://localhost/main/v1/paper",
         {
           content: inputValue,
-          
         },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           },
-          withCredentials: true,
         }
       );
       console.log("페이퍼 생성 성공");

@@ -11,7 +11,6 @@ function User() {
     const [showMyPosts, setShowMyPosts] = useState(false);
     const [rollingClass, setRollingClass] = useState(`${styles.boxs3}`);
     const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
-    /*const [papers, setPapers] = useState([]);*/
     const [userEmail, setUserEmail] = useState('');
     const [pageTitle,setPageTitle] = useState('');
     const [paperList,setPaperList] = useState('');
@@ -43,20 +42,6 @@ function User() {
             return localStorage.getItem('accessToken');
         }
     }
-
-    /*async function showUser() {
-        try {
-            const token = getToken();
-            const response = await axios.get('http://localhost/main/v1/', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            });
-            setPapers(response.data.data);
-        } catch (error) {
-            console.error("유저 페이지 불러오기 실패", error);
-        }
-    }*/
 
     async function getUserEmail() {
         try {
