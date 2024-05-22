@@ -1,100 +1,149 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import handleSocialLogin from '../Pages/AuthCallback';
 
 export const AuthContext = createContext();
 
+const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
+
 export const AuthProvider = ({ children }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [isLoggedIn,setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [inputValue, setInputValue] = useState('');
     let navigate = useNavigate();
 
-    const axiosInstance = axios.create({
-      baseURL: 'http://localhost'
-    });
+    axios.defaults.baseURL = 'http://localhost'; // 기본 URL 설정
 
-    axiosInstance.interceptors.request.use(
+    axios.interceptors.request.use(
         config => {
-          const accessToken = localStorage.getItem('accessToken');
-          if (accessToken) {
-            config.headers['Authorization'] = `Bearer ${accessToken}`;
-          }
-          return config;
+            const accessToken = axios.defaults.headers.common['Authorization'];
+            if (accessToken) {
+                config.headers['Authorization'] = accessToken;
+            }
+            return config;
         },
         error => {
-          return Promise.reject(error);
+            return Promise.reject(error);
         }
     );
 
-    async function handleLogin() {
-      try {
-        const response = await axiosInstance.post('/auth/v1/login', {
-          email,
-          password,
-        });
-        if(response.data.status === 403){
-          setModalMessage('아이디가 존재하지 않습니다 회원가입을 해주세요');
-          setIsModalOpen(true);
-        }
-        console.log("엑세스토큰 확인 : " + response.data.data.accessToken);
-        const accessToken  = response.data.data.accessToken;
-        console.log("저장 전 엑세스토큰 : "+ accessToken);
-        localStorage.setItem('accessToken', accessToken);
+    const toggleDarkMode = () => {
+        console.log("toggleDarkMode 실행");
+        setIsDarkMode(!isDarkMode);
+    };
+
+    const onLoginSuccess = async response => {
+        const { accessToken } = response.data.data;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         setIsLoggedIn(true);
+        setTimeout(silentRefresh, JWT_EXPIRY_TIME - 60000);
         await checkTitleExistence();
-      } catch (error) {
-        if(error.response && error.response.data.status === 403){
-          setModalMessage('아이디가 존재하지 않습니다 회원가입을 해주세요');
-          setIsModalOpen(true);
-        } else {
-          setModalMessage('이메일 또는 비밀번호가 일치하지 않습니다.');
-          setIsModalOpen(true);
-        }
-      }
     }
 
+    const silentRefresh = async () => {
+        if (!isLoggedIn) return;
+        try {
+            const response = await axios.post('/auth/v1/refresh', {}, {
+                headers: {
+                    Authorization: `Bearer ${axios.defaults.headers.common['Authorization']}`
+                }
+            });
+            await onLoginSuccess(response.data);
+        } catch (error) {
+            console.error('토큰 발급 오류', error);
+            await handleLogout();
+        }
+    }
+    async function onClickPage() {
+        try {
+            const response = await axios.post('/main/v1/page', {
+                title:inputValue,
+            });
+            console.log("페이지 생성 성공:", response.data)
+            navigate("/Page");
+        } catch (error) {
+            console.error("페이지 생성 실패:", error);
+        }
+    }
     async function checkTitleExistence() {
-      try {
-        const response = await axiosInstance.get('/main/v1/validate', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-          }
-        });
-        console.log(response.data);
-        if (response.data) {
-          console.log("페이지가 있습니다.");
-          navigate("/Page");
-        } else {
-          console.log("페이지가 없습니다.");
-          navigate("/NormalTitle");
+        try {
+            const response = await axios.get('/main/v1/validate');
+            if (response.data) {
+                navigate("/Page");
+            } else {
+                navigate("/Title");
+            }
+        } catch (error) {
+            console.error("오류", error);
         }
-      } catch (error) {
-        console.error("에러내용", error);
-      }
-    }
-    async function handleLogout() {
-      try {
-        await axiosInstance.post('/auth/v1/logout', null, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
-        // 로그아웃 성공 시 수행할 작업
-        localStorage.removeItem('accessToken');
-        setIsLoggedIn(false);
-        navigate('/login');
-      } catch (error) {
-        console.error('로그아웃 에러:', error);
-        // 로그아웃 실패 시 수행할 작업
-      }
     }
 
-  return (
-    <AuthContext.Provider value={{ email, setEmail, password, setPassword, isModalOpen, setIsModalOpen, modalMessage, setModalMessage, handleLogin, checkTitleExistence,isLoggedIn,setIsLoggedIn,handleLogout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    async function handleLogin(email, password) {
+        try {
+            const response = await axios.post('/auth/v1/login', {
+                email,
+                password,
+            });
+            console.log(response.data);
+            await onLoginSuccess(response);
+        } catch (error) {
+            console.log("handleLogin 함수 실행", email, password);
+            console.error('로그인 오류 :', error);
+            // 에러 객체의 세부 내용을 출력하기 위한 for문
+            for (const key in error) {
+                if (error.hasOwnProperty(key)) {
+                    console.log(`${key}: ${error[key]}`);
+                }
+            }
+            // 추가로 error 객체의 depth를 확인하기 위해 JSON.stringify 사용
+            console.log("에러 객체의 세부 내용:", JSON.stringify(error, null, 2));
+        }
+    }
+
+    async function handleLogout() {
+        try {
+            console.log('로그아웃 시도');
+            await axios.post('/auth/v1/logout');
+            axios.defaults.headers.common['Authorization'] = '';
+            setIsLoggedIn(false);
+            navigate('/login');
+        } catch (error) {
+            console.error('로그아웃 오류 :', error);
+        }
+    }
+
+    useEffect(() => {
+        silentRefresh().then(() => console.log('silent refresh done'));
+    }, []);
+
+    return (
+        <AuthContext.Provider
+            value={{
+                email,
+                setEmail,
+                password,
+                setPassword,
+                isModalOpen,
+                setIsModalOpen,
+                modalMessage,
+                setModalMessage,
+                handleLogin,
+                isLoggedIn,
+                setIsLoggedIn,
+                handleSocialLogin,
+                toggleDarkMode,
+                isDarkMode,
+                onClickPage,
+                inputValue,
+                setInputValue
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 };

@@ -1,13 +1,19 @@
-import React, {  useContext, useState } from 'react';
+import React, {  useContext, useState,useEffect } from 'react';
 import { Menu, Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import styles from '../../css/Menubar.module.css';
 import {Link} from 'react-router-dom'
 import { AuthContext } from '../../Context/AuthContext';
-
+import DarkModeToggle from './DarkMode';
 
 const Menubar = () => {
   const { isLoggedIn,handleLogout } = useContext(AuthContext);
+
+  useEffect(() => {
+    // isLoggedIn 상태 변화 감지
+    console.log('isLoggedIn changed:', isLoggedIn);
+    // 필요한 작업 수행
+  }, [isLoggedIn]);
 
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
@@ -50,6 +56,9 @@ const Menubar = () => {
                 <Link to="/view">소개</Link>
               </Menu.Item>
             </li>
+            <li>
+              <DarkModeToggle />
+            </li>
             </>            
           )}
           {isLoggedIn && (
@@ -63,6 +72,9 @@ const Menubar = () => {
               <Menu.Item key="5" onClick={handleLogout}>
                 <p>로그아웃</p>
               </Menu.Item> 
+            </li>
+            <li>
+            <DarkModeToggle />
             </li>
               </>
           )}

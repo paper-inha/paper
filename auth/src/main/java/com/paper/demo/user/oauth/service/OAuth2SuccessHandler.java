@@ -28,13 +28,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 		String accessToken = (String) session.getAttribute("accessToken");
 		String refreshToken = (String) session.getAttribute("refreshToken");
 		if (accessToken != null && refreshToken != null) {
-			// 액세스 토큰을 HTTP 헤더에 추가
 			response.setHeader("Authorization", "Bearer " + accessToken);
-			// 리프레시 토큰을 HttpOnly 쿠키에 추가
 			addRefreshTokenInCookie(refreshToken, request, response);
 		}
-		// 필요한 경우 리다이렉트
-		response.sendRedirect("http://localhost:3000/Title");
+		// // 필요한 경우 리다이렉트
+		response.sendRedirect("http://localhost:3000/auth/callback");
 	}
 
 	private void addRefreshTokenInCookie(String refreshToken, HttpServletRequest request, HttpServletResponse response) {

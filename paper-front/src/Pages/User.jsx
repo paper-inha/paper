@@ -28,38 +28,20 @@ function User() {
     const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
     /*const [papers, setPapers] = useState([]);*/
     const [userEmail, setUserEmail] = useState('');
+    const [userName,setUserName] = useState('');
 
-    const getToken = () => {
-        const loginType = localStorage.getItem('loginType'); // 로그인 유형 확인
-        if (loginType === 'social') {
-            return localStorage.getItem('socialAccessToken');
-        } else {
-            return localStorage.getItem('accessToken');
+    async function getName(){
+        try{
+            const reponse = await axios.get('http://localhost/auth/v1/name');
+            setUserName(reponse.data.data);
+        }catch (error){
+            console.error("유저 이름 불러오기 실패", error);
         }
     }
-
-    /*async function showUser() {
-        try {
-            const token = getToken();
-            const response = await axios.get('http://localhost/main/v1/', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            });
-            setPapers(response.data.data);
-        } catch (error) {
-            console.error("유저 페이지 불러오기 실패", error);
-        }
-    }*/
-
     async function getUserEmail() {
         try {
-            const token = getToken();
-            const response = await axios.get('http://localhost/main/v1/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await axios.get('http://localhost/main/v1/user',
+            );
             setUserEmail(response.data.data);
         } catch (error) {
             console.error("유저 이메일 불러오기 실패", error);
@@ -68,6 +50,7 @@ function User() {
 
     useEffect(() => {
         getUserEmail();
+        getName();
     }, []);
 
 
@@ -80,7 +63,7 @@ function User() {
       setShowMyPosts(false);
       setRollingClass(`${styles.boxs3}`);
       setPostsClass(`${styles.boxs4}`);
-      // 내가 만든 롤링 기능 구현
+
     };
   
     const handleMyPostsClick = () => {
@@ -88,7 +71,6 @@ function User() {
       setShowMyRolling(false);
       setRollingClass(`${styles.boxs4}`);
       setPostsClass(`${styles.boxs3}`);
-      // 내가 쓴 글 기능 구현
     };
 
     return (
@@ -98,8 +80,8 @@ function User() {
                 <h1>마이페이지</h1>
                 <div className={styles.box1}>
                     <div className={styles.boxs1}>
-                    <p>{userEmail}</p> {/*이 부분에 유저 정보 들어가야 함 */}
-                    <h2>{/* 유저 닉네임 들어가야 함 */}</h2>
+                    <p>{userEmail}</p>
+                    <h2>{userName}</h2>
                     </div>
                 </div>
                 <div className={styles.box2}>

@@ -4,33 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../css/Page.module.css';
 import Menubar from "../Component/Menubar/Header";
 import Modal from 'react-modal';
+import Write from './Write';
+import Share from '../Image/share.png';
+import Plus from '../Image/plus.png';
 
 function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
-    const [inputValue, setInputValue] = useState('');
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     let navigate = useNavigate();
     const [papers, setPapers] = useState([]);
     const [userEmail, setUserEmail] = useState('');
 
-    const getToken = () => {
-        const loginType = localStorage.getItem('loginType'); // 로그인 유형 확인
-        if (loginType === 'social') {
-            return localStorage.getItem('socialAccessToken');
-        } else {
-            return localStorage.getItem('accessToken');
-        }
-    }
-
     async function showPaper() {
         try {
-            const token = getToken();
-            const response = await axios.get('http://localhost/main/v1/', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            });
+            const response = await axios.get('http://localhost/main/v1/');
             setPapers(response.data.data);
         } catch (error) {
             console.error("페이퍼 불러오기 실패", error);
@@ -39,12 +33,7 @@ function Page() {
 
     async function getUserEmail() {
         try {
-            const token = getToken();
-            const response = await axios.get('http://localhost/main/v1/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await axios.get('http://localhost/main/v1/user');
             setUserEmail(response.data.data);
             console.log(response.data);
         } catch (error) {
@@ -58,35 +47,46 @@ function Page() {
     }, []);
 
     return (
-        <div className={styles.main}>
-            <div className={styles.mainpage}>
-                <div className={styles.container}>
-                    <div className={styles.headerbox1}>
-                        <div className={styles.headerbox2}>
-                            <Menubar/>
-                            <div>
+        <div id="wrap">
+            <div className={styles.main}>
+                <div className={styles.mainpage}>
+                    <div className={styles.container}>
+                        <div className={styles.headerbox1}>
+                            <div className={styles.headerbox2}>
+                                <img src={Share} className={styles.img}/>
                                 <h1 className={styles.h1F}>{userEmail}</h1>
+                                <Menubar/>
+                            </div>
+                            <div headerbox3></div>
+                        </div>
+                        <div className={styles.paperlistbox1}>
+                            {papers.length}개 작성
+                        </div>
+                        <section className={styles.post1}>
+                            <div className={styles.post2}>
+                                {papers.map(paper => (
+                                    <div key={paper.id} className={styles.postit}>
+                                        <div className={styles.postitcontext}>
+                                            {paper.content}
+                                        </div>
+                                    </div>
+                                ))}
+                                <div className={styles.postbox}></div>
+                            </div>
+                        </section>
+                        <div className={styles.write} >
+                            <div className={styles.writebtn}>
+                                <img src={Plus} width="24" height="24" onClick={openModal}/>
+                                <Modal
+                                    isOpen={isModalOpen}
+                                    onRequestClose={closeModal}
+                                    contentLabel="Write Modal"
+                                >
+                                    <Write closeModal={closeModal} />
+                                </Modal>
                             </div>
                         </div>
-                        <div headerbox3></div>
                     </div>
-                    <div className={styles.paperlistbox1}>
-                        {papers.length}개 작성
-                    </div>
-                    <div className={styles.write} onClick={() => navigate('/Write')}>
-                        <p>임시 글쓰기 추후 수정</p>
-                    </div>
-                    <section className={styles.post1}>
-                        <div className={styles.post2}>
-                            {papers.map(paper => (
-                                <div key={paper.id} className={styles.postit}>
-                                    <div className={styles.postitcontext}>
-                                        {paper.content}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
                 </div>
             </div>
         </div>
