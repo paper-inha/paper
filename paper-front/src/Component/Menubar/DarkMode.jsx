@@ -7,6 +7,7 @@ const DarkModeToggle = () => {
   const [isOn, setIsOn] = useState(isDarkMode);
 
   const handleToggle = () => {
+    console.log(handleToggle+"handleToggle 실행")
     setIsOn(!isOn);
     toggleDarkMode();
   };

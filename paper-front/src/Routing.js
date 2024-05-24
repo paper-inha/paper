@@ -7,9 +7,9 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Write from "./Pages/Write";
 import Page from "./Pages/Page";
 import User from "./Pages/User";
-import NormalTitle from "./Pages/NormalTitle";
 import {AuthProvider} from "./Context/AuthContext";
 import PrivateRoute from './Component/Private/PrivateRoute';
+
 
 function Routing(){
     return (
@@ -29,9 +29,6 @@ function Routing(){
                         <Route path='/page' element={<Page/>}/>
                         <Route element={<PrivateRoute />}>
                         <Route path='/user' element={<User/>}/>
-                        </Route>
-                        <Route element={<PrivateRoute />}>
-                        <Route path='/normaltitle' element={<NormalTitle/>}/>
                         </Route>
                     </Routes>
                 </AuthProvider>

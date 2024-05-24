@@ -2,25 +2,12 @@ import React,{useState,useEffect} from 'react';
 import Menubar from '../Component/Menubar/Header';
 import styles from '../css/User.module.css';
 import axios from 'axios';
-import Report from '../Image/report.jpeg';
-import Pen from '../Image/pen.png';
 
-function User() {  
-    const [activeTab, setActiveTab] = useState('posts'); // 초기 탭은 "작성글"
-    const [showMyRolling, setShowMyRolling] = useState(false);
-    const [showMyPosts, setShowMyPosts] = useState(false);
-    const [rollingClass, setRollingClass] = useState(`${styles.boxs3}`);
-    const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
-    const [userEmail, setUserEmail] = useState('');
-    const [pageTitle,setPageTitle] = useState('');
-    const [paperList,setPaperList] = useState('');
-    
-
-    const MyRollingResults = () => {
+const MyRollingResults = () => {
         // 페이지 리스트 불러오기 코드 구현
         return (
         <div>
-            {pageTitle}
+            {/* 내가 만든 롤링 결과를 표시하는 UI */}
         </div>
         );
     };
@@ -29,28 +16,32 @@ function User() {
         // 내가 쓴 페이퍼 불러오기 코드 구현
         return (
         <div>
-            {paperList}
+            {/* 내가 쓴 글 결과를 표시하는 UI */}
         </div>
         );
     };
+function User() {  
+    const [activeTab, setActiveTab] = useState('posts'); // 초기 탭은 "작성글"
+    const [showMyRolling, setShowMyRolling] = useState(false);
+    const [showMyPosts, setShowMyPosts] = useState(false);
+    const [rollingClass, setRollingClass] = useState(`${styles.boxs3}`);
+    const [postsClass, setPostsClass] = useState(`${styles.boxs4}`);
+    /*const [papers, setPapers] = useState([]);*/
+    const [userEmail, setUserEmail] = useState('');
+    const [userName,setUserName] = useState('');
 
-    const getToken = () => {
-        const loginType = localStorage.getItem('loginType'); // 로그인 유형 확인
-        if (loginType === 'social') {
-            return localStorage.getItem('socialAccessToken');
-        } else {
-            return localStorage.getItem('accessToken');
+    async function getName(){
+        try{
+            const reponse = await axios.get('http://localhost/auth/v1/name');
+            setUserName(reponse.data.data);
+        }catch (error){
+            console.error("유저 이름 불러오기 실패", error);
         }
     }
-
     async function getUserEmail() {
         try {
-            const token = getToken();
-            const response = await axios.get('http://localhost/main/v1/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await axios.get('http://localhost/main/v1/user',
+            );
             setUserEmail(response.data.data);
         } catch (error) {
             console.error("유저 이메일 불러오기 실패", error);
@@ -59,31 +50,9 @@ function User() {
 
     useEffect(() => {
         getUserEmail();
-        const title = localStorage.getItem('pageTitle');
-        if (title) {
-            setPageTitle(title);
-        }
-        getPaperList();
-        const list = localStorage.getItem('paperlist');
-        if(list){
-            setPaperList(list);
-        }
+        getName();
     }, []);
 
-     async function getPaperList() {
-        try {
-            const token = getToken();
-          const response = await axios.get('http://localhost/main/v1/', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setPaperList(response.data.data);
-          
-        } catch (error) {
-          console.error('페이퍼 리스트 조회 실패:', error);
-        }
-      };
 
     const handleTabClick = (tab) => {
       setActiveTab(tab);
@@ -94,7 +63,7 @@ function User() {
       setShowMyPosts(false);
       setRollingClass(`${styles.boxs3}`);
       setPostsClass(`${styles.boxs4}`);
-      // 내가 만든 롤링 기능 구현
+
     };
   
     const handleMyPostsClick = () => {
@@ -102,7 +71,6 @@ function User() {
       setShowMyRolling(false);
       setRollingClass(`${styles.boxs4}`);
       setPostsClass(`${styles.boxs3}`);
-      // 내가 쓴 글 기능 구현
     };
 
     return (
@@ -112,19 +80,17 @@ function User() {
                 <h1>마이페이지</h1>
                 <div className={styles.box1}>
                     <div className={styles.boxs1}>
-                    <p>{userEmail}</p> {/*이 부분에 유저 정보 들어가야 함 */}
-                    <h2>{/* 유저 닉네임 들어가야 함 */}</h2>
+                    <p>{userEmail}</p>
+                    <h2>{userName}</h2>
                     </div>
                 </div>
                 <div className={styles.box2}>
                     <div className={`${styles.boxs2} ${activeTab === 'posts' ? styles.active : ''}`}
                     onClick={() => handleTabClick('posts')}>
-                        <img src={Pen} width="24" height="24"  />
                         <h3>작성글</h3>
                     </div>
                     <div className={`${styles.boxs2} ${activeTab === 'notifications' ? styles.active : ''}`}
                     onClick={() => handleTabClick('notifications')}>
-                        <img src={Report} width="24" height="24" />
                         <h3>알림</h3>
                     </div>
                 </div>

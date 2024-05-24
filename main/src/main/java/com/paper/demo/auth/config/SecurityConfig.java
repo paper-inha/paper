@@ -1,5 +1,6 @@
 package com.paper.demo.auth.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,27 +16,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig  {
-	/**
-	 * @apiNote 인증서버에서 발급한 엑세스토큼을 이용하여 인증을 처리한다.
-	 * @param http
-	 * @return
-	 * @throws Exception
-	 */
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(AbstractHttpConfigurer::disable)
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.authorizeHttpRequests(registry -> registry
-				.requestMatchers("/v**/auth/**","/v**/validate/**","/v**/user").permitAll()
+				.requestMatchers("/v**/auth/**","/v**/validate/**","/v**/user","/v**/paper").permitAll()
 				.requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
-				.requestMatchers("/v**/paper/**").hasRole("USER")
+				.requestMatchers("/v**/page").hasRole("USER")
 				.anyRequest().permitAll())
 			.oauth2ResourceServer(oauth2ResourceServer ->
 				oauth2ResourceServer.jwt(jwt ->
@@ -44,13 +43,26 @@ public class SecurityConfig  {
 				sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
 	}
-	private Converter<Jwt, JwtAuthenticationToken> adminConverter() {
-		return jwt -> {
-			String authority = jwt.getClaimAsString("roles");
-			List<GrantedAuthority> grantedAuthorities = Collections.singletonList(
-				new SimpleGrantedAuthority(authority));
-			return new JwtAuthenticationToken(jwt, grantedAuthorities);
-		};
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // Allow specific origin
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow specific methods
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // Allow specific headers
+		configuration.setAllowCredentials(true); // Allow credentials
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
+		private Converter<Jwt, JwtAuthenticationToken> adminConverter() {
+			return jwt -> {
+				String authority = jwt.getClaimAsString("roles");
+				List<GrantedAuthority> grantedAuthorities = Collections.singletonList(
+					new SimpleGrantedAuthority(authority));
+				return new JwtAuthenticationToken(jwt, grantedAuthorities);
+			};
+		}
+
 
 }

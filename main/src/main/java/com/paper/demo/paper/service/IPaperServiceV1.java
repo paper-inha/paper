@@ -7,7 +7,7 @@ import com.paper.demo.paper.domain.PaperListDto;
 
 public interface IPaperServiceV1 {
 
-	void createPapers(PaperDto.createPaper createPaper,String accessToken);
+	void createPapers(PaperDto.createPaper createPaper);
 	void deletePage(Long pageId);
 	List<PaperListDto> getPaperList(String accessToken);
 

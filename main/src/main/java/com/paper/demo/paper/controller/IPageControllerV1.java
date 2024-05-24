@@ -35,12 +35,11 @@ public interface IPageControllerV1 {
 				@ApiResponse(responseCode = "400", description = "페이지 생성 실패")
 			}
 	)
-	@PostMapping("/v1/page")
+	@PostMapping("/v1/rolls/page")
 	ResponseEntity<?> createPage(@RequestHeader("Authorization") String accessToken,
 		@RequestBody PaperDto.createPage createPage);
 	/**
 	 * 페이퍼 생성
-	 * @param accessToken
 	 * @param createPaper
 	 * @return
 	 */
@@ -52,8 +51,8 @@ public interface IPageControllerV1 {
 					@ApiResponse(responseCode = "400", description = "페이퍼 생성")
 			}
 	)
-	@PostMapping("/v1/paper")
-	ResponseEntity<?> createPaper(@RequestHeader("Authorization") String accessToken, @RequestBody  PaperDto.createPaper createPaper);
+	@PostMapping("/v1/rolls/paper")
+	ResponseEntity<?> createPaper(@RequestBody  PaperDto.createPaper createPaper);
 	/**
 	 * 페이퍼 리스트 조회
 	 * @param accessToken
@@ -67,7 +66,7 @@ public interface IPageControllerV1 {
 					@ApiResponse(responseCode = "400", description = "페이퍼 리스트 조회 실패")
 			}
 	)
-	@GetMapping("/v1/")
+	@GetMapping("/v1/rolls/")
 	ResponseEntity<?> getPaperList(@RequestHeader("Authorization") String accessToken);
 
 	@Operation(
@@ -80,6 +79,7 @@ public interface IPageControllerV1 {
 	)
 	@GetMapping("/v1/user")
 	ResponseEntity<?> getUserEmail(@RequestHeader("Authorization") String accessToken);
+
 
 	/**
 	 * 페이퍼 삭제
@@ -95,7 +95,12 @@ public interface IPageControllerV1 {
 					@ApiResponse(responseCode = "400", description = "페이퍼 삭제 실패")
 			}
 	)
-	@PostMapping("/v1/page/{paperId}")
+	@PostMapping("/v1/rolls/{paperId}")
 	ResponseEntity<?> deletePaper(@PathVariable Long paperId, @RequestHeader("Authorization") String accessToken);
 
+	@GetMapping("/v1/rolls/{pageId}")
+	ResponseEntity<?> getPageAndPapers(@PathVariable Long pageId, @RequestHeader("Authorization") String accessToken);
+
+	@GetMapping("/v1/rolls/id")
+	ResponseEntity<?> getPageId(@RequestHeader("Authorization") String accessToken);
 }

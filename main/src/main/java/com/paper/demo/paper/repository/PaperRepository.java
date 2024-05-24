@@ -21,4 +21,7 @@ public interface PaperRepository extends JpaRepository<Paper, Long> {
 	@Modifying
 	@Query("UPDATE Paper p SET p.deletedYn= 'Y' WHERE p.id = :paperId")
 	void deletePaper(@Param("paperId")Long paperId);
+
+	@Query("SELECT p.content FROM Paper p WHERE p.author.id = :pageId")
+	List<String> findContentsByPageId(@Param("pageId") Long pageId);
 }

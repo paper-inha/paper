@@ -1,7 +1,6 @@
 package com.paper.demo.paper.service;
 
-import static org.springframework.util.ClassUtils.*;
-
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
@@ -13,7 +12,9 @@ import com.paper.demo.auth.domain.JsonResponse;
 import com.paper.demo.auth.service.SecurityService;
 import com.paper.demo.paper.domain.Page;
 import com.paper.demo.paper.domain.PaperDto;
+import com.paper.demo.paper.domain.PageIdDto;
 import com.paper.demo.paper.repository.PageRepository;
+import com.paper.demo.paper.repository.PaperRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import reactor.core.publisher.Mono;
 public class PageService implements IPageServiceV1 {
 	private final SecurityService securityService;
 	private final PageRepository pageRepository;
+	private final PaperRepository paperRepository;
 
 	/**
 	 * 페이지 타이틀 유효성 검사
@@ -99,6 +101,26 @@ public class PageService implements IPageServiceV1 {
 			throw new RuntimeException("인증정보가 없거나 잘못된 토큰정보 입니다.");
 		}
 		return (String) jwt.getClaims().get("loginType");
+	}
+
+	@Override
+	public PageIdDto getPageAndPapersByPageId(Long pageId, String accessToken) {
+		Page page = pageRepository.findById(pageId)
+			.orElseThrow(() -> new RuntimeException("Page not found"));
+		List<String> contents = paperRepository.findContentsByPageId(pageId);
+		return new PageIdDto(
+			page.getEmail(),
+			page.getTitle(),
+			contents,
+			page.getLoginType()
+		);
+	}
+
+	@Override
+	public Long getPageId(){
+		String email = getUserEmail();
+		System.out.println("pageRepository.findIdByEmail(email) = " + pageRepository.findIdByEmail(email));
+		return pageRepository.findIdByEmail(email);
 	}
 
 }

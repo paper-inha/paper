@@ -1,5 +1,8 @@
 package com.paper.demo.configuration;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +17,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.paper.demo.auth.jwt.JwtAccessDeniedHandler;
 import com.paper.demo.auth.jwt.JwtAuthenticationEntryPoint;
@@ -53,7 +59,8 @@ public class SecurityConfig {
 		// 인터셉터로 요청을 안전하게 보호하는 방법 설정
 		http.authorizeHttpRequests(authorize -> {
 				authorize.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll();
-				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/oauth/**","/v**/logout/**","/v**/name/**").permitAll();
+				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/oauth/**","/v**/logout/**","/v**/name/**","/v**/reissue").permitAll();
+				authorize.requestMatchers("/v**/refresh/**").hasRole("USER");
 				authorize.anyRequest().authenticated();
 			})
 			.sessionManagement(session -> {
@@ -62,7 +69,7 @@ public class SecurityConfig {
 			.httpBasic(HttpBasicConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(AbstractHttpConfigurer::disable)
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo
 					.userService(customOAuth2UserService))
 				.successHandler(oAuth2SuccessHandler)
@@ -86,7 +93,18 @@ public class SecurityConfig {
 			);
 		return http.build();
 	}
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // Allow specific origin
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow specific methods
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // Allow specific headers
+		configuration.setAllowCredentials(true); // Allow credentials
 
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
 		Exception {
