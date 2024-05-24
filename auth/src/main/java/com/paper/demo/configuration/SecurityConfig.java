@@ -59,7 +59,7 @@ public class SecurityConfig {
 		// 인터셉터로 요청을 안전하게 보호하는 방법 설정
 		http.authorizeHttpRequests(authorize -> {
 				authorize.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll();
-				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/oauth/**","/v**/logout/**","/v**/name/**").permitAll();
+				authorize.requestMatchers("v**/validate/**","/v**/login/**","/v**/signup/**","/oauth/**","/v**/logout/**","/v**/name/**","/v**/reissue").permitAll();
 				authorize.requestMatchers("/v**/refresh/**").hasRole("USER");
 				authorize.anyRequest().authenticated();
 			})

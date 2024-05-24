@@ -77,8 +77,8 @@ public interface IAuthApiControllerV1 {
 			@ApiResponse(responseCode = "200", description = "토큰 재발급 성공"),
 			@ApiResponse(responseCode = "400", description = "토큰 재발급 실패")
 	})
-	@PostMapping("/v1/refresh")
-	ResponseEntity<?> reissue(@CookieValue(name = "refresh-token") String requestRefreshToken,
+	@PostMapping("/v1/reissue")
+	ResponseEntity<?> reissue(@CookieValue(name = "refreshToken") String requestRefreshToken,
 		@RequestHeader("Authorization") String requestAccessToken) throws
 		NoSuchAlgorithmException,
 		InvalidKeySpecException;
@@ -118,4 +118,5 @@ public interface IAuthApiControllerV1 {
 
 	@GetMapping("/v1/name")
 	ResponseEntity<?> name(@RequestHeader("Authorization") String requestAccessToken);
+
 }

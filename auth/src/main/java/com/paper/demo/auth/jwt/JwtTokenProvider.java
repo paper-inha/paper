@@ -36,6 +36,7 @@ public class JwtTokenProvider implements InitializingBean {
 	private static final String EMAIL_KEY = "email"; // 토큰에 저장할 키
 	private static final String url = "https://authHost:9000"; // 인증서버 주소
 	private static final String LOGIN_TYPE = "loginType"; // 로그인 타입
+	private static Long pageId;
 	private static KeyPair signingKeyPair; // 비밀키, 공개키 쌍
 	private final UserDetailsServiceImpl userDetailsService; // 유저 정보
 	private final RedisService redisService; // 레디스
@@ -118,6 +119,7 @@ public class JwtTokenProvider implements InitializingBean {
 		UserDetailsImpl userDetailsImpl = userDetailsService.loadUserByUsername(email);
 		return new UsernamePasswordAuthenticationToken(userDetailsImpl, "", userDetailsImpl.getAuthorities());
 	}
+
 
 	public long getTokenExpirationTime(String token) {
 		return getClaims(token).getExpiration().getTime();

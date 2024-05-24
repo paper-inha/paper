@@ -25,11 +25,10 @@ public class PaperService implements IPaperServiceV1 {
 	/**
 	 * 사용자가 작성한 페이퍼를 생성하는 메서드
 	 * @param createPaper
-	 * @param accessToken
 	 */
 	@Override
 	@Transactional
-	public void createPapers(PaperDto.createPaper createPaper,String accessToken) {
+	public void createPapers(PaperDto.createPaper createPaper) {
 		Paper paper = Paper.builder()
 			.deletedYn("N")
 			.content(createPaper.getContent())

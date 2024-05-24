@@ -47,13 +47,10 @@ public class AuthService implements IAuthServiceV1 {
 	}
 
 	// 토큰 재발급: validate 메서드가 true 반환할 때만 사용 -> AT, RT 재발급
-	public AuthDto.TokenDto reissue(String requestAccessTokenInHeader, String requestRefreshToken) throws
-		NoSuchAlgorithmException,
-		InvalidKeySpecException {
+	public AuthDto.TokenDto reissue(String requestAccessTokenInHeader, String requestRefreshToken){
 		String requestAccessToken = resolveToken(requestAccessTokenInHeader);
 		Authentication authentication = jwtTokenProvider.getAuthentication(requestAccessToken);
 		String principal = getPrincipal(requestAccessToken);
-
 		String refreshTokenInRedis = redisService.getValues("RT(" + SERVER + "):" + principal);
 		if (refreshTokenInRedis == null) { // Redis에 저장되어 있는 RT가 없을 경우
 			System.out.println("Redis에 저장된 RT가 없습니다.");
@@ -69,7 +66,6 @@ public class AuthService implements IAuthServiceV1 {
 		}
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String authorities = getAuthorities(authentication);
-
 		// 토큰 재발급 및 Redis 업데이트
 		System.out.println("Redis에 저장된 RT: " + redisService.getValues("RT(" + SERVER + "):" + principal));
 		redisService.deleteValues("RT(" + SERVER + "):" + principal); // 기존 RT 삭제
@@ -84,7 +80,7 @@ public class AuthService implements IAuthServiceV1 {
 			redisService.deleteValues("RT(" + provider + "):" + email); // 삭제
 		}
 		// AT, RT 생성 및 Redis에 RT 저장
-		AuthDto.TokenDto tokenDto = jwtTokenProvider.createToken(email, authorities,"Normal");
+		AuthDto.TokenDto tokenDto = jwtTokenProvider.createToken(email, authorities,"normal");
 		saveRefreshToken(provider, email, tokenDto.getRefreshToken());
 		return tokenDto;
 	}
@@ -94,7 +90,6 @@ public class AuthService implements IAuthServiceV1 {
 		redisService.setValuesWithTimeout("RT(" + provider + "):" + principal, // key
 			refreshToken, // value
 			jwtTokenProvider.getTokenExpirationTime(refreshToken)); // timeout(milliseconds)
-
 	}
 
 	// 권한 이름 가져오기
@@ -134,7 +129,4 @@ public class AuthService implements IAuthServiceV1 {
 			"logout",
 			expiration);
 	}
-
-
-
 }

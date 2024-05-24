@@ -1,7 +1,10 @@
 package com.paper.demo.paper.service;
 
+import java.util.List;
+
 import com.paper.demo.paper.domain.Page;
 import com.paper.demo.paper.domain.PaperDto;
+import com.paper.demo.paper.domain.PageIdDto;
 
 import reactor.core.publisher.Mono;
 
@@ -13,4 +16,6 @@ public interface IPageServiceV1 {
 
 	String getLoginType(String accessToken);
 
+	PageIdDto getPageAndPapersByPageId(Long pageId , String accessToken);
+	Long getPageId();
 }

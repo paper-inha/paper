@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../css/Write.module.css";
+import {useNavigate} from "react-router-dom";
 
 function Write({ closeModal }) {
     const [inputValue, setInputValue] = useState("");
     const maxLength = 100;
-
+    let navigate = useNavigate();
     const handleChange = (event) => {
         const { value } = event.target;
         if (value.length <= maxLength) {
@@ -16,9 +17,13 @@ function Write({ closeModal }) {
     async function onClickPaper() {
         try {
             const response = await axios.post(
-                "http://localhost/main/v1/paper",
+                "http://localhost/main/v1/rolls/paper",
                 {
                     content: inputValue,
+                },{
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    }
                 }
             );
             closeModal();
