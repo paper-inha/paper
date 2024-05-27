@@ -14,7 +14,7 @@
       min-height: 100vh;
       height: 100%;
       display: flex;
-      background: url('../Image/Line.jpg') no-repeat;
+      background: url('../Image/LineL.jpg') no-repeat;
       background-size: 100% 90%;
       flex-direction: column;
     }

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../css/Write.module.css";
-import {useNavigate} from "react-router-dom";
 
 function Write({ closeModal }) {
     const [inputValue, setInputValue] = useState("");
     const maxLength = 100;
-    let navigate = useNavigate();
     const handleChange = (event) => {
         const { value } = event.target;
         if (value.length <= maxLength) {

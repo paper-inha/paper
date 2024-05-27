@@ -19,6 +19,10 @@ export const AuthProvider = ({ children }) => {
     const [papers, setPapers] = useState([]);
     const [userEmail, setUserEmail] = useState('');
     const [showPaper, setShowPaper] = useState([]); // []
+    const [showPages, setShowPages] = useState([]);
+    const [pageId, setPageId] = useState(0);
+    const [title, setTitle] = useState('');
+
     let navigate = useNavigate();
 
 
@@ -121,8 +125,50 @@ export const AuthProvider = ({ children }) => {
             console.error('로그아웃 오류 :', error);
         }
     }
+    
+    const showPage = async (id) => {
+        try {
+            const response = await axios.get(`http://localhost/main/v1/rolls/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
+            setShowPages(response.data);
+            setTitle(response.data.title);
+            setPapers(response.data.content);
+        } catch (error) {
+            console.error('페이지 불러오기 실패', error);
+        }
+    };    
+    
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
+    useEffect(() => {
+        const storedIsDarkMode = localStorage.getItem('isDarkMode');
+        if (storedIsDarkMode !== null) {
+          setIsDarkMode(JSON.parse(storedIsDarkMode));
+        }
+      }, []);
+      
+      useEffect(() => {
+        localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+      }, [isDarkMode]);
+
+      useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+          setIsLoggedIn(true);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+          setTimeout(silentRefresh, JWT_EXPIRY_TIME - 60000);
+        }
+      }, []);
+      
     return (
         <AuthContext.Provider
             value={{
@@ -149,6 +195,13 @@ export const AuthProvider = ({ children }) => {
                 userEmail,setUserEmail,
                 onLoginSuccess,
                 handleLogout,
+                showPage,
+                showPages,
+                pageId, 
+                setPageId,
+                title,
+                openModal,
+                closeModal,
             }}
         >
             {children}

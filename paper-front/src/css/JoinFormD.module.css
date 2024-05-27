@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
+    background-color: darkslateblue;
 }
 .container {
     position: relative;
@@ -10,7 +11,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('../Image/night.png') no-repeat;
+    background: url('../Image/night.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     left:50%;
