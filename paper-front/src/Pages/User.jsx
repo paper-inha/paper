@@ -6,7 +6,7 @@ import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 import {useNavigate} from "react-router-dom";
 
-  
+
 const MyRollingResults = () => {
   const {title} = useContext(AuthContext);
 
@@ -33,6 +33,7 @@ const MyPostsResults = () => {
   );
 };
 
+  
 function User() {  
   const { isDarkMode, isLoggedIn } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('posts');
@@ -50,6 +51,7 @@ function User() {
       console.error('유저 이름 불러오기 실패:', error);
     }
   }
+
 
   async function getUserEmail() {
     try {

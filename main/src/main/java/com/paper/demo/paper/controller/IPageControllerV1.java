@@ -79,7 +79,7 @@ public interface IPageControllerV1 {
 	)
 	@GetMapping("/v1/user")
 	ResponseEntity<?> getUserEmail(@RequestHeader("Authorization") String accessToken);
-
+		
 
 	/**
 	 * 페이퍼 삭제

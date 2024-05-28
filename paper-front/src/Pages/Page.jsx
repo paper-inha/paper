@@ -35,6 +35,32 @@ function Page() {
         }
     };
 
+    const handleDelete = async (id) => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+    
+            // Alert를 통해 사용자에게 확인 메시지 표시
+            if (window.confirm('정말 삭제하시겠습니까?')) {
+                const response = await axios.post(`http://localhost/main/v1/rolls/${id}`, null, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+    
+                if (response.status === 200) {
+                    // 삭제 성공
+                    alert('삭제되었습니다.');
+                } else {
+                    // 삭제 실패
+                    console.error('페이퍼 삭제 실패', response.data);
+                }
+            }
+        } catch (error) {
+            console.error('페이퍼 삭제 실패', error);
+            // 에러 처리
+        }
+    };    
+
     useEffect(() => {
         const initialize = async () => {
             try {
@@ -70,6 +96,7 @@ function Page() {
                                     <div key={index} className={isDarkMode ? D.postit : L.postit}>
                                         <div className={isDarkMode ? D.postitcontext : L.postitcontext}>
                                             {content}
+                                            <button onClick={handleDelete}>삭제</button>
                                         </div>
                                     </div>
                                 ))}
