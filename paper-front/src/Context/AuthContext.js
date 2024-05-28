@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }) => {
         async function silentRefresh(){
             if (!isLoggedIn) return;
             try {
+                const accessToken = localStorage.getItem('accessToken');
                 const response = await axios.post('/auth/v1/refresh', {}, {
                     withCredentials: true,
                     headers:{
@@ -69,13 +70,22 @@ export const AuthProvider = ({ children }) => {
             await onLoginSuccess(response);
         } catch (error) {
             console.error('토큰 발급 오류', error);
+            if (error.response.status === 401) {
+                // 토큰이 만료된 경우 로그인 페이지로 이동
+                navigate("/Login");
+            }
         }
     }
 
     async function onClickPage() {
         try {
+            const accessToken = localStorage.getItem('accessToken');
             const response = await axios.post('/main/v1/rolls/page', {
                 title:inputValue,
+            },{
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
             });
             navigate("/Page");
         } catch (error) {
@@ -85,7 +95,16 @@ export const AuthProvider = ({ children }) => {
 
     async function checkTitleExistence() {
         try {
-            const response = await axios.get('/main/v1/validate');
+            const accessToken = localStorage.getItem('accessToken');
+            if (!accessToken) {
+                navigate("/Login");
+                return;
+            }
+            const response = await axios.get('/main/v1/validate',{
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             if (response.data) {
                 navigate("/Page");
             } else {
@@ -93,6 +112,10 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("오류", error);
+            if (error.response.status === 401) {
+                // 토큰이 만료된 경우 로그인 페이지로 이동
+                navigate("/Login");
+            }
         }
     }
 
@@ -118,8 +141,9 @@ export const AuthProvider = ({ children }) => {
         try {
             await axios.post('/auth/v1/logout');
             axios.defaults.headers.common['Authorization'] = '';
-            setIsLoggedIn(false);
             localStorage.removeItem('accessToken');
+            localStorage.clear();
+            setIsLoggedIn(false);
             navigate('/login');
         } catch (error) {
             console.error('로그아웃 오류 :', error);

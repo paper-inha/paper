@@ -102,8 +102,8 @@
         
     }
     .box5{
-      width: 374;
-      height: 100%;
-      padding: 24px;
+      width:374px;
+      height:calc(100%-315px);
+      background-color: white;
       margin: 0 auto;
     }

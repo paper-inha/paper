@@ -4,33 +4,44 @@ import L from '../css/UserL.module.css';
 import D from '../css/UserD.module.css';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
+import {useNavigate} from "react-router-dom";
 
+  
 const MyRollingResults = () => {
+  const {title} = useContext(AuthContext);
+
   return (
     <div>
-      {/* 내가 만든 롤링 결과를 표시하는 UI */}
+      {title}{/* 내가 만든 롤링 결과를 표시하는 UI */}
     </div>
   );
 };
 
 const MyPostsResults = () => {
+  const {isDarkMode,papers} = useContext(AuthContext);
+
   return (
     <div>
-      {/* 내가 쓴 글 결과를 표시하는 UI */}
+      {papers.map((content, index) => (
+      <div key={index}>
+        <div className={isDarkMode ? D.content : L.content}>
+          {content}
+        </div>
+      </div>
+      ))}
     </div>
   );
 };
 
-function User() {
+function User() {  
+  const { isDarkMode, isLoggedIn } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('posts');
   const [showMyRolling, setShowMyRolling] = useState(false);
   const [showMyPosts, setShowMyPosts] = useState(false);
-  const [rollingClass, setRollingClass] = useState('');
-  const [postsClass, setPostsClass] = useState('');
+  const [rollingClass, setRollingClass] = useState(`${isDarkMode ? D.boxs3 : L.boxs3}`);
+  const [postsClass, setPostsClass] = useState(`${isDarkMode ? D.boxs4 : L.boxs4}`);
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
-  const [isDarkMode] = useContext(AuthContext);
-  
   async function getName() {
     try {
       const response = await axios.get('http://localhost/auth/v1/name');
@@ -54,25 +65,30 @@ function User() {
     getName();
   }, []);
 
+  
+  let navigate = useNavigate();
+
+  if(!isLoggedIn){
+    return navigate("/login");
+  }
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-  };
-
-  const updateClassNames = () => {
-    setRollingClass(`${isDarkMode ? D.boxs3 : L.boxs3}`);
-    setPostsClass(`${isDarkMode ? D.boxs4 : L.boxs4}`);
   };
 
   const handleMyRollingClick = () => {
     setShowMyRolling(true);
     setShowMyPosts(false);
-    updateClassNames();
+    setRollingClass(`${isDarkMode ? D.boxs3 : L.boxs3}`);
+    setPostsClass(`${isDarkMode ? D.boxs4 : L.boxs4}`);
+  
   };
 
   const handleMyPostsClick = () => {
     setShowMyPosts(true);
     setShowMyRolling(false);
-    updateClassNames();
+    setRollingClass(`${isDarkMode ? D.boxs4 : L.boxs4}`);
+    setPostsClass(`${isDarkMode ? D.boxs3 : L.boxs3}`);  
   };
 
   return (

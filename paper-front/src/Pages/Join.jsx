@@ -87,9 +87,9 @@ function Join() {
                 onRequestClose={() => setIsModalOpen(false)}
                 contentLabel="Error Modal"
                 className={isDarkMode?D.modal:L.modal}
-                overlayClassName={isDarkMode?D.modalOverlay: L.modal}
+                overlayClassName={isDarkMode?D.modalOverlay: L.modalOverlay}
             >
-                <div className={isDarkMode?D.modalContent:L.modal}>
+                <div className={isDarkMode?D.modalContent:L.modalContent}>
                     <h2>Error</h2>
                     <p>{modalMessage}</p>
                     <button onClick={() => setIsModalOpen(false)}>Close</button>

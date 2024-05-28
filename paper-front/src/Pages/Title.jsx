@@ -1,13 +1,12 @@
     import L from '../css/TitleL.module.css';
     import D from '../css/TitleD.module.css';
-    import React, {useContext, useState,useEffect} from 'react';
+    import React, {useContext,useEffect} from 'react';
     import {useNavigate} from "react-router-dom";
     import Menubar from '../Component/Menubar/Header';
     import mainImage from '../Image/main.png';
     import mainDImage from '../Image/mainD.png';
     import {AuthContext} from "../Context/AuthContext";
-    import axios from 'axios';
-
+    
     const Logo = React.memo(function Logo() {
         
     const {isDarkMode} = useContext(AuthContext);
@@ -22,20 +21,18 @@
     });
 
     function Title() {
-        const maxLength = 12;
-        const { inputValue, onClickPage, setInputValue,isDarkMode} = useContext(AuthContext);
-        const [isLoggedIn, setIsLoggedIn] = useState(false);
+        const { inputValue, onClickPage, setInputValue,isDarkMode,isLoggedIn,  onLoginSuccess} = useContext(AuthContext);
 
         useEffect(() => {
-          const accessToken = localStorage.getItem('accessToken');
-          if (accessToken) {
-            setIsLoggedIn(true);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+          const storedAccessToken = localStorage.getItem('accessToken');
+          if (storedAccessToken) {
+            onLoginSuccess({ data: { data: { accessToken: storedAccessToken } } });
           }
-        }, []);
-        
+        }, [onLoginSuccess]);
+
         return (
             <div className={isDarkMode ? D.main : L.main}>
+                {isLoggedIn ?(
                 <form>
                     <div className={isDarkMode ? D.container : L.container}>
                         <Logo />
@@ -53,6 +50,9 @@
                         </div>
                     </div>
                 </form>
+                ) : (
+                    <p>로그인 안됨</p>
+                )}
             </div>
         );
     }
