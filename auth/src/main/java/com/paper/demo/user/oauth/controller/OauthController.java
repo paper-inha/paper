@@ -38,4 +38,5 @@ public class OauthController {
 			.status(HttpStatus.OK)
 			.body(successResponse);
 	}
+
 }

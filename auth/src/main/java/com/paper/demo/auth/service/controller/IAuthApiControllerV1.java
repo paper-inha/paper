@@ -119,4 +119,6 @@ public interface IAuthApiControllerV1 {
 	@GetMapping("/v1/name")
 	ResponseEntity<?> name(@RequestHeader("Authorization") String requestAccessToken);
 
+	@GetMapping("/v1/validate/join")
+	ResponseEntity<?> validateJoinByEmail(@RequestHeader("Authorization") String requestAccessToken);
 }

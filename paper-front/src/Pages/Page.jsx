@@ -35,21 +35,21 @@ function Page() {
         }
     };
 
+
     const handleDelete = async (id) => {
         try {
             const accessToken = localStorage.getItem('accessToken');
-    
-            // Alert를 통해 사용자에게 확인 메시지 표시
             if (window.confirm('정말 삭제하시겠습니까?')) {
                 const response = await axios.post(`http://localhost/main/v1/rolls/${id}`, null, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-    
                 if (response.status === 200) {
                     // 삭제 성공
+                    console.log('페이퍼 삭제 성공', response.data);
                     alert('삭제되었습니다.');
+                    window.location.reload();
                 } else {
                     // 삭제 실패
                     console.error('페이퍼 삭제 실패', response.data);
@@ -59,7 +59,7 @@ function Page() {
             console.error('페이퍼 삭제 실패', error);
             // 에러 처리
         }
-    };    
+    };
 
     useEffect(() => {
         const initialize = async () => {
@@ -74,6 +74,10 @@ function Page() {
         initialize(getPageId, setPageId, showPage);
     }, []);
 
+    const deletePaper = (index) => {
+        handleDelete(index);
+    };
+
     return (
         <div id="wrap">
             <div className={isDarkMode ? D.main : L.main}>
@@ -81,9 +85,9 @@ function Page() {
                     <div className={isDarkMode ? D.container : L.container}>
                         <div className={isDarkMode ? D.headerbox1 : L.headerbox1}>
                             <div className={isDarkMode ? D.headerbox2 : L.headerbox2}>
-                                <img src={Share} className={isDarkMode ? D.img : L.img} alt="Share" />
+                                <img src={Share} className={isDarkMode ? D.img : L.img} alt="Share"/>
                                 <h1 className={isDarkMode ? D.h1F : L.h1F}>{title}</h1>
-                                <Menubar />
+                                <Menubar/>
                             </div>
                             <div className={isDarkMode ? D.headerbox3 : L.headerbox3}></div>
                         </div>
@@ -96,7 +100,6 @@ function Page() {
                                     <div key={index} className={isDarkMode ? D.postit : L.postit}>
                                         <div className={isDarkMode ? D.postitcontext : L.postitcontext}>
                                             {content}
-                                            <button onClick={handleDelete}>삭제</button>
                                         </div>
                                     </div>
                                 ))}
@@ -105,13 +108,13 @@ function Page() {
                         </section>
                         <div className={isDarkMode ? D.write : L.write}>
                             <div className={isDarkMode ? D.writebtn : L.writebtn}>
-                                <img src={Plus} width="24" height="24" onClick={openModal} alt="Plus" />
+                                <img src={Plus} width="24" height="24" onClick={openModal} alt="Plus"/>
                                 <Modal
                                     isOpen={isModalOpen}
                                     onRequestClose={closeModal}
                                     contentLabel="Write Modal"
                                 >
-                                    <Write closeModal={closeModal} />
+                                    <Write closeModal={closeModal}/>
                                 </Modal>
                             </div>
                         </div>
@@ -121,5 +124,4 @@ function Page() {
         </div>
     );
 }
-
 export default Page;
