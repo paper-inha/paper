@@ -13,7 +13,6 @@ public interface IUserServiceV1 {
 	void checkPassword(String password);
 	void checkEmailCompatibility(String email);
 	void registerAdmin(AuthDto.SignupDto signupDto);
-	void checkEmailInDB(String email);
 
 	String getUserEmail();
 }

@@ -172,13 +172,5 @@ public class AuthApiController implements IAuthApiControllerV1 {
 			.body(successResponse);
 	}
 
-	@Override
-	public ResponseEntity<?> validateJoinByEmail(@RequestHeader("Authorization") String requestAccessToken) {
-		userService.checkEmailInDB(userService.getUserEmail());
-		SuccessResponse<?> successResponse = SuccessResponse.from(ResponseStatus.SUCCESS, "이메일 인증 성공");
-		return ResponseEntity
-			.status(ResponseStatus.SUCCESS.getCode())
-			.body(successResponse);
-	}
 
 }

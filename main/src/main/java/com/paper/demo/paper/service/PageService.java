@@ -36,8 +36,8 @@ public class PageService implements IPageServiceV1 {
 	 * @return
 	 */
 	public boolean validateTitle(String accessToken) {
-		String email = getUserEmail();
-		String loginType = getLoginType(accessToken);
+		String email = getUserEmail(); // 현재 사용자의 이메일을 얻습니다.
+		String loginType = getLoginType(accessToken); // 현재 사용자의 로그인 타입을 얻습니다.
 		Optional<Page> optionalPage = pageRepository.findByEmailAndLoginType(email, loginType);
 		return optionalPage.isPresent();
 	}

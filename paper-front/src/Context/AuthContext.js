@@ -1,10 +1,12 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import handleSocialLogin from '../Pages/AuthCallback';
 
+
 export const AuthContext = createContext();
 const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
+
 
 export const AuthProvider = ({ children }) => {
     const [email, setEmail] = useState('');
@@ -20,7 +22,6 @@ export const AuthProvider = ({ children }) => {
     const [showPages, setShowPages] = useState([]);
     const [pageId, setPageId] = useState(0);
     const [title, setTitle] = useState('');
-    const [paperId, setPaperId] = useState(0);
 
     let navigate = useNavigate();
 
@@ -46,6 +47,7 @@ export const AuthProvider = ({ children }) => {
 
     const onLoginSuccess = async response => {
         const { accessToken } = response.data.data;
+        //로컬스토리지에 엑세스토큰이 있다면 삭제하고 새로운 엑세스토큰을 저장
         if (localStorage.getItem('accessToken')) {
             localStorage.removeItem('accessToken');
         }

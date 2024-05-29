@@ -13,7 +13,9 @@ const AuthCallback = () => {
                 const response = await axios.get('http://localhost/auth/oauth/token', {
                     withCredentials: true,
                 });
+
                 onLoginSuccess(response);
+                navigate('/'); // 로그인 후 리다이렉트할 경로로 수정하세요.
             } catch (error) {
                 console.error('로그인 오류 :', error);
             }

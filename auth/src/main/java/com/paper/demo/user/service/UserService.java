@@ -50,11 +50,14 @@ public class UserService implements IUserServiceV1 {
 	 */
 	@Override
 	public void registerUser(AuthDto.SignupDto signupDto){
+		//이메일 중복 체크
 		checkDuplicatedEmail(signupDto.getEmail());
 		checkEmailCompatibility(signupDto.getEmail());
+		//비밀번호 입력안내와 호환성검사
 		checkPassword(signupDto.getPassword());
 		checkPasswordCompatibility(signupDto.getPassword());
 		String encodedPassword = passwordEncoder.encode(signupDto.getPassword());
+		//사용자 등록
 		User user = User.registerUser(signupDto.getEmail(), encodedPassword, signupDto.getName(), Role.USER);
 		userRepository.save(user);
 	}
@@ -119,11 +122,7 @@ public class UserService implements IUserServiceV1 {
 		}
 	}
 
-	@Override
-	public void checkEmailInDB(String email) {
-		Optional<User> user = userRepository.findByEmail(email);
-		if (user.isEmpty()) {
-			throw new IllegalArgumentException("일치하는 정보가 없습니다.");
-		}
-	}
+
+
+
 }

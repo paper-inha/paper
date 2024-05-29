@@ -14,7 +14,6 @@ public class PageIdDto {
 		private List<String> content;
 		private String loginType;
 
-
 		public PageIdDto(String email, String title, List<String> content, String loginType) {
 			this.email = email;
 			this.title = title;

@@ -25,7 +25,6 @@ function Write({ closeModal }) {
                 }
             );
             closeModal();
-            window.location.reload();
         } catch (error) {
             console.error("페이퍼 생성 실패:", error);
         }
