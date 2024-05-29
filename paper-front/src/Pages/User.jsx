@@ -12,7 +12,7 @@ const MyRollingResults = () => {
 
   return (
     <div>
-      {title}{/* 내가 만든 롤링 결과를 표시하는 UI */}
+      {title}
     </div>
   );
 };

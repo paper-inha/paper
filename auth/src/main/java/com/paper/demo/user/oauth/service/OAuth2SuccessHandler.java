@@ -32,7 +32,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 			addRefreshTokenInCookie(refreshToken, request, response);
 		}
 		// // 필요한 경우 리다이렉트
-		response.sendRedirect("http://localhost:3000/auth/callback");
+		response.sendRedirect("http://localhost:3000/auth/success");
 	}
 
 	private void addRefreshTokenInCookie(String refreshToken, HttpServletRequest request, HttpServletResponse response) {

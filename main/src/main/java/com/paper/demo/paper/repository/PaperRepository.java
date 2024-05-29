@@ -24,4 +24,6 @@ public interface PaperRepository extends JpaRepository<Paper, Long> {
 
 	@Query("SELECT p.content FROM Paper p WHERE p.author.id = :pageId")
 	List<String> findContentsByPageId(@Param("pageId") Long pageId);
+
+
 }
