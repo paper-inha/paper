@@ -3,18 +3,21 @@ import D from '../css/JoinFormD.module.css';
 import L from '../css/JoinFormL.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Modal from 'react-modal';
 import { AuthContext } from '../Context/AuthContext';
+import EmailDuplicateModal from './EmailDuplicateModal';
+import JoinModal from './JoinModal';
+import Modal from 'react-modal';
+
 
 function Join() {
-    const { isDarkMode } = useContext(AuthContext);
+    const { isDarkMode,isModalOpen,openModal,closeModal,setIsModalOpen,setModalMessage } = useContext(AuthContext);
+    const [isEmailDuplicateModalOpen, setIsEmailDuplicateModalOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [name, setName] = useState('');
     let navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    
     useEffect(() => {
         const link = document.createElement('link');
         link.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css';
@@ -44,7 +47,7 @@ function Join() {
             // 사용자에게 에러 메시지 표시
             setModalMessage(errorMessage);
             setIsModalOpen(true);
-        }
+        } 
     }
 
     const handleSubmit = (e) => {
@@ -56,6 +59,9 @@ function Join() {
         }
         getData(email, password, name).then(r => console.log(r));
     };
+    const handleEmailDuplicateCheck = () => {
+        setIsEmailDuplicateModalOpen(true);
+    };
 
     return (
         <div className={isDarkMode ? D.main : L.main}>
@@ -63,9 +69,18 @@ function Join() {
                 <div className={isDarkMode ? D.wrapper : L.wrapper}>
                     <h1 onClick={() => navigate('/')}>회원가입</h1>
                     <form onSubmit={handleSubmit}>
-                        <div className={isDarkMode ? D.inputbox : L.inputbox}>
+                        <div className={isDarkMode ? D.inputbox2 : L.inputbox2}>
                             <input type="text" placeholder="이메일" required value={email} onChange={(e) => setEmail(e.target.value)}/>
-                            <i className='bx bxs-user'></i>
+                            <button className={isDarkMode ? D.emailtest:L.emailtest}onClick={handleEmailDuplicateCheck}>중복확인</button>
+                            {isEmailDuplicateModalOpen && (
+                                <Modal
+                                    isOpen={isEmailDuplicateModalOpen}
+                                    onRequestClose={() => setIsEmailDuplicateModalOpen(false)}
+                                    contentLabel="Email Duplicate Modal"
+                                >
+                                    <EmailDuplicateModal closeModal={() => setIsEmailDuplicateModalOpen(false)}/>
+                                </Modal>
+                            )}
                         </div>
                         <div className={isDarkMode ? D.inputbox : L.inputbox}>
                             <input type="password" placeholder="패스워드" required value={password} onChange={(e) => setPassword(e.target.value)}/>
@@ -78,23 +93,17 @@ function Join() {
                         <div className={isDarkMode ? D.inputbox : L.inputbox}>
                             <input type="text" placeholder="닉네임" required value={name} onChange={(e) => setName(e.target.value)}/>
                         </div>
-                        <button type="submit" className={isDarkMode ? D.btn : L.btn}>회원가입</button>
+                        <button type="submit" className={isDarkMode ? D.btn : L.btn}>회원가입</button>          
+                          <Modal
+                            isOpen={isModalOpen}
+                            onRequestClose={closeModal}
+                            contentLabel="Write Modal"
+                          >
+                            <JoinModal closeModal={closeModal}/>
+                          </Modal>
                     </form>
                 </div>
             </div>
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
-                contentLabel="Error Modal"
-                className={isDarkMode?D.modal:L.modal}
-                overlayClassName={isDarkMode?D.modalOverlay: L.modalOverlay}
-            >
-                <div className={isDarkMode?D.modalContent:L.modalContent}>
-                    <h2>Error</h2>
-                    <p>{modalMessage}</p>
-                    <button onClick={() => setIsModalOpen(false)}>Close</button>
-                </div>
-            </Modal>
         </div>
     );
 }

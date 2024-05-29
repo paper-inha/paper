@@ -97,7 +97,11 @@ function Page() {
                         <section className={isDarkMode ? D.post1 : L.post1}>
                             <div className={isDarkMode ? D.post2 : L.post2}>
                                 {papers.map((content, index) => (
-                                    <div key={index} className={isDarkMode ? D.postit : L.postit}>
+                                    <div key={index}
+                                    className={isDarkMode ? D.postit : L.postit}
+                                    style={{
+                                      transform: `rotate(${Math.floor(Math.random() * 21) - 10}deg)`,
+                                    }}>
                                         <div className={isDarkMode ? D.postitcontext : L.postitcontext}>
                                             {content}
                                         </div>
