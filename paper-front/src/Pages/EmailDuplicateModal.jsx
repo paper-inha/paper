@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function EmailDuplicateModal ({ closeModal }) {
   const [email, setEmail] = useState('');
+  const [isDuplicate, setIsDuplicate] = useState(false);
 
-  /*const handleEmailDuplicateConfirm = async () => {
+  const handleDuplicateCheck = async () => {
     try {
-      // 이메일 중복 확인 API 호출
-      if (response.data.isDuplicate) {
-        // 이메일 중복 발생
-        alert('이메일이 중복되었습니다.');
-      } else {
-        // 이메일 중복 없음
-        // 이메일 중복 체크 완료 처리
-        onConfirm();
-      }
+      const response = await axios.get('http://localhost/auth/v1/validate/join', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        params: {
+          email,
+        },
+      });
+
+      setIsDuplicate(response.data.isDuplicate);
     } catch (error) {
-      console.error(error);
-      // 에러 처리
+      console.error('이메일 중복 확인 실패:', error);
     }
-  };*/
+  };
+
 
   return (
     <div>
@@ -28,7 +31,8 @@ function EmailDuplicateModal ({ closeModal }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button>중복 확인</button>
+        <button onClick={handleDuplicateCheck}>중복 확인</button>
+        {isDuplicate && <span>이메일이 중복되었습니다.</span>}
         <span onClick={closeModal}>취소</span>
       </div>
   );
